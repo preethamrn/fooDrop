@@ -3,6 +3,7 @@ import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
+import ListingsBase from '@/components/ListingsBase'
 
 Vue.use(Vuetify)
 Vue.use(Router)
@@ -11,11 +12,19 @@ Vue.use(Router)
 var router = new Router({
   routes: [
     {
-      path: '/',
+      path: '/hello',
       name: 'HelloWorld',
       component: HelloWorld,
       meta: {
-        title: 'Home'
+        title: 'HelloWorld - Test'
+      }
+    },
+    {
+      path: '/',
+      name: 'Listings',
+      component: ListingsBase,
+      meta: {
+        title: 'Listings'
       }
     }
   ]

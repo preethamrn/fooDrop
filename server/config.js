@@ -4,4 +4,4 @@ module.exports = {
     SERVER_PORT: process.env.SERVER_PORT || 8081,
     DB_USERNAME: process.env.DB_USERNAME || 'username',
     DB_PASSWORD: process.env.DB_PASSWORD || 'password'
-  }
+}
