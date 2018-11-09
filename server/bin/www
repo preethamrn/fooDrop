@@ -4,8 +4,8 @@
  * Module dependencies.
  */
 
-var app = require('../app');
-var debug = require('debug')('foodrop:server');
+var app = require('./src/app.js');
+var debug = require('debug')('server:server');
 var http = require('http');
 
 /**
