@@ -47,12 +47,22 @@ app.use('/users', usersRouter);
 
 // Add new post
 app.get('/posts', (req, res) => {
-  var db = req.db;
-  var title = req.body.title;
-  var description = req.body.description;
+  var title = "udayan";
+  var description = "sahai";
+  var dietaryRestrictions = ["Hello","World"];
+  var ingredients = ['carrots'];
+  var price = 100; 
+  var quantity = 1; 
+  var sellerId = 1234; 
+
   var new_post = new Post({
     title: title,
-    description: description
+    description: description,
+    dietaryRestrictions: dietaryRestrictions,
+    ingredients: ingredients,
+    price: price,
+    quantity: quantity,
+    sellerId: sellerId
   })
 
   new_post.save(function (error) {
