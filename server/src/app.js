@@ -7,14 +7,12 @@ var logger = require('morgan');
 var indexRouter = require('../routes/index');
 var usersRouter = require('../routes/users');
 
-
 var app = express();
 
 // mongodb
 const mongoose = require('mongoose')
 const mongodb_conn_module = require('./mongodbConnModule');
 var db = mongodb_conn_module.connect();
-
 
 // socket.io
 const http = require('http').Server(app)
@@ -46,7 +44,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
 // Add new post
-app.get('/posts', (req, res) => {
+app.post('/posts', (req, res) => {
   var db = req.db;
   var title = req.body.title;
   var description = req.body.description;
