@@ -49,8 +49,8 @@ app.use('/dish', dishRouter);
 app.get('/posts', (req, res) => {
   var title = "udayan";
   var description = "sahai";
-  var dietaryRestrictions = ["Hello","World"];
-  var ingredients = ['carrots'];
+  var dietaryRestrictions = ["peanut"];
+  var ingredients = ['carrots','peas','potatoes'];
   var price = 100; 
   var quantity = 1; 
   var sellerId = 1234; 
