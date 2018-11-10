@@ -53,18 +53,19 @@ var description = "best dish ever";
 var ingredients = ["eggs", "ham", "cheese"];
 var allergies = ["peanuts", "seafood"];
 
-
 router.post('/new_dish', (req, res) => {
 
   var new_dish = new Post({
-    dietaryRestrictions: allergies,
-    title: name,
-    description: description,
-    ingredients: ingredients,
-    price: price
+    dietaryRestrictions: req.body.allergies,
+    title: req.body.name,
+    description: req.body.description,
+    ingredients: req.body.ingredients,
+    price: req.price
   })
 
-  console.log("hi");
+  //console.log(req.body.FirstName);
+
+  var body = req.body;
 
   new_dish.save(function (error) {
     if (error) {
@@ -72,7 +73,8 @@ router.post('/new_dish', (req, res) => {
     }
     res.send({
       success: true,
-      message: 'Post saved successfully!'
+      message: 'Post saved successfully!',
+      body: body
     })
   })
 
