@@ -6,6 +6,7 @@ var logger = require('morgan');
 
 var indexRouter = require('../routes/index');
 var usersRouter = require('../routes/users');
+var dishRouter = require('../routes/dish');
 
 var app = express();
 
@@ -42,12 +43,9 @@ app.use(function(req, res, next) {
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/dish', dishRouter);
 
-// Add new post
-app.post('/posts', (req, res) => {
-  var db = req.db;
-  var title = req.body.title;
-  var description = req.body.description;
+
 app.get('/posts', (req, res) => {
   var title = "udayan";
   var description = "sahai";
