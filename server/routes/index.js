@@ -13,8 +13,6 @@ router.get('/get_dishes', (req, res) => {
   ] })
 })
 
-router.post('/new_dish', (req, res) => {
-  res.send({ success: true, dish: { name: 'testDish', ingredients: ['carrots'], dietaryRestrictions: [], price: 100, quantity: 1, sellerId: '1234' } })
-})
+
 
 module.exports = router;

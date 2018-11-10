@@ -1,6 +1,9 @@
 var express = require('express');
 var router = express.Router();
+<<<<<<< HEAD
 const mongoose = require('mongoose');
+=======
+>>>>>>> 3bd19962cf277e0527a5968616f1b1a5ce4654d2
 var Post = require("../models/post");
 
 
