@@ -9,6 +9,12 @@ var Post = require("../models/post");
 var search = function(radius, ingredients, dietaryRestrictions){
 };
 
+router.post('/', function(request, response){
+  console.log(request.body);      // your JSON
+  response.send(request.body);    // echo the result back
+});
+
+
 router.get('/get_dishes', function(req, res, next) {
 
 	Post.find(function (err, result) {
