@@ -1,45 +1,74 @@
-const config = require('../config')
-const express = require('express')
-const bodyParser = require('body-parser')
-const cors = require('cors')
-const morgan = require('morgan')
-const jwt = require('jsonwebtoken')
-const moment = require('moment')
+var createError = require('http-errors');
+var express = require('express');
+var path = require('path');
+var cookieParser = require('cookie-parser');
+var logger = require('morgan');
 
-// express
-const app = express()
-app.use(morgan('combined'))
-app.use(bodyParser.json())
-app.use(cors())
+var indexRouter = require('../routes/index');
+var usersRouter = require('../routes/users');
 
-// socket.io
-const http = require('http').Server(app)
-const io = require('socket.io')(http)
+var app = express();
 
 // mongodb
 const mongoose = require('mongoose')
 const mongodb_conn_module = require('./mongodbConnModule');
 var db = mongodb_conn_module.connect();
 
-//socket.io connection listening
-http.listen(config.SERVER_PORT)
+// socket.io
+const http = require('http').Server(app)
+const io = require('socket.io')(http)
+
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
+
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
 
 io.use(function(socket, next) {
-    next()
+  next()
 })
 
 app.use(function(req, res, next) {
-    req.io = io
-    next()
+  req.io = io
+  next()
 })
 
+app.use('/', indexRouter);
+app.use('/users', usersRouter);
+
+//preetham code
 app.get('/get_dishes', (req, res) => {
-    res.send({ dishes: [
-        { name: 'testDish1', ingredients: ['carrots'], dietaryRestrictions: [], price: 100, amount: 1, sellerId: '1234' },
-        { name: 'testDish2', ingredients: ['apples', 'bananas', 'milk'], dietaryRestrictions: ['lactose'], price: 500, amount: 7, sellerId: '1234' }
-    ] })
+  res.send({ dishes: [
+      { name: 'testDish1', ingredients: ['carrots'], dietaryRestrictions: [], price: 100, amount: 1, sellerId: '1234' },
+      { name: 'testDish2', ingredients: ['apples', 'bananas', 'milk'], dietaryRestrictions: ['lactose'], price: 500, amount: 7, sellerId: '1234' }
+  ] })
 })
 
 app.post('/new_dish', (req, res) => {
-    res.send({ success: true, dish: { name: 'testDish', ingredients: ['carrots'], dietaryRestrictions: [], price: 100, amount: 1, sellerId: '1234' } })
+  res.send({ success: true, dish: { name: 'testDish', ingredients: ['carrots'], dietaryRestrictions: [], price: 100, amount: 1, sellerId: '1234' } })
 })
+
+
+
+
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  next(createError(404));
+});
+
+// error handler
+app.use(function(err, req, res, next) {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+  // render the error page
+  res.status(err.status || 500);
+  res.render('error');
+});
+
+module.exports = app;
