@@ -43,11 +43,11 @@ app.use(function(req, res, next) {
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
-// Add new post
-app.post('/posts', (req, res) => {
-  var db = req.db;
-  var title = req.body.title;
-  var description = req.body.description;
+
+
+  
+
+
 app.get('/posts', (req, res) => {
   var title = "udayan";
   var description = "sahai";
