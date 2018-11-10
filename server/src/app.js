@@ -7,12 +7,14 @@ var logger = require('morgan');
 var indexRouter = require('../routes/index');
 var usersRouter = require('../routes/users');
 
+
 var app = express();
 
 // mongodb
 const mongoose = require('mongoose')
 const mongodb_conn_module = require('./mongodbConnModule');
 var db = mongodb_conn_module.connect();
+
 
 // socket.io
 const http = require('http').Server(app)
@@ -21,6 +23,9 @@ const io = require('socket.io')(http)
 // view engine setup
 app.set('views', path.join(__dirname, '../views'));
 app.set('view engine', 'jade');
+
+//database model
+var Post = require("../models/post");
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -40,19 +45,26 @@ app.use(function(req, res, next) {
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
-//preetham code
-app.get('/get_dishes', (req, res) => {
-  res.send({ dishes: [
-      { name: 'testDish1', ingredients: ['carrots'], dietaryRestrictions: [], price: 100, amount: 1, sellerId: '1234' },
-      { name: 'testDish2', ingredients: ['apples', 'bananas', 'milk'], dietaryRestrictions: ['lactose'], price: 500, amount: 7, sellerId: '1234' }
-  ] })
+// Add new post
+app.get('/posts', (req, res) => {
+  var db = req.db;
+  var title = req.body.title;
+  var description = req.body.description;
+  var new_post = new Post({
+    title: title,
+    description: description
+  })
+
+  new_post.save(function (error) {
+    if (error) {
+      console.log(error)
+    }
+    res.send({
+      success: true,
+      message: 'Post saved successfully!'
+    })
+  })
 })
-
-app.post('/new_dish', (req, res) => {
-  res.send({ success: true, dish: { name: 'testDish', ingredients: ['carrots'], dietaryRestrictions: [], price: 100, amount: 1, sellerId: '1234' } })
-})
-
-
 
 
 // catch 404 and forward to error handler
