@@ -9,9 +9,29 @@ var usersRouter = require('./routes/users');
 
 var app = express();
 
+// mongodb
+const mongoose = require('mongoose')
+const mongodb_conn_module = require('./src/mongodbConnModule');
+var db = mongodb_conn_module.connect();
+
+// socket.io
+const http = require('http').Server(app)
+const io = require('socket.io')(http)
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
+
+
+
+io.use(function(socket, next) {
+    next()
+})
+
+app.use(function(req, res, next) {
+    req.io = io
+    next()
+})
 
 app.use(logger('dev'));
 app.use(express.json());
