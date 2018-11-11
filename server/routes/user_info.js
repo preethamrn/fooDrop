@@ -53,5 +53,4 @@ router.get('/get_users', (req, res) => {
 	})
 })
 
-
 module.exports = router;
