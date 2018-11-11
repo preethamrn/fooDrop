@@ -1,13 +1,19 @@
 <template>
   <div name='listings-base'>
-    <div v-for='(dish, id) in dishes' :key='id'> {{ dish }} </div>
+    <v-list v-for='(dish, index) in dishes' :key='index'>
+      <listings-dish-item :name='dish.name' :location='dish.location' :price='dish.price' :id='dish.id'/>
+    </v-list>
   </div>
 </template>
 
 <script>
 import DishesService from '@/services/DishesService'
+import ListingsDishItem from '@/components/ListingsDishItem'
 export default {
   name: 'listings-base',
+  components: {
+    ListingsDishItem
+  },
   data () {
     return {
       dishes: [],
