@@ -11,7 +11,7 @@ var UserSchema = new Schema({
   price: Number, //(this can be plus or minus)
   dietaryRestrictions: [{type: String}], 
   name: String,
-  paypayID: Number,
+  paypalID: Number,
   rating: Number,
   radius: {type: Number, default: 1}
 },{ versionKey: false });
