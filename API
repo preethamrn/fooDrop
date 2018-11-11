@@ -1,0 +1,15 @@
+GetDishes() 
+
+GET at /dish/get_dishes 
+
+optional parameters - Search by ingredient and allergies 
+
+Example - http://localhost:8081/dish/get_dishes?ingredients=carrots&ingredients=peas&dietaryRestrictions=peanut
+
+POST at /dish/new_dish 
+
+send request body with paramaters as JSON 
+
+
+
+
