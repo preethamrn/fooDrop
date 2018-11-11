@@ -13,6 +13,7 @@ var UserSchema = new Schema({
   name: String,
   paypalID: Number,
   rating: Number,
+  OAuth: {type: String, default: "leslie is cool"},
   radius: {type: Number, default: 1}
 },{ versionKey: false });
 
