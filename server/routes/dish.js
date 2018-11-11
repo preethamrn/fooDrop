@@ -23,6 +23,7 @@ router.get('/get_dishes', function(req, res, next) {
 var ingredients = []; 
 var dietaryRestrictions = []; 
 
+
 if (!req.query.ingredients)
 	ingredients = []
 else 
