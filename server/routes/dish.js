@@ -57,11 +57,11 @@ var allergies = ["peanuts", "seafood"];
 router.post('/new_dish', (req, res) => {
 
   var new_dish = new Post({
-    dietaryRestrictions: req.body.allergies,
-    title: req.body.name,
+    dietaryRestrictions: req.body.dietaryRestrictions,
+    title: req.body.title,
     description: req.body.description,
     ingredients: req.body.ingredients,
-    price: req.price
+    price: req.body.price
   })
 
   //console.log(req.body.FirstName);
