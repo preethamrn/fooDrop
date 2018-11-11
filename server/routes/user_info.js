@@ -44,5 +44,14 @@ router.get('/create', function(req,res,next){
   })
 });
 
+router.get('/get_users', (req, res) => {
+  User.find({}, function (error, posts) {
+	  if (error) { console.error(error); }
+	  res.send({
+			posts: posts
+		})
+	})
+})
+
 
 module.exports = router;
