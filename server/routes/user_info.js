@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var User = require("../models/user");
+const mongoose = require('mongoose');
+const ObjectId = mongoose.Types.ObjectId;
 
 
 /* GET users listing. */
@@ -43,6 +45,18 @@ router.get('/create', function(req,res,next){
     })
   })
 });
+
+router.get('/get_user', (req, res) => {
+  var user_id = ObjectId(req.query.user_id); 
+  User.findById(user_id, function(err,result){
+    if (err) return console.error(err);
+    else {
+      res.contentType('application/json');
+      res.send(JSON.stringify(result));
+    }
+
+  })
+})
 
 router.get('/get_users', (req, res) => {
   User.find({}, function (error, posts) {

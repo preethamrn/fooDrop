@@ -4,7 +4,6 @@ var Schema = mongoose.Schema;
 var UserSchema = new Schema({
 
   //TODO: need to add default radius
-  userId: {type: Number, default: 100}, //question, how do we get a generated sellerId?
   transaction_post_id: Number,
   date: Date,
   post_object: Schema.Types.Mixed,
