@@ -4,6 +4,9 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const morgan = require('morgan')
 const jwt = require('jsonwebtoken')
+const passport = require('passport')
+const FacebookStrategy = require('passport-facebook')
+const facebookCred = require(__dirname + '/../facebook/credentials.js')
 const moment = require('moment')
 
 // express
@@ -23,6 +26,20 @@ var db = mongodb_conn_module.connect();
 
 //socket.io connection listening
 http.listen(config.SERVER_PORT)
+app.listen(8080, function() {
+	console.log("Listening")
+})
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.serializeUser(function(user, cb) {
+	cb(null, user);
+});
+
+passport.deserializeUser(function(user, cb){
+	cb(null, user);
+});
 
 io.use(function(socket, next) {
     next()
@@ -31,6 +48,10 @@ io.use(function(socket, next) {
 app.use(function(req, res, next) {
     req.io = io
     next()
+})
+
+app.get('/', (req, res) => {
+	res.send("HELLO WORLD!")
 })
 
 app.get('/get_dishes', (req, res) => {
@@ -43,3 +64,51 @@ app.get('/get_dishes', (req, res) => {
 app.post('/new_dish', (req, res) => {
     res.send({ success: true, dish: { name: 'testDish', ingredients: ['carrots'], dietaryRestrictions: [], price: 100, amount: 1, sellerId: '1234' } })
 })
+
+passport.use(new FacebookStrategy({
+	clientID: facebookCred.auth.id,
+	clientSecret: facebookCred.auth.secret,
+	callbackURL: 'http://localhost:8080/auth/facebook'
+}, async (req, accessToken, refreshToken, profile, done) => {
+	var query = {"FacebookID": profile.id}
+	db.collection("Users").findOne(query, (err, result) => {
+		if(err) {
+			console.log(err)
+		}
+		else if(result == null) {
+			var newUser = {
+				"AccessToken": accessToken,
+				"FacebookID": profile.id,
+				"radiusDefault": 2,
+				"dietaryRestrictions": [],
+				"PaypalID": 0,
+				"Rating": 0,
+				"Name": profile.displayName
+			}
+
+			console.log("Adding User To Database")
+			db.collection("Users").insertOne(newUser, (err, result) => {
+				if(err) {
+					console.log(err)
+				}
+				else {
+					console.log("Successfully Added New User")
+					console.log(result)
+					done(null, result)
+				}
+			})
+
+		}
+		else {
+			console.log("Successfully Logged In")
+			console.log(result)
+			done(null, result)
+		}
+	})
+}))
+
+app.get('/login', passport.authenticate('facebook'))
+app.get('/auth/facebook', passport.authenticate('facebook'), (req, resp) => {
+	resp.send(req.user)
+})
+

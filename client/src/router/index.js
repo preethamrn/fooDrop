@@ -4,6 +4,7 @@ import 'vuetify/dist/vuetify.min.css'
 import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 import ListingsBase from '@/components/ListingsBase'
+import FacebookLogin from '@/components/FacebookLogin'
 
 Vue.use(Vuetify)
 Vue.use(Router)
@@ -26,7 +27,15 @@ var router = new Router({
       meta: {
         title: 'Listings'
       }
-    }
+    },
+    {
+      path: '/login',
+      name: 'FacebookLogin',
+      component: FacebookLogin,
+      meta: {
+        title: 'Log In'
+      }
+    },
   ]
 })
 
