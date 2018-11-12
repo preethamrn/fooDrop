@@ -4,6 +4,7 @@ import 'vuetify/dist/vuetify.min.css'
 import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 import ListingsBase from '@/components/ListingsBase'
+import CreateDishBase from '@/components/CreateDishBase'
 
 Vue.use(Vuetify)
 Vue.use(Router)
@@ -25,6 +26,14 @@ var router = new Router({
       component: ListingsBase,
       meta: {
         title: 'Listings'
+      }
+    },
+    {
+      path: '/new',
+      name: 'Sell',
+      component: CreateDishBase,
+      meta: {
+        title: 'Sell'
       }
     }
   ]
