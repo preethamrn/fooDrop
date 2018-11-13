@@ -35,8 +35,11 @@ export default {
       })
     }
   },
-  created () {
+  mounted () {
     // initialize global details (eg. authToken, username, etc.)
+    if (localStorage.getItem('authToken') === null) {
+      this.$router.push({ path: `/login` })
+    }
   }
 }
 </script>
