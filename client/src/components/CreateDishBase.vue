@@ -8,7 +8,7 @@
             :src='newDishUrl'
             aspect-ratio='2.75'
           ></v-img>
-          <v-text-field label='URL' v-model='newDishUrl'></v-text-field>
+          <v-text-field label='Image URL' v-model='newDishUrl'></v-text-field>
 
           <v-text-field label='Name' v-model='newDishName' class='dish-name'></v-text-field>
           <v-textarea label='Description' v-model='newDishDescription' rows='3' auto-grow></v-textarea>
