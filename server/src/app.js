@@ -27,7 +27,7 @@ var User = db.model('Users', userSchema)
 
 //socket.io connection listening
 http.listen(config.SERVER_PORT)
-app.listen(8080)
+//app.listen(8080)
 
 io.use(function(socket, next) {
     next()
@@ -100,6 +100,8 @@ app.post('/auth/facebook', passport.authenticate('facebook-token', {session: fal
 		id: req.user.facebookID
 	}
 
+	console.log(req.auth)
+
 	next()
 }, 
 function(req, res, next) {
@@ -109,11 +111,14 @@ function(req, res, next) {
 		expiresIn: '1h'
 	})
 
+	console.log(req.token)
+
 	next()
 }, 
 function(req, res) {
+	console.log("Sending Token")
 	res.setHeader('x-auth-token', req.token);
-	res.status(200).send({auth: true, token: req.token})
+	res.send({auth: true, token: req.token})
 })
 
 
