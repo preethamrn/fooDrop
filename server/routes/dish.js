@@ -31,33 +31,57 @@ router.get('/get_dish', function(req, res){
 
 router.get('/get_dishes', function(req, res, next) {
 
-	Post.find(function (err, result) {
-  if (err) return console.error(err);
 
-var ingredients = []; 
-var dietaryRestrictions = []; 
+    var ingredients = []; 
+    var dietaryRestrictions = []; 
 
 
-if (!req.query.ingredients)
-	ingredients = []
-else 
-  ingredients = req.query.ingredients;
+    if (!req.query.ingredients)
+      ingredients = []
+    else 
+      ingredients = JSON.parse(req.query.ingredients);
 
-if (!req.query.dietaryRestrictions)
-	dietaryRestrictions = []
-else 
-  dietaryRestrictions = req.query.dietaryRestrictions;
+    if (!req.query.dietaryRestrictions)
+      dietaryRestrictions = []
+    else 
+      dietaryRestrictions = JSON.parse(req.query.dietaryRestrictions);
 
 
-  if(ingredients.length >= 1)
-  	result = result.filter(dish => (dish["ingredients"].filter(value => -1 !== ingredients.indexOf(value))).length > 0);
+    console.log(ingredients);
+    console.log(dietaryRestrictions);
 
- 	if(dietaryRestrictions.length >= 1)
-  	result = result.filter(dish => (dish["dietaryRestrictions"].filter(value => -1 !== dietaryRestrictions.indexOf(value))).length <= 0);
+    // Post.find({ingredients: {$in: ingredients}},{},function (err, result) {
+    //     if (err) return console.error(err);
 
-  res.contentType('application/json');
-	res.send(JSON.stringify(result));
-  })
+    //     res.contentType('application/json');
+    //     res.send(JSON.stringify(result));
+    //   }); 
+
+
+    if(ingredients.length >= 1){
+
+      Post.find({}).
+      where('ingredients').in(ingredients).
+      where('dietaryRestrictions').nin(dietaryRestrictions).
+      exec(function (err, result) {
+        if (err) return console.error(err);
+
+        res.contentType('application/json');
+        res.send(JSON.stringify(result));
+      });
+    }
+    else 
+    {
+      Post.find({}).
+      where('dietaryRestrictions').nin(dietaryRestrictions).
+      exec(function (err, result) {
+        if (err) return console.error(err);
+
+        res.contentType('application/json');
+        res.send(JSON.stringify(result));
+      });
+    }
+
 });
 
 //array of info 
@@ -71,10 +95,10 @@ var allergies = ["peanuts", "seafood"];
 router.post('/new_dish', (req, res) => {
 
   var new_dish = new Post({
-    dietaryRestrictions: req.body.dietaryRestrictions,
+    dietaryRestrictions: JSON.parse(req.body.dietaryRestrictions),
     title: req.body.title,
     description: req.body.description,
-    ingredients: req.body.ingredients,
+    ingredients: JSON.parse(req.body.ingredients),
     price: req.body.price
   })
 

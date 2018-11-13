@@ -16,7 +16,6 @@ router.get('/transactions', function(req, res, next) {
 
 router.get('/create', function(req,res,next){
 
-  var post_id = 10;
   var date = Date.now();
   var post_object = { amount:5, dish_name:"whooper" };
   var price = 19;
@@ -29,7 +28,7 @@ router.get('/create', function(req,res,next){
     date: date,
     post_object: post_object,
     price: price,
-    dietaryRestrictions: dietaryRestrictions,
+    dietaryRestrictions: JSON.parse(dietaryRestrictions),
     name: name,
     paypalID: paypal,
     rating: rating
