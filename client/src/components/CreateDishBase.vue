@@ -2,7 +2,7 @@
   <div class="create-dish-base">
     <v-layout>
       <v-flex xs12 sm6 offset-sm3>
-        <v-card>
+        <v-card class='create-dish-card'>
           <v-img v-if="newDishUrl != ''"
             :src='newDishUrl'
             aspect-ratio='2.75'
@@ -41,8 +41,6 @@
             clearable
             solo
             multiple
-            readonly
-            flat
           >
             <template slot='selection' slot-scope='data'>
               <v-chip
@@ -54,16 +52,6 @@
               </v-chip>
             </template>
           </v-combobox>
-          <v-layout row>
-            <v-flex xs11>
-              <v-text-field label='Ingredient' v-model='newIngredient' @keydown.enter='addIngredient' class='new-ingredient'></v-text-field>
-            </v-flex>
-            <v-flex xs1>
-              <v-btn flat icon color="indigo" @click='addIngredient'>
-                <v-icon>add</v-icon>
-              </v-btn>
-            </v-flex>
-          </v-layout>
 
           <v-text-field label='Price' prefix='$' v-model='newDishPrice'></v-text-field>
           <v-text-field label='Quantity' v-model='newDishQuantity'></v-text-field>
@@ -91,10 +79,7 @@ export default {
       newDishIngredients: [],
       newDishDietaryRestrictions: [],
       newDishPrice: 0,
-      newDishQuantity: 0,
-
-      // new ingredient to be appended to `newDishIngredients`
-      newIngredient: ''
+      newDishQuantity: 0
     }
   },
   methods: {
@@ -129,6 +114,11 @@ export default {
 </script>
 
 <style scoped>
+.create-dish-card {
+  margin-left: 1em;
+  margin-right: 1em;
+}
+
 .dish-name {
   font-size: x-large;
 }
