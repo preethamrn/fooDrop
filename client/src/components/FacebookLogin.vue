@@ -6,3 +6,18 @@
 	</v-layout>
 </template>
 
+<script>
+import LoginService from '@/services/LoginService'
+export default {
+  name: 'facebook-login',
+  data () {
+    return {}
+  },
+  methods: {
+    async login () {
+      let response = await LoginService.getAuth({})
+      console.log(response)
+    }
+  }
+}
+</script>

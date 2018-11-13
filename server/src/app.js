@@ -21,14 +21,11 @@ const io = require('socket.io')(http)
 
 // mongodb
 const mongoose = require('mongoose')
-const mongodb_conn_module = require('./mongodbConnModule');
-var db = mongodb_conn_module.connect();
+const mongodb_conn_module = require('./mongodbConnModule')
+var db = mongodb_conn_module.connect()
 
 //socket.io connection listening
 http.listen(config.SERVER_PORT)
-app.listen(8080, function() {
-	console.log("Listening")
-})
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -68,7 +65,7 @@ app.post('/new_dish', (req, res) => {
 passport.use(new FacebookStrategy({
 	clientID: facebookCred.auth.id,
 	clientSecret: facebookCred.auth.secret,
-	callbackURL: 'http://localhost:8080/auth/facebook'
+	callbackURL: 'http://localhost:' + config.SERVER_PORT + '/auth/facebook'
 }, async (req, accessToken, refreshToken, profile, done) => {
 	var query = {"FacebookID": profile.id}
 	db.collection("Users").findOne(query, (err, result) => {
@@ -111,4 +108,3 @@ app.get('/login', passport.authenticate('facebook'))
 app.get('/auth/facebook', passport.authenticate('facebook'), (req, resp) => {
 	resp.send(req.user)
 })
-
