@@ -11,6 +11,7 @@ Vue.use(Router)
 
 // TODO: use router.beforeEach for auth? if auth fails then redirect them to correct route
 var router = new Router({
+  mode: 'history',
   routes: [
     {
       path: '/hello',
