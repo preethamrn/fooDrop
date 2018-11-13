@@ -23,34 +23,16 @@ export default {
     async logout () {
       console.log("Loading SDK")
       let self = this
-      window.fbAsyncInit = function () {
-        FB.init({
-          appId: '1898976426806055',
-          cookie: true,
-          xfbml: true,
-          version: 'v3.2'
-        });
-
-        console.log("Loaded")
-        FB.getLoginStatus(function (response) {
-          if (response.status === 'connected') {
-            FB.logout(function (response) {
-              if (response.authResponse) {
-                localStorage.removeItem('authToken')
-                self.$router.push({ path: `/login` })
-              }
-            })
-          }
-        })
-      };
-
-      (function (d, s, id) {
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) {return;}
-        js = d.createElement(s); js.id = id; js.async = true;
-        js.src = "https://connect.facebook.net/en_US/sdk.js";
-        fjs.parentNode.insertBefore(js, fjs);
-      }(document, 'script', 'facebook-jssdk'));
+      FB.getLoginStatus(function (response) {
+        if (response.status === 'connected') {
+          FB.logout(function (response) {
+            if (response.authResponse) {
+              localStorage.removeItem('authToken')
+              self.$router.push({ path: `/login` })
+            }
+          })
+        }
+      })
     }
   },
   created () {
