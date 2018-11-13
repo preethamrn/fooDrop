@@ -1,5 +1,6 @@
 <template>
   <div class="create-dish-base">
+    <header-base/>
     <v-layout>
       <v-flex xs12 sm6 offset-sm3>
         <v-card class='create-dish-card'>
@@ -76,8 +77,12 @@
 
 <script>
 import DishesService from '@/services/DishesService'
+import HeaderBase from '@/components/HeaderBase'
 export default {
   name: 'create-dish-base',
+  components: {
+    HeaderBase
+  },
   data () {
     return {
       // new dish details

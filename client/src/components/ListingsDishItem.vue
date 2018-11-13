@@ -47,13 +47,13 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 .v-list__tile {
   height: 88px
 }
 @media only screen and (max-width: 1080px) {
   .v-list__tile {
-    height: 150px
+    height: 125px
   }
 }
 </style>

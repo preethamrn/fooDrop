@@ -1,17 +1,20 @@
 <template>
   <div name='listings-base'>
-    <v-list v-for='(dish, index) in dishes' :key='index'>
-      <listings-dish-item :name='dish.name' :location='dish.location' :price='dish.price' :id='dish.id'/>
+    <header-base/>
+    <v-list>
+      <listings-dish-item v-for='(dish, index) in dishes' :key='index' :name='dish.name' :location='dish.location' :price='dish.price' :id='dish.id'/>
     </v-list>
   </div>
 </template>
 
 <script>
 import DishesService from '@/services/DishesService'
+import HeaderBase from '@/components/HeaderBase'
 import ListingsDishItem from '@/components/ListingsDishItem'
 export default {
   name: 'listings-base',
   components: {
+    HeaderBase,
     ListingsDishItem
   },
   data () {
