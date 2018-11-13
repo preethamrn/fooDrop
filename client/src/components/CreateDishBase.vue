@@ -84,8 +84,8 @@ export default {
       newDishName: '',
       newDishDescription: '',
       newDishUrl: '',
-      newDishLocationLat: '',
-      newDishLocationLong: '',
+      newDishLocationLat: 0.0,
+      newDishLocationLong: 0.0,
       newDishIngredients: [],
       newDishDietaryRestrictions: [],
       newDishPrice: 0,
@@ -99,7 +99,7 @@ export default {
         ingredients: this.newDishIngredients,
         dietaryRestrictions: this.newDishDietaryRestrictions,
         price: this.newDishPrice,
-        Quantity: this.newDishQuantity
+        quantity: this.newDishQuantity
       })
       if (response.data.success) {
         alert('Success!')
@@ -114,10 +114,6 @@ export default {
     removeIngredient (item) {
       this.newDishIngredients.splice(this.newDishIngredients.indexOf(item), 1)
       this.newDishIngredients = [...this.newDishIngredients]
-    },
-    addIngredient () {
-      if (this.newIngredient !== '') this.newDishIngredients.push(this.newIngredient)
-      this.newIngredient = ''
     }
   },
   mounted () {
