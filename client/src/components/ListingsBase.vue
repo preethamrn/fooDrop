@@ -22,6 +22,11 @@ export default {
       dishes: []
     }
   },
+  mounted () {
+    if (!localStorage.getItem('authToken')) {
+      this.$router.push({ path: `/` })
+    }
+  },
   async created () {
     let response = await DishesService.getDishes({})
     this.dishes = response.data.dishes
