@@ -1,7 +1,7 @@
 import Api from '@/services/Api'
 
 export default {
-	getToken(params) {
-		Api().post('auth/facebook', params)
-	}
+  getToken(params) {
+    return Api().post('auth/facebook', params)
+  }
 }

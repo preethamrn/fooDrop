@@ -27,7 +27,6 @@ var User = db.model('Users', userSchema)
 
 //socket.io connection listening
 http.listen(config.SERVER_PORT)
-//app.listen(8080)
 
 io.use(function(socket, next) {
     next()
