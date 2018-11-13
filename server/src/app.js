@@ -145,3 +145,4 @@ app.get('/auth/validateUser', function(req,res) {
 		})
 	})
 })
+
