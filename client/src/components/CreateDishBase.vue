@@ -11,6 +11,14 @@
 
           <v-text-field label='Name' v-model='newDishName' class='dish-name'></v-text-field>
           <v-textarea label='Description' v-model='newDishDescription' rows='3' auto-grow></v-textarea>
+          <v-layout row>
+            <v-flex xs6>
+              <v-text-field label='Latitude' v-model='newDishLocationLat' disabled></v-text-field>
+            </v-flex>
+            <v-flex xs6>
+              <v-text-field label='Longitude' v-model='newDishLocationLong' disabled></v-text-field>
+            </v-flex>
+          </v-layout>
 
           <v-combobox
             v-model='newDishDietaryRestrictions'
@@ -76,6 +84,8 @@ export default {
       newDishName: '',
       newDishDescription: '',
       newDishUrl: '',
+      newDishLocationLat: '',
+      newDishLocationLong: '',
       newDishIngredients: [],
       newDishDietaryRestrictions: [],
       newDishPrice: 0,
@@ -109,6 +119,15 @@ export default {
       if (this.newIngredient !== '') this.newDishIngredients.push(this.newIngredient)
       this.newIngredient = ''
     }
+  },
+  mounted () {
+    if (navigator.geolocation) {
+       var self = this;
+       navigator.geolocation.getCurrentPosition(function (position) {
+        self.newDishLocationLat = position.coords.latitude
+        self.newDishLocationLong = position.coords.longitude
+      })
+    }
   }
 }
 </script>
@@ -121,10 +140,5 @@ export default {
 
 .dish-name {
   font-size: x-large;
-}
-
-.new-ingredient {
-  padding-top: 0;
-  margin-top: 0;
 }
 </style>

@@ -39,10 +39,10 @@ export default {
     }
   },
   props: {
-    name: '',
-    location: '',
-    price: 0,
-    id: ''
+    name: String,
+    location: String,
+    price: Number,
+    id: String
   }
 }
 </script>
