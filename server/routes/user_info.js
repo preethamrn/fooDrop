@@ -14,15 +14,15 @@ router.get('/transactions', function(req, res, next) {
   res.send('transcation history');
 });
 
-router.get('/create', function(req,res,next){
+router.post('/create', function(req,res,next){
 
-  var date = Date.now();
-  var post_object = { amount:5, dish_name:"whooper" };
-  var price = 19;
-  var dietaryRestrictions = ["chocolate", "shellfish"];
-  var name = "leslie liang"
-  var paypal = 69;
-  var rating = 5;
+  var date = req.body.date;
+  var post_object = req.body.post_object;
+  var price = req.body.price;
+  var dietaryRestrictions = req.body.dietaryRestrictions;
+  var name = req.body.name;
+  var paypal = req.body.paypayID;
+  var rating = req.body.rating;
 
   var new_user = new User({
     date: date,
