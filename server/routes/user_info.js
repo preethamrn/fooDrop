@@ -14,37 +14,64 @@ router.get('/transactions', function(req, res, next) {
   res.send('transcation history');
 });
 
+//convention, we are sending strings over, even the objects are in strings
+// router.post('/test',function(req, res, next) {
+
+//   var tmp_arr = req.body.arr;
+//   console.log(tmp_arr);
+
+//   tmp_arr = JSON.parse(tmp_arr);
+
+//   console.log(typeof(tmp_arr));
+
+//   res.send("hi");
+// });
+
 router.post('/create', function(req,res,next){
 
-  var date = req.body.date;
-  var post_object = req.body.post_object;
-  var price = req.body.price;
-  var dietaryRestrictions = req.body.dietaryRestrictions;
+  var	facebookID = req.body.facebookID;
+  var	paypalID = req.body.paypalID;
+  var	radius = req.body.radius;
+  var transactions = req.body.transactions;
+
   var name = req.body.name;
-  var paypal = req.body.paypayID;
-  var rating = req.body.rating;
-
-  var new_user = new User({
-    date: date,
-    post_object: post_object,
-    price: price,
-    dietaryRestrictions: JSON.parse(dietaryRestrictions),
+  var	restrictions = req.body.restrictions;
+/*
+  console.log(restrictions);
+  console.log(transactions);
+  console.log(facebookID);
+  console.log(paypalID);
+  console.log(radius);
+  console.log(name);
+*/
+  
+  var new_user = new User( {
     name: name,
-    paypalID: paypal,
-    rating: rating
-  })
-
+    facebookID: facebookID,
+    paypalID: paypalID,
+    radius: radius,
+    restrictions: restrictions,
+    transactions: transactions
+    } )
+  
+  
   new_user.save(function (error) {
     if (error) {
       console.log(error)
     }
-    res.send({
+  res.send({
       success: true,
       message: 'User created successfully!'
     })
   })
+
+  
+  
 });
 
+
+
+/*
 router.get('/get_user', (req, res) => {
   var user_id = ObjectId(req.query.user_id); 
   User.findById(user_id, function(err,result){
@@ -64,6 +91,6 @@ router.get('/get_users', (req, res) => {
 			posts: posts
 		})
 	})
-})
+}) */
 
 module.exports = router;
