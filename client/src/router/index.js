@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
 import ListingsBase from '@/components/ListingsBase'
 import CreateDishBase from '@/components/CreateDishBase'
 import SearchDishBase from '@/components/SearchDishBase'
@@ -15,14 +14,6 @@ Vue.use(Router)
 var router = new Router({
   mode: 'history',
   routes: [
-    {
-      path: '/hello',
-      name: 'HelloWorld',
-      component: HelloWorld,
-      meta: {
-        title: 'HelloWorld - Test'
-      }
-    },
     {
       path: '/',
       name: 'Listings',
