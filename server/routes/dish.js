@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 const mongoose = require('mongoose');
 var Post = require("../models/post");
+var Post_Controller = require("../controller/post_controller");
 const ObjectId = mongoose.Types.ObjectId;
 
 /* GET home page. */
@@ -35,6 +36,7 @@ router.get('/get_dishes', function(req, res, next) {
     var ingredients = []; 
     var dietaryRestrictions = []; 
 
+    console.log("Entered");
 
     if (!req.query.ingredients)
       ingredients = []
@@ -46,44 +48,43 @@ router.get('/get_dishes', function(req, res, next) {
     else 
       dietaryRestrictions = JSON.parse(req.query.dietaryRestrictions);
 
-
-    console.log(ingredients);
-    console.log(dietaryRestrictions);
-
-    // Post.find({ingredients: {$in: ingredients}},{},function (err, result) {
-    //     if (err) return console.error(err);
-
-    //     res.contentType('application/json');
-    //     res.send(JSON.stringify(result));
-    //   }); 
-
-
-    if(ingredients.length >= 1){
-
-      Post.find({}).
-      where('ingredients').in(ingredients).
-      where('dietaryRestrictions').nin(dietaryRestrictions).
-      exec(function (err, result) {
-        if (err) return console.error(err);
-
-        res.contentType('application/json');
-        res.send(JSON.stringify(result));
-      });
-    }
-    else 
-    {
-      Post.find({}).
-      where('dietaryRestrictions').nin(dietaryRestrictions).
-      exec(function (err, result) {
-        if (err) return console.error(err);
-
-        res.contentType('application/json');
-        res.send(JSON.stringify(result));
-      });
-    }
+    Post_Controller.get_dishes(ingredients,dietaryRestrictions, function(result){
+            res.contentType('application/json');
+            res.send(JSON.stringify(result));
+    });
 
 });
 
+
+router.get('/get_dishes_by_rad', function(req, res, next) {
+
+    var ingredients = []; 
+    var dietaryRestrictions = []; 
+    var radius = req.query.radius; 
+    var user_lat = req.query.lat; 
+    var user_lon = req.query.lon; 
+    
+
+    if (!req.query.ingredients)
+      ingredients = []
+    else 
+      ingredients = JSON.parse(req.query.ingredients);
+
+    if (!req.query.dietaryRestrictions)
+      dietaryRestrictions = []
+    else 
+      dietaryRestrictions = JSON.parse(req.query.dietaryRestrictions);
+
+    Post_Controller.get_dishes(ingredients,dietaryRestrictions, function(result){
+            result = result.filter(post => Post_Controller.
+              getDistanceFromLatLonInMiles(user_lat,user_lon,post["location"]["lat"],post["location"]["lon"]) < radius);
+
+
+            res.contentType('application/json');
+            res.send(JSON.stringify(result));
+    });
+
+});
 //array of info 
 
 var name = "big mac";
@@ -94,11 +95,13 @@ var allergies = ["peanuts", "seafood"];
 
 router.post('/new_dish', (req, res) => {
 
+  console.log("Enter")
   var new_dish = new Post({
-    dietaryRestrictions: JSON.parse(req.body.dietaryRestrictions),
+    dietaryRestrictions: (req.body.dietaryRestrictions),
     title: req.body.title,
     description: req.body.description,
-    ingredients: JSON.parse(req.body.ingredients),
+    location: (req.body.location),
+    ingredients: (req.body.ingredients),
     price: req.body.price
   })
 
