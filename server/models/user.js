@@ -6,6 +6,8 @@ var UserSchema = new Schema({
 	facebookID: String,
 	paypalID: String,
 	radius: Number,
+	priceLow: Number,
+	priceHigh: Number,
 	restrictions: [{type: String}],
 	transactions: [{
 		ingredients: [{type: String}],
