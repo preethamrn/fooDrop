@@ -106,14 +106,15 @@ router.post('/new_dish', (req, res) => {
   var body = req.body;
 
 
-  new_dish.save(function (error) {
+  new_dish.save(function (error, result) {
     if (error) {
       console.log(error)
     }
     res.send({
       success: true,
       message: 'Post saved successfully!',
-      body: body
+      body: body,
+      _id: result.id 
     })
   })
 

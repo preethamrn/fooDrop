@@ -52,13 +52,15 @@ router.post('/create', function(req,res,next){
     transactions: transactions
     } )
   
-  new_user.save(function (error) {
+  new_user.save(function (error, result) {
     if (error) {
       console.log(error)
     }
+
   res.send({
       success: true,
-      message: 'User created successfully!'
+      message: 'User created successfully!',
+      _id: result.id     
     })
   })
 });
