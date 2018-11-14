@@ -87,6 +87,7 @@ router.get('/get_dishes', function(req, res, next) {
 //array of info 
 
 
+//TODO: write response back to front end the whole row that was created, including objectID
 router.post('/new_dish', (req, res) => {
 
   var new_dish = new Post({
@@ -100,6 +101,7 @@ router.post('/new_dish', (req, res) => {
   //console.log(req.body.FirstName);
 
   var body = req.body;
+
 
   new_dish.save(function (error) {
     if (error) {

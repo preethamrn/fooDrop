@@ -29,12 +29,18 @@ router.get('/transactions', function(req, res, next) {
 
 router.post('/create', function(req,res,next){
 
+
+
   var	facebookID = req.body.facebookID;
   var	paypalID = req.body.paypalID;
   var	radius = req.body.radius;
+  
+  //for transactions, give me an empty list if user didn't have any transactions
   var transactions = req.body.transactions;
 
   var name = req.body.name;
+
+  //for restrictions, give me an empty list if user didn't add any transactions, in the future I can just append to the list of restrictions
   var	restrictions = req.body.restrictions;
 
   var new_user = new User( {
@@ -90,10 +96,27 @@ router.put('/update', (req, res)=> {
   console.log(typeof(values));
   console.log(values);
 
+  /*Updating radius */
+  //need to provide a user id for this to work
+  if (typeof values.radius !== "undefined") {
+    var user_id = ObjectId(values.object_id);
+    User.findById(user_id, function(error, user){
+      if (error) { console.error(error); }
 
-  if (typeof values.radius === "undefined") {
-    console.log('radius property is missing');
-}
+      user.radius = values.radius;
+      user.save(function(error)
+      {
+        if(error)
+        {
+          console.log(error);
+        }
+        
+      })
+    })
+  }
+
+  
+  
 
   // console.log(typeof(values));
   // console.log(values);
