@@ -7,6 +7,7 @@ var PostSchema = new Schema({
   description: String,
   ingredients: [{type: String}],
   price: Number, 
+  location: {lat:Number, lon:Number},
   sellerId: {type: Number, default: 100}, //question, how do we get a generated sellerId?
   quantity: { type: Number, default: 1} 
 },{ versionKey: false });
