@@ -73,7 +73,26 @@ export default {
     removeDietaryRestriction (item) {
       this.defaultDietaryRestrictions.splice(this.defaultDietaryRestrictions.indexOf(item), 1)
       this.defaultDietaryRestrictions = [...this.defaultDietaryRestrictions]
+    },
+    resetDefaults () {
+      this.defaultDietaryRestrictions = this.$store.state.defaultDietaryRestrictions
+      // TODO: fix price range and other values in vuex store depending on how backend user profile integrates
+      //this.defaultPriceRange = this.$store.state.defaultPriceRange
+      this.defaultRadius = this.$store.state.defaultRadius
     }
+  },
+  computed: {
+    storeUserState () {
+      return this.$store.state.userId
+    }
+  },
+  watch: {
+    storeUserState () {
+      this.resetDefaults()
+    }
+  },
+  created () {
+    this.resetDefaults()
   }
 }
 </script>
