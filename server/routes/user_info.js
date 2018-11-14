@@ -29,13 +29,10 @@ router.get('/transactions', function(req, res, next) {
 // });
 
 router.post('/create', function(req,res,next){
-
-
-
   var	facebookID = req.body.facebookID;
   var	paypalID = req.body.paypalID;
   var	radius = req.body.radius;
-  
+
   //for transactions, give me an empty list if user didn't have any transactions
   var transactions = req.body.transactions;
 
@@ -44,27 +41,27 @@ router.post('/create', function(req,res,next){
   //for restrictions, give me an empty list if user didn't add any transactions, in the future I can just append to the list of restrictions
   var	restrictions = req.body.restrictions;
 
-  var new_user = new User( {
+  var new_user = new User({
     name: name,
     facebookID: facebookID,
     paypalID: paypalID,
     radius: radius,
     restrictions: restrictions,
     transactions: transactions
-    } )
+    })
   
   new_user.save(function (error, result) {
     if (error) {
       console.log(error)
     }
 
-  res.send({
+    res.send({
       success: true,
       message: 'User created successfully!',
       _id: result.id     
     })
   })
-});
+})
 
 router.get('/get_user', (req, res) => {
   var user_id = ObjectId(req.query.user_id); 
@@ -85,37 +82,15 @@ router.get('/get_users', (req, res) => {
 			posts: posts
 		})
 	})
-}) 
+})
 
 router.put('/update', (req, res)=> {
-
   var values = req.body.values; //expecting an array of values
   User_Controller.updateUser(values, function(result){
     res.send({
       user: result
     })
   })
-
-  /*Updating radius */
-  //need to provide a user id for this to work
-    // var user_id = ObjectId(values["_id"]);
-    // User.findById(user_id, function(error, user){
-    //   if (error) console.error(error);
-
-    //   for(var key in values){
-    //     user[key] = values[key];
-    //   }
-
-    //   user.save(function(error)
-    //   {
-    //     if(error)
-    //     {
-    //       console.log(error);
-    //     }
-        
-    //   })
-    // })
-
 })
 
 module.exports = router;

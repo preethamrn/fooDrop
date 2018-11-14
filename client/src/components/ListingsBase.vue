@@ -1,39 +1,25 @@
 <template>
   <div name='listings-base'>
-    <div v-for='(dish, id) in dishes' :key='id'> {{ dish }} </div>
+    <header-base/>
+    <v-list>
+      <listings-dish-item v-for='(dish, index) in dishes' :key='index' :name='dish.name' :location='dish.location' :price='dish.price' :id='dish.id'/>
+    </v-list>
   </div>
 </template>
 
 <script>
 import DishesService from '@/services/DishesService'
+import HeaderBase from '@/components/HeaderBase'
+import ListingsDishItem from '@/components/ListingsDishItem'
 export default {
   name: 'listings-base',
+  components: {
+    HeaderBase,
+    ListingsDishItem
+  },
   data () {
     return {
-      dishes: [],
-
-      // new dish details
-      newDishName: '',
-      newDishIngredients: [],
-      newDishDietaryRestrictions: [],
-      newDishPrice: '',
-      newDishAmount: 0
-    }
-  },
-  methods: {
-    async newDish () {
-      let response = await DishesService.newDish({
-        name: this.newDishName,
-        ingredients: this.newDishIngredients,
-        dietaryRestrictions: this.newDishDietaryRestrictions,
-        price: this.newDishPrice,
-        amount: this.newDishAmount
-      })
-      if (response.data.success) {
-        alert('Success!')
-      } else {
-        alert('Error: ' + response.data.errorMessage)
-      }
+      dishes: []
     }
   },
   async created () {

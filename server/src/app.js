@@ -1,20 +1,27 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const createError = require('http-errors');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const express = require('express')
+const bodyParser = require('body-parser')
+const cors = require('cors')
+const morgan = require('morgan')
+const jwt = require('jsonwebtoken')
+const passport = require('passport')
+const facebookToken = require('passport-facebook-token')
+const config = require('../config')
 
-var indexRouter = require('../routes/index');
+// express
+const app = express()
+app.use(morgan('combined'))
+
 var dishRouter = require('../routes/dish');
 var userRouter = require('../routes/user_info');
 
-
-var app = express();
-
 // mongodb
 const mongoose = require('mongoose')
-const mongodb_conn_module = require('./mongodbConnModule');
-var db = mongodb_conn_module.connect();
+const mongodb_conn_module = require('./mongodbConnModule')
+var db = mongodb_conn_module.connect()
+var User = require("../models/user")
 
 // socket.io
 const http = require('http').Server(app)
@@ -27,11 +34,13 @@ app.set('view engine', 'jade');
 //database model
 var Post = require("../models/post");
 
-app.use(logger('dev'));
+app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(bodyParser.json())
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(cors())
 
 io.use(function(socket, next) {
   next()
@@ -42,39 +51,103 @@ app.use(function(req, res, next) {
   next()
 })
 
-//app.use('/', indexRouter);
 app.use('/user', userRouter);
 app.use('/dish', dishRouter);
 
+// Using passport's facebook token strategy to authenticate accessToken
+passport.use(new facebookToken({
+	clientID: '1898976426806055',
+	clientSecret: '3db474179fd2165f68391ee27c714b6c'
+}, function(accessToken, refreshToken, profile, done) {
+	User.findOne({'facebookID': profile.id}, function(err, result) {
+		if(err) {
+			console.log(err)
+		}
+		else if (result == null) {
+			var newUser = new User({
+				name: profile.displayName,
+				facebookID: profile.id,
+				paypalID: -1,
+				radius: 2,
+				restrictions: [],
+				transactions: []
+			})
 
-app.get('/posts', (req, res) => {
-  var title = "udayan";
-  var description = "sahai";
-  var dietaryRestrictions = ["peanut"];
-  var ingredients = ['carrots','peas','potatoes'];
-  var price = 100; 
-  var quantity = 1; 
-  var sellerId = 1234; 
+			newUser.save(function(err, savedUser) {
+				if(err) {
+					console.log(err)
+				}
+				console.log(savedUser)
+				done(err, savedUser)
+			})
+		}
+		else {
+			console.log("Found User")
+			console.log(result)
+			done(err, result)
+		}
+	})
+}))
 
-  var new_post = new Post({
-    title: title,
-    description: description,
-    dietaryRestrictions: dietaryRestrictions,
-    ingredients: ingredients,
-    price: price,
-    quantity: quantity,
-    sellerId: sellerId
-  })
+// Once passport strategy has been authenticated, handle user information.
+// This is where we create json web tokens
+// TODO: Add secret to config file rather than hard coding it.
+app.post('/auth/facebook', passport.authenticate('facebook-token', {session: false}), function(req, res, next) {
+	if(!req.user) {
+		console.log("User Not Authenticated");
+	}
 
-  new_post.save(function (error) {
-    if (error) {
-      console.log(error)
-    }
-    res.send({
-      success: true,
-      message: 'Post saved successfully!'
-    })
-  })
+	req.auth = {
+		id: req.user.facebookID
+	}
+
+	console.log(req.auth)
+
+	next()
+}, 
+function(req, res, next) {
+	req.token = jwt.sign({
+		facebookID: req.auth.id,
+	}, 'AFB7E158AB3E2C9F590F4F9F94684C42391C236777239C6EB6E46B6E585255E0', {
+		expiresIn: '7d'
+	})
+
+	console.log(req.token)
+
+	next()
+}, 
+function(req, res) {
+	console.log("Sending Token")
+	res.setHeader('x-auth-token', req.token);
+	res.send({auth: true, token: req.token, facebookID: req.auth.id})
+})
+
+
+// Endpoint to validate jwt when frontend sends a request
+// TODO: Change the implementation to check database with decoded id and send the rest of the information.
+app.get('/auth/validateUser', function(req,res) {
+	var token = req.headers['x-auth-token']
+	var facebookID = req.query.facebookID
+	if(!token) {
+		console.log("No Token!")
+	}
+
+	jwt.verify(token, 'AFB7E158AB3E2C9F590F4F9F94684C42391C236777239C6EB6E46B6E585255E0', function(err, payload) {
+		if (err) {
+			console.log(err)
+			res.send({auth: false})
+		} else if (payload.facebookID !== facebookID) {
+			res.send({auth: false})
+		} else {
+			User.findOne({facebookID: payload.facebookID}, function(err, result) {
+				if(err) {
+					console.log(err)
+				} else {
+					res.send({auth: true, user: result})
+				}
+			})
+		}
+	})
 })
 
 
