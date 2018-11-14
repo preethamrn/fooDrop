@@ -117,9 +117,11 @@ export default {
     clear () {
       this.searchDishName = ''
       this.searchDishIngredients = []
-      this.searchDishDietaryRestrictions = []
+      this.searchDishDietaryRestrictions = this.$store.state.defaultDietaryRestrictions
+      // TODO: fix price range and other values in vuex store depending on how backend user profile integrates
+      //this.searchDishPrice = this.$store.state.defaultPriceRange
       this.searchDishPrice = [0, 5]
-      this.searchDishRadius = 0
+      this.searchDishRadius = this.$store.state.defaultRadius
     },
     removeDietaryRestriction (item) {
       this.searchDishDietaryRestrictions.splice(this.searchDishDietaryRestrictions.indexOf(item), 1)
@@ -129,6 +131,19 @@ export default {
       this.searchDishIngredients.splice(this.searchDishIngredients.indexOf(item), 1)
       this.searchDishIngredients = [...this.searchDishIngredients]
     }
+  },
+  computed: {
+    storeUserState () {
+      return this.$store.state.userId
+    }
+  },
+  watch: {
+    storeUserState () {
+      this.clear()
+    }
+  },
+  created () {
+    this.clear()
   },
   mounted () {
     if (navigator.geolocation) {

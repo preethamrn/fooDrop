@@ -127,8 +127,6 @@ function(req, res) {
 app.get('/auth/validateUser', function(req,res) {
 	var token = req.headers['x-auth-token']
 	var facebookID = req.query.facebookID
-	console.log(req.query)
-	console.log(token)
 	if(!token) {
 		console.log("No Token!")
 	}
