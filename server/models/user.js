@@ -2,18 +2,21 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
 var UserSchema = new Schema({
-
-  //TODO: need to add default radius
-  transaction_post_id: Number,
-  date: Date,
-  post_object: Schema.Types.Mixed,
-  price: Number, //(this can be plus or minus)
-  dietaryRestrictions: [{type: String}], 
-  name: String,
-  paypalID: Number,
-  rating: Number,
-  OAuth: {type: String, default: "leslie is cool"},
-  radius: {type: Number, default: 1}
+	name: String,
+	facebookID: String,
+	paypalID: String,
+	radius: Number,
+	restrictions: [{type: String}],
+	transactions: [{
+		ingredients: [{type: String}],
+		restrictions: [{type: String}],
+		name: String,
+		photo: String,
+		location: String,
+		price: Number,
+		sellerID: String,
+		quantity: Number
+	}]
 },{ versionKey: false });
 
 var User = mongoose.model("User", UserSchema);

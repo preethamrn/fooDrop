@@ -10,6 +10,10 @@ POST at /dish/new_dish
 
 send request body with paramaters as JSON 
 
+POST at /dish/new_dish
+    Input: need dietaryRestrictions, title, description, ingredient and price in the request body
+Result: creates a new post in MongoDB
 
-
-
+POST at /user/create
+    Input: facebookID, paypalID, radius, transactions, name and dietaryRestrictions in the request body
+Result: creates a new user in MongoDB

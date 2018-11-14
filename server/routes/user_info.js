@@ -14,31 +14,49 @@ router.get('/transactions', function(req, res, next) {
   res.send('transcation history');
 });
 
-router.get('/create', function(req,res,next){
+//convention, we are sending strings over, even the objects are in strings
+// router.post('/test',function(req, res, next) {
 
-  var date = Date.now();
-  var post_object = { amount:5, dish_name:"whooper" };
-  var price = 19;
-  var dietaryRestrictions = ["chocolate", "shellfish"];
-  var name = "leslie liang"
-  var paypal = 69;
-  var rating = 5;
+//   var tmp_arr = req.body.arr;
+//   console.log(tmp_arr);
 
-  var new_user = new User({
-    date: date,
-    post_object: post_object,
-    price: price,
-    dietaryRestrictions: JSON.parse(dietaryRestrictions),
+//   tmp_arr = JSON.parse(tmp_arr);
+
+//   console.log(typeof(tmp_arr));
+
+//   res.send("hi");
+// });
+
+router.post('/create', function(req,res,next){
+
+
+
+  var	facebookID = req.body.facebookID;
+  var	paypalID = req.body.paypalID;
+  var	radius = req.body.radius;
+  
+  //for transactions, give me an empty list if user didn't have any transactions
+  var transactions = req.body.transactions;
+
+  var name = req.body.name;
+
+  //for restrictions, give me an empty list if user didn't add any transactions, in the future I can just append to the list of restrictions
+  var	restrictions = req.body.restrictions;
+
+  var new_user = new User( {
     name: name,
-    paypalID: paypal,
-    rating: rating
-  })
-
+    facebookID: facebookID,
+    paypalID: paypalID,
+    radius: radius,
+    restrictions: restrictions,
+    transactions: transactions
+    } )
+  
   new_user.save(function (error) {
     if (error) {
       console.log(error)
     }
-    res.send({
+  res.send({
       success: true,
       message: 'User created successfully!'
     })
@@ -64,6 +82,57 @@ router.get('/get_users', (req, res) => {
 			posts: posts
 		})
 	})
+}) 
+
+router.put('/update', (req, res)=> {
+
+  var values = req.query.values; //expecting an array of values
+
+  
+  console.log(values);
+
+  values = JSON.parse(values);
+
+  console.log(typeof(values));
+  console.log(values);
+
+  /*Updating radius */
+  //need to provide a user id for this to work
+  if (typeof values.radius !== "undefined") {
+    var user_id = ObjectId(values.object_id);
+    User.findById(user_id, function(error, user){
+      if (error) { console.error(error); }
+
+      user.radius = values.radius;
+      user.save(function(error)
+      {
+        if(error)
+        {
+          console.log(error);
+        }
+        
+      })
+    })
+  }
+
+  
+  
+
+  // console.log(typeof(values));
+  // console.log(values);
+
+  // JSON.stringify(values);
+  // console.log(typeof(values));
+  // JSON.parse(values);
+
+  // console.log(values);
+
+
+  //JSON.parse(values);
+  //console.log(values);
+
+  res.send("ok");
+
 })
 
 module.exports = router;

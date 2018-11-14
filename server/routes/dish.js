@@ -87,12 +87,8 @@ router.get('/get_dishes_by_rad', function(req, res, next) {
 });
 //array of info 
 
-var name = "big mac";
-var price = 10.15;
-var description = "best dish ever";
-var ingredients = ["eggs", "ham", "cheese"];
-var allergies = ["peanuts", "seafood"];
 
+//TODO: write response back to front end the whole row that was created, including objectID
 router.post('/new_dish', (req, res) => {
 
   console.log("Enter")
@@ -108,6 +104,7 @@ router.post('/new_dish', (req, res) => {
   //console.log(req.body.FirstName);
 
   var body = req.body;
+
 
   new_dish.save(function (error) {
     if (error) {
