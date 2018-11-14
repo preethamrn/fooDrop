@@ -3,6 +3,7 @@ var router = express.Router();
 const mongoose = require('mongoose');
 var Post = require("../models/post");
 var Post_Controller = require("../controller/post_controller");
+var User_Controller = require("../controller/user_controller");
 const ObjectId = mongoose.Types.ObjectId;
 
 /* GET home page. */
@@ -17,7 +18,7 @@ router.post('/', function(request, response){
 
 
 router.get('/get_dish', function(req, res){
-  var post_id = ObjectId(req.query.object_id); 
+  var post_id = ObjectId(req.query.post_id); 
   Post.findById(post_id, function(err,result){
     if (err) return console.error(err);
     else {
@@ -28,6 +29,17 @@ router.get('/get_dish', function(req, res){
   })
 });
 
+router.post('/transaction', function(req, res){
+
+var buyer_id = ObjectId(req.body.buyer_id);
+var buyer_id = ObjectId(req.body.seller_id);
+var post_id = ObjectId(req.body.post_id);
+
+Post.get_dish_by_id(post_id, function(result){
+
+
+  })
+})
 
 
 router.get('/get_dishes', function(req, res, next) {
@@ -36,7 +48,6 @@ router.get('/get_dishes', function(req, res, next) {
     var ingredients = []; 
     var dietaryRestrictions = []; 
 
-    console.log("Entered");
 
     if (!req.query.ingredients)
       ingredients = []

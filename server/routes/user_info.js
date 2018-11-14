@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var User = require("../models/user");
 const mongoose = require('mongoose');
+var User_Controller = require("../controller/user_controller");
 const ObjectId = mongoose.Types.ObjectId;
 
 
@@ -89,28 +90,31 @@ router.get('/get_users', (req, res) => {
 router.put('/update', (req, res)=> {
 
   var values = req.body.values; //expecting an array of values
+  User_Controller.updateUser(values, function(result){
+    res.send({
+      user: result
+    })
+  })
 
   /*Updating radius */
   //need to provide a user id for this to work
-    var user_id = ObjectId(values["_id"]);
-    User.findById(user_id, function(error, user){
-      if (error) console.error(error);
+    // var user_id = ObjectId(values["_id"]);
+    // User.findById(user_id, function(error, user){
+    //   if (error) console.error(error);
 
-      for(var key in values){
-        user[key] = values[key];
-      }
+    //   for(var key in values){
+    //     user[key] = values[key];
+    //   }
 
-      user.save(function(error)
-      {
-        if(error)
-        {
-          console.log(error);
-        }
+    //   user.save(function(error)
+    //   {
+    //     if(error)
+    //     {
+    //       console.log(error);
+    //     }
         
-      })
-    })
-
-  res.send("ok");
+    //   })
+    // })
 
 })
 
