@@ -4,65 +4,68 @@
     <v-layout>
       <v-flex xs12 sm6 offset-sm3>
         <v-card class='search-dish-card'>
-          <v-card-title><h3 class="headline mb-0">Search</h3></v-card-title>
+          <v-form ref='form' v-model='valid' lazy-validation>
+            <v-card-title><h3 class="headline mb-0">Search</h3></v-card-title>
 
-          <v-text-field label='Name' v-model='searchDishName' class='dish-name'></v-text-field>
+            <v-text-field label='Name' v-model='searchDishName' class='dish-name'></v-text-field>
 
-          <v-combobox
-            v-model='searchDishDietaryRestrictions'
-            :items="['gluten free', 'vegan', 'vegetarian', 'lactose free', 'nut free']"
-            label='Dietary Restrictions'
-            chips
-            clearable
-            solo
-            multiple
-            dense
-          >
-            <template slot='selection' slot-scope='data'>
-              <v-chip
-                :selected='data.selected'
-                close
-                @input='removeDietaryRestriction(data.item)'
-              >
-                <strong>{{ data.item }}</strong>&nbsp;
-              </v-chip>
-            </template>
-          </v-combobox>
+            <v-combobox
+              v-model='searchDishDietaryRestrictions'
+              :rules='dietaryRestrictionsRules'
+              :items='dietaryRestrictionsList'
+              label='Dietary Restrictions'
+              chips
+              clearable
+              solo
+              multiple
+              dense
+            >
+              <template slot='selection' slot-scope='data'>
+                <v-chip
+                  :selected='data.selected'
+                  close
+                  @input='removeDietaryRestriction(data.item)'
+                >
+                  <strong>{{ data.item }}</strong>&nbsp;
+                </v-chip>
+              </template>
+            </v-combobox>
 
-          <v-combobox
-            v-model='searchDishIngredients'
-            :items='[]'
-            label='Ingredients'
-            chips
-            clearable
-            solo
-            multiple
-          >
-            <template slot='selection' slot-scope='data'>
-              <v-chip
-                :selected='data.selected'
-                close
-                @input='removeIngredient(data.item)'
-              >
-                <strong>{{ data.item }}</strong>&nbsp;
-              </v-chip>
-            </template>
-          </v-combobox>
+            <v-combobox
+              v-model='searchDishIngredients'
+              :items='[]'
+              label='Ingredients'
+              chips
+              clearable
+              solo
+              multiple
+            >
+              <template slot='selection' slot-scope='data'>
+                <v-chip
+                  :selected='data.selected'
+                  close
+                  @input='removeIngredient(data.item)'
+                >
+                  <strong>{{ data.item }}</strong>&nbsp;
+                </v-chip>
+              </template>
+            </v-combobox>
 
-          <v-layout row>
-            <v-flex xs10><v-range-slider class='padded-slider' v-model='searchDishPrice' :max='100' :min='0'></v-range-slider></v-flex>
-            <v-flex xs1><v-text-field label='Price' prefix='$' v-model='searchDishPrice[0]'></v-text-field></v-flex>
-            <v-flex xs1><v-text-field prefix='-' v-model='searchDishPrice[1]'></v-text-field></v-flex>
-          </v-layout>
-          <v-layout row>
-            <v-flex xs10><v-slider class='padded-slider' v-model='searchDishRadius' :max='15' :min='0'></v-slider></v-flex>
-            <v-flex xs2><v-text-field class='padded-input' label='Radius' suffix='mi' v-model='searchDishRadius'></v-text-field></v-flex>
-          </v-layout>
+            <v-layout row>
+              <v-flex xs10><v-range-slider class='padded-slider' v-model='searchDishPrice' :max='100' :min='0'></v-range-slider></v-flex>
+              <v-flex xs1><v-text-field label='Price' prefix='$' v-model='searchDishPrice[0]'></v-text-field></v-flex>
+              <v-flex xs1><v-text-field prefix='-' v-model='searchDishPrice[1]'></v-text-field></v-flex>
+            </v-layout>
+            <v-layout row>
+              <v-flex xs10><v-slider class='padded-slider' v-model='searchDishRadius' :max='15' :min='0'></v-slider></v-flex>
+              <v-flex xs2><v-text-field class='padded-input' label='Radius' suffix='mi' v-model='searchDishRadius'></v-text-field></v-flex>
+            </v-layout>
 
-          <v-card-actions>
-            <v-btn flat color='red' @click='clear'>x Clear</v-btn>
-            <v-btn flat color='green'>- Search</v-btn>
-          </v-card-actions>
+            <v-card-actions>
+              <v-btn flat color='red' @click='clear'>x Clear</v-btn>
+              <v-btn flat color='green' :disabled='!valid'>- Search</v-btn>
+            </v-card-actions>
+          </v-form>
         </v-card>
       </v-flex>
     </v-layout>
@@ -79,6 +82,11 @@ export default {
   },
   data () {
     return {
+      // validation
+      valid: true,
+      dietaryRestrictionsList: ['gluten free', 'vegan', 'vegetarian', 'lactose free', 'nut free'],
+      dietaryRestrictionsRules: [(v) => { return (v && v.every((d) => { return this.dietaryRestrictionsList.includes(d); })) || 'Dietary Restrictions must be from dropdown!' }],
+
       // new dish details
       searchDishName: '',
       searchDishLocationLat: 0.0,
@@ -91,17 +99,19 @@ export default {
   },
   methods: {
     async searchDish () {
-      let response = await DishesService.searchDish({
-        name: this.searchDishName,
-        ingredients: this.searchDishIngredients,
-        dietaryRestrictions: this.searchDishDietaryRestrictions,
-        price: this.searchDishPrice,
-        quantity: this.searchDishQuantity
-      })
-      if (response.data.success) {
-        alert('Success!')
-      } else {
-        alert('Error: ' + response.data.errorMessage)
+      if (this.$refs.form.validate()) {
+        let response = await DishesService.searchDish({
+          name: this.searchDishName,
+          ingredients: this.searchDishIngredients,
+          dietaryRestrictions: this.searchDishDietaryRestrictions,
+          price: this.searchDishPrice,
+          quantity: this.searchDishQuantity
+        })
+        if (response.data.success) {
+          alert('Success!')
+        } else {
+          alert('Error: ' + response.data.errorMessage)
+        }
       }
     },
     clear () {

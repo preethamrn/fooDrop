@@ -11,7 +11,7 @@
             ></v-img>
             <v-text-field label='Image URL' v-model='newDishUrl'></v-text-field>
 
-            <v-text-field label='Name' v-model='newDishName' :rules="[v => !!v || 'Name is required']" class='dish-name'></v-text-field>
+            <v-text-field label='Name' v-model='newDishName' :rules='nameRules' class='dish-name'></v-text-field>
             <v-textarea label='Description' v-model='newDishDescription' rows='3' auto-grow></v-textarea>
             <v-layout row>
               <v-flex xs6>
@@ -24,7 +24,8 @@
 
             <v-combobox
               v-model='newDishDietaryRestrictions'
-              :items="['gluten free', 'vegan', 'vegetarian', 'lactose free', 'nut free']"
+              :rules='dietaryRestrictionsRules'
+              :items='dietaryRestrictionsList'
               label='Dietary Restrictions'
               chips
               clearable
@@ -63,8 +64,8 @@
               </template>
             </v-combobox>
 
-            <v-text-field label='Price' prefix='$' :rules="[v => !!v || 'Price is required', (v && v > 0 && v < 100) || 'Price must be between $0 and $100']" v-model.number='newDishPrice'></v-text-field>
-            <v-text-field label='Quantity' :rules="[v => !!v || 'Quantity is required', (v && v > 0) || 'Quantity cannot be negative']" v-model.number='newDishQuantity'></v-text-field>
+            <v-text-field label='Price' prefix='$' :rules='priceRules' v-model.number='newDishPrice'></v-text-field>
+            <v-text-field label='Quantity' :rules='quantityRules' v-model.number='newDishQuantity'></v-text-field>
 
             <v-card-actions>
               <v-btn flat color='red' @click='clearForm'>x Clear</v-btn>
@@ -89,6 +90,11 @@ export default {
     return {
       // validation
       valid: true,
+      nameRules: [(v) => { return !!v || 'Name is required' }],
+      dietaryRestrictionsList: ['gluten free', 'vegan', 'vegetarian', 'lactose free', 'nut free'],
+      dietaryRestrictionsRules: [(v) => { return (v && v.every((d) => { return this.dietaryRestrictionsList.includes(d); })) || 'Dietary Restrictions must be from dropdown!' }],
+      priceRules: [(v) => { return !!v || 'Price is required'}, (v) => { return (v && v > 0 && v <= 100) || 'Price must be between $0 and $100' }],
+      quantityRules: [(v) => { return !!v || 'Quantity is required'}, (v) => { return (v && v > 0) || 'Quantity cannot be negative' }],
 
       // new dish details
       newDishName: '',
