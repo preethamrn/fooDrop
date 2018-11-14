@@ -18,7 +18,7 @@
               Price: {{ price }}
             </v-flex>
             <v-flex xs6 sm3>
-              <v-btn flat outline @click='viewDish'>View Dish</v-btn>
+              <dish-details :name='name' :location='location' :price='price' :id='id'/>
             </v-flex>
           </v-layout>
         </v-list-tile>
@@ -28,15 +28,14 @@
 </template>
 
 <script>
+import DishDetails from '@/components/DishDetails'
 export default {
   name: 'listings-dish-item',
+  components: {
+    DishDetails
+  },
   data () {
     return { }
-  },
-  methods: {
-    viewDish () {
-      this.$router.push({ path: `/dish/${this.id}`, params: { id: this.id } })
-    }
   },
   props: {
     name: String,
