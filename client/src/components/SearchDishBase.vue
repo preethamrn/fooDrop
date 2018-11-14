@@ -60,7 +60,7 @@
           </v-layout>
 
           <v-card-actions>
-            <v-btn flat color='red'>x Clear</v-btn>
+            <v-btn flat color='red' @click='clear'>x Clear</v-btn>
             <v-btn flat color='green'>- Search</v-btn>
           </v-card-actions>
         </v-card>
@@ -103,6 +103,13 @@ export default {
       } else {
         alert('Error: ' + response.data.errorMessage)
       }
+    },
+    clear () {
+      searchDishName = ''
+      searchDishIngredients = []
+      searchDishDietaryRestrictions = []
+      searchDishPrice = [0, 5]
+      searchDishRadius = 0
     },
     removeDietaryRestriction (item) {
       this.searchDishDietaryRestrictions.splice(this.searchDishDietaryRestrictions.indexOf(item), 1)
