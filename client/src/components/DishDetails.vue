@@ -20,14 +20,18 @@
                 <v-text-field v-model='locationLong' label='LocationLong' readonly></v-text-field>
               </v-flex>
 
-              <v-combobox class='readonly-combobox' v-model='dietaryRestrictions' label='Dietary Restrictions' multiple chips readonly></v-combobox>
-              <v-combobox class='readonly-combobox' v-model='ingredients' label='Ingredients' multiple chips readonly></v-combobox>
+              <v-combobox v-model='dietaryRestrictions' label='Dietary Restrictions' multiple chips readonly></v-combobox>
+              <v-combobox v-model='ingredients' label='Ingredients' multiple chips readonly></v-combobox>
 
-              <v-flex xs6>
-                <v-text-field v-model='quantity' label='Quantity' readonly></v-text-field>
-              </v-flex>
-              <v-flex xs6>
+              <v-flex xs12>
                 <v-text-field v-model='price' prefix='$' label='Price' readonly></v-text-field>
+              </v-flex>
+
+              <v-flex xs12>
+                <v-layout row>
+                  <v-flex xs10><v-slider class='padded-slider' v-model='quantity' :max='maxQuantity' :min='0'></v-slider></v-flex>
+                  <v-flex xs2><v-text-field class='padded-input' label='Quantity' v-model='quantity'></v-text-field></v-flex>
+                </v-layout>
               </v-flex>
             </v-layout>
           </v-container>
@@ -50,7 +54,22 @@ export default {
       dishDetailsDialog: false,
       dietaryRestrictions: ['nut free'],
       ingredients: ['carrots'],
-      url: 'https://images.pexels.com/photos/248797/pexels-photo-248797.jpeg?auto=compress&cs=tinysrgb&h=350'
+      url: 'https://images.pexels.com/photos/248797/pexels-photo-248797.jpeg?auto=compress&cs=tinysrgb&h=350',
+      locationLat: 0.0,
+      locationLong: 0.0,
+      maxQuantity: 5,
+      quantity: 1
+    }
+  },
+  methods: {
+    purchaseDish () {
+      if (this.quantity <= 0) {
+        alert('Quantity must be positive')
+      } else if (this.quantity > this.maxQuantity) {
+        alert('Quantity must be less than maximum available dishes (' + this.maxQuantity + ')')
+      } else {
+        // purchase with Api
+      }
     }
   },
   props: {
@@ -65,5 +84,14 @@ export default {
 <style scoped>
 .v-chip .v-chip__content {
   color: #000000
+}
+
+.padded-slider {
+  margin-left: 1em;
+  margin-right: 1em;
+}
+
+.padded-input {
+  margin-right: 1em;
 }
 </style>
