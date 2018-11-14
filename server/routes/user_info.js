@@ -86,24 +86,18 @@ router.get('/get_users', (req, res) => {
 
 router.put('/update', (req, res)=> {
 
-  var values = req.query.values; //expecting an array of values
-
-  
-  console.log(values);
-
-  values = JSON.parse(values);
-
-  console.log(typeof(values));
-  console.log(values);
+  var values = req.body.values; //expecting an array of values
 
   /*Updating radius */
   //need to provide a user id for this to work
-  if (typeof values.radius !== "undefined") {
-    var user_id = ObjectId(values.object_id);
+    var user_id = ObjectId(values["_id"]);
     User.findById(user_id, function(error, user){
-      if (error) { console.error(error); }
+      if (error) console.error(error);
 
-      user.radius = values.radius;
+      for(var key in values){
+        user[key] = values[key];
+      }
+
       user.save(function(error)
       {
         if(error)
@@ -113,23 +107,6 @@ router.put('/update', (req, res)=> {
         
       })
     })
-  }
-
-  
-  
-
-  // console.log(typeof(values));
-  // console.log(values);
-
-  // JSON.stringify(values);
-  // console.log(typeof(values));
-  // JSON.parse(values);
-
-  // console.log(values);
-
-
-  //JSON.parse(values);
-  //console.log(values);
 
   res.send("ok");
 
