@@ -14,8 +14,7 @@ var userSchema = new Schema({
 		photo: String,
 		location: String,
 		price: Number,
-		sellerID: String,
-		quantity: Number
+		sellerID: String
 	}]
 })
 
