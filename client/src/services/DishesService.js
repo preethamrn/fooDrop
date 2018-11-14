@@ -9,5 +9,8 @@ export default {
   },
   searchDish (params) {
     return Api().get('search_dish', {params: params })
+  },
+  getUser (params) {
+    return Api().get('get_user', { params: params })
   }
 }

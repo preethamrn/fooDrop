@@ -40,6 +40,13 @@ app.get('/get_dishes', (req, res) => {
     ] })
 })
 
+app.get('/get_user', (req, res) => {
+    res.send({ user: [
+        { name: 'firstSeller', id: '1234', location: "Los Angeles, California 90024", rating: 9, dieteryRestrictions: []},
+        { name: 'secondSeller', id: '5678', location: "Simi Valley, California 930363", rating: 10 ,dieteryRestrictions: []}
+    ] })
+})
+
 app.post('/new_dish', (req, res) => {
     res.send({ success: true, dish: { name: 'testDish', ingredients: ['carrots'], dietaryRestrictions: [], price: 100, amount: 1, sellerId: '1234' } })
 })
