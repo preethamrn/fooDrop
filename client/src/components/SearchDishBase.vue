@@ -86,7 +86,7 @@ export default {
       searchDishIngredients: [],
       searchDishDietaryRestrictions: [],
       searchDishPrice: [0, 5],
-      searchDishRadius: 0
+      searchDishRadius: 5
     }
   },
   methods: {

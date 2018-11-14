@@ -6,6 +6,7 @@ import ListingsBase from '@/components/ListingsBase'
 import CreateDishBase from '@/components/CreateDishBase'
 import SearchDishBase from '@/components/SearchDishBase'
 import FacebookLogin from '@/components/FacebookLogin'
+import UserProfileBase from '@/components/UserProfileBase'
 
 Vue.use(Vuetify)
 Vue.use(Router)
@@ -44,6 +45,14 @@ var router = new Router({
       component: FacebookLogin,
       meta: {
         title: 'Login'
+      }
+    },
+    {
+      path: '/profile',
+      name: 'Profile',
+      component: UserProfileBase,
+      meta: {
+        title: 'Profile'
       }
     }
   ]
