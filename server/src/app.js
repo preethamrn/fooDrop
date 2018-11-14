@@ -42,6 +42,7 @@ app.get('/', function(req, res) {
 })
 
 app.get('/get_dishes', (req, res) => {
+	console.log(req.query)
     res.send({ dishes: [
         { name: 'testDish1', ingredients: ['carrots'], dietaryRestrictions: [], price: 100, amount: 1, sellerId: '1234' },
         { name: 'testDish2', ingredients: ['apples', 'bananas', 'milk'], dietaryRestrictions: ['lactose'], price: 500, amount: 7, sellerId: '1234' }
@@ -107,7 +108,7 @@ function(req, res, next) {
 	req.token = jwt.sign({
 		facebookID: req.auth.id,
 	}, 'AFB7E158AB3E2C9F590F4F9F94684C42391C236777239C6EB6E46B6E585255E0', {
-		expiresIn: '1h'
+		expiresIn: '7d'
 	})
 
 	console.log(req.token)
@@ -117,7 +118,7 @@ function(req, res, next) {
 function(req, res) {
 	console.log("Sending Token")
 	res.setHeader('x-auth-token', req.token);
-	res.send({auth: true, token: req.token})
+	res.send({auth: true, token: req.token, facebookID: req.auth.id})
 })
 
 
@@ -125,23 +126,27 @@ function(req, res) {
 // TODO: Change the implementation to check database with decoded id and send the rest of the information.
 app.get('/auth/validateUser', function(req,res) {
 	var token = req.headers['x-auth-token']
-	console.log(req.headers)
+	var facebookID = req.query.facebookID
+	console.log(req.query)
+	console.log(token)
 	if(!token) {
 		console.log("No Token!")
 	}
 
 	jwt.verify(token, 'AFB7E158AB3E2C9F590F4F9F94684C42391C236777239C6EB6E46B6E585255E0', function(err, payload) {
-		if(err) {
+		if (err) {
 			console.log(err)
+			res.send({auth: false})
+		} else if (payload.facebookID !== facebookID) {
+			res.send({auth: false})
+		} else {
+			User.findOne({facebookID: payload.facebookID}, function(err, result) {
+				if(err) {
+					console.log(err)
+				} else {
+					res.send({auth: true, user: result})
+				}
+			})
 		}
-		
-		User.findOne({facebookID: payload.facebookID}, function(err, result) {
-			if(err) {
-				console.log(err)
-			}
-			else {
-				res.send(result)
-			}
-		})
 	})
 })

@@ -110,6 +110,7 @@ export default {
   },
   methods: {
     async createDish () {
+      // TODO: also include seller userId and paypalId in dish details
       if (this.$refs.form.validate()) {
         let response = await DishesService.newDish({
           name: this.newDishName,

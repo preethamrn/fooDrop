@@ -14,6 +14,7 @@
 
 <script>
 /* eslint-disable */
+import FacebookAuth from '@/services/FacebookAuth'
 export default {
   name: 'header-base',
   data () {
@@ -28,6 +29,7 @@ export default {
           FB.logout(function (response) {
             if (response.authResponse) {
               localStorage.removeItem('authToken')
+              localStorage.removeItem('facebookID')
               self.$router.push({ path: `/login` })
             }
           })
@@ -35,10 +37,26 @@ export default {
       })
     }
   },
-  mounted () {
-    // initialize global details (eg. authToken, username, etc.)
+  async created () {
     if (localStorage.getItem('authToken') === null) {
       this.$router.push({ path: `/login` })
+    } else if (this.$store.state.userId === '') {
+      this.$store.commit('setAuthToken', localStorage.getItem('authToken'))
+      let response = await FacebookAuth.validateUser(
+        { facebookID: localStorage.getItem('facebookID') },
+        { 'x-auth-token': this.$store.state.authToken }
+      )
+      if (response.data.auth) {
+        // set default values for user in Vuex store
+        let user = response.data.user
+        this.$store.commit('setUserId', user._id)
+        this.$store.commit('setDefaultDietaryRestrictions', user.restrictions)
+        this.$store.commit('setDefaultPriceRange', user.priceRange)
+        this.$store.commit('setDefaultRadius', user.radius)
+        this.$store.commit('setPaypalId', user.paypalID)
+      } else {
+        alert('Error: Authentication failed')
+      }
     }
   }
 }

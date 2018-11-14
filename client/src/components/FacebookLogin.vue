@@ -25,9 +25,10 @@ export default {
             let response = await FacebookLogin.getToken({
               access_token: fbResponse.authResponse.accessToken
             });
-            console.log(response);
+            console.log(response.data)
             if (response.data.auth) {
               localStorage.setItem('authToken', response.data.token)
+              localStorage.setItem('facebookID', response.data.facebookID)
               self.$router.push({ path: `/` })
             } else {
               alert('Error: Failed authentication')
