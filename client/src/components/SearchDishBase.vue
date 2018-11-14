@@ -105,11 +105,11 @@ export default {
       }
     },
     clear () {
-      searchDishName = ''
-      searchDishIngredients = []
-      searchDishDietaryRestrictions = []
-      searchDishPrice = [0, 5]
-      searchDishRadius = 0
+      this.searchDishName = ''
+      this.searchDishIngredients = []
+      this.searchDishDietaryRestrictions = []
+      this.searchDishPrice = [0, 5]
+      this.searchDishRadius = 0
     },
     removeDietaryRestriction (item) {
       this.searchDishDietaryRestrictions.splice(this.searchDishDietaryRestrictions.indexOf(item), 1)
