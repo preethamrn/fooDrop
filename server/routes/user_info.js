@@ -36,15 +36,7 @@ router.post('/create', function(req,res,next){
 
   var name = req.body.name;
   var	restrictions = req.body.restrictions;
-/*
-  console.log(restrictions);
-  console.log(transactions);
-  console.log(facebookID);
-  console.log(paypalID);
-  console.log(radius);
-  console.log(name);
-*/
-  
+
   var new_user = new User( {
     name: name,
     facebookID: facebookID,
@@ -53,7 +45,6 @@ router.post('/create', function(req,res,next){
     restrictions: restrictions,
     transactions: transactions
     } )
-  
   
   new_user.save(function (error) {
     if (error) {
@@ -64,14 +55,8 @@ router.post('/create', function(req,res,next){
       message: 'User created successfully!'
     })
   })
-
-  
-  
 });
 
-
-
-/*
 router.get('/get_user', (req, res) => {
   var user_id = ObjectId(req.query.user_id); 
   User.findById(user_id, function(err,result){
@@ -91,6 +76,40 @@ router.get('/get_users', (req, res) => {
 			posts: posts
 		})
 	})
-}) */
+}) 
+
+router.put('/update', (req, res)=> {
+
+  var values = req.query.values; //expecting an array of values
+
+  
+  console.log(values);
+
+  values = JSON.parse(values);
+
+  console.log(typeof(values));
+  console.log(values);
+
+
+  if (typeof values.radius === "undefined") {
+    console.log('radius property is missing');
+}
+
+  // console.log(typeof(values));
+  // console.log(values);
+
+  // JSON.stringify(values);
+  // console.log(typeof(values));
+  // JSON.parse(values);
+
+  // console.log(values);
+
+
+  //JSON.parse(values);
+  //console.log(values);
+
+  res.send("ok");
+
+})
 
 module.exports = router;

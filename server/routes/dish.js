@@ -86,11 +86,6 @@ router.get('/get_dishes', function(req, res, next) {
 
 //array of info 
 
-var name = "big mac";
-var price = 10.15;
-var description = "best dish ever";
-var ingredients = ["eggs", "ham", "cheese"];
-var allergies = ["peanuts", "seafood"];
 
 router.post('/new_dish', (req, res) => {
 
