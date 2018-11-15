@@ -22,7 +22,7 @@ router.get('/get_dish', function(req, res){
   Post.findById(post_id, function(err,result){
     if (err || res==null) {
       // res.send()
-      res.status(500).send({ error: "boo:(" });
+      res.status(400).send({ error: "boo :(" });
       return console.error(err);
     }
     else {
@@ -52,15 +52,7 @@ Post_Controller.updatePostQ(post_id,quantity,function(error,post)
   var result = post;
   var new_transaction = 
     {    
-          // ingredients: result["ingredients"],
-          // restrictions: result["dietaryRestrictions"],
-          // name: result["title"],
-          // photo: "",
-          // location: result["location"],
-          // price: result["price"],
-          // sellerID: seller_id,
-          // buyerID: buyer_id,
-          // quantity: quantity
+
           name: post["name"],
           description: post["description"],
           imageUrl: post["imageUrl"],
@@ -105,7 +97,7 @@ router.get('/get_dishes', function(req, res, next) {
   var price_low = req.query.priceLow
   var price_high = req.query.priceHigh
 
-  Post_Controller.get_dishes(ingredients,dietaryRestrictions, function(result){
+  Post_Controller.get_dishes(ingredients,dietaryRestrictions,price_low,price_high, function(result){
           res.contentType('application/json');
           res.send({ success: true, dishes: result });
   });
@@ -123,7 +115,7 @@ router.get('/get_dishes_by_radius', function(req, res, next) {
     var price_low = req.query.priceLow
     var price_high = req.query.priceHigh
 
-    Post_Controller.get_dishes(ingredients,dietaryRestrictions, function(result){
+    Post_Controller.get_dishes(ingredients,dietaryRestrictions,price_low,price_high, function(result){
             result = result.filter(post => Post_Controller.
               getDistanceFromLatLonInMiles(user_lat,user_lon,post["location"]["lat"],post["location"]["lon"]) < radius);
 
