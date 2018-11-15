@@ -5,8 +5,9 @@
         <v-list-tile :key='name' avatar>
           <v-layout row wrap>
             <v-tooltip top>
-              <v-list-tile-avatar slot='activator' tile size='50'><img src='../assets/default_food.png'></v-list-tile-avatar>
-              <span>{{ name }}</span>
+              <v-list-tile-avatar v-if="dish.imageUrl !== ''" slot='activator' tile size='50'><img :src='dish.imageUrl'></v-list-tile-avatar>
+              <v-list-tile-avatar v-else slot='activator' tile size='50'><img src='../assets/default_food.png'></v-list-tile-avatar>
+              <span>{{ dish.description }}</span>
             </v-tooltip>
             <v-flex xs9 sm5>
               <v-list-tile-content>

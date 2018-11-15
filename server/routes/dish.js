@@ -52,7 +52,15 @@ Post_Controller.updatePostQ(post_id,quantity,function(error,post)
   var result = post;
   var new_transaction = 
     {    
-      
+          // ingredients: result["ingredients"],
+          // restrictions: result["dietaryRestrictions"],
+          // name: result["title"],
+          // photo: "",
+          // location: result["location"],
+          // price: result["price"],
+          // sellerID: seller_id,
+          // buyerID: buyer_id,
+          // quantity: quantity
           name: post["name"],
           description: post["description"],
           imageUrl: post["imageUrl"],
@@ -68,7 +76,7 @@ Post_Controller.updatePostQ(post_id,quantity,function(error,post)
 
   Post_Controller.addTransaction(seller_id,new_transaction,function(error,seller){
       if(error){
-        res.status(401).send({
+        res.status(400).send({
           status: "fail"
         })
         return console.err(error);
@@ -76,7 +84,7 @@ Post_Controller.updatePostQ(post_id,quantity,function(error,post)
 
       Post_Controller.addTransaction(buyer_id,new_transaction,function(error,seller){
         if(error){
-          res.status(402).send({
+          res.status(400).send({
             status: "fail"
           })
           return;
