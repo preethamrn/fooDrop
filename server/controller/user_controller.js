@@ -3,11 +3,14 @@ var User = require("../models/user");
 const ObjectId = mongoose.Types.ObjectId;
 
 
-exports.updateUser = function(values,callback){
+exports.updateUser = function(user_id,values,callback){
 
-	var user_id = ObjectId(values["_id"]);
     User.findById(user_id, function(error, user){
-      if (error) console.error(error);
+      if (error || !user) {
+        console.error(error);
+        callback(1,user);
+        return; 
+      }
 
       for(var key in values){
         user[key] = values[key];
@@ -18,11 +21,13 @@ exports.updateUser = function(values,callback){
         if(error)
         {
           console.log(error);
+          callback(error,user);
+          return; 
         }
         
       })
 
-      callback(user);
+      callback(0,user);
 
     })
 }
