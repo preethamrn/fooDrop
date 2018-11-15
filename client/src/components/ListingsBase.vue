@@ -2,7 +2,7 @@
   <div name='listings-base'>
     <header-base/>
     <v-list v-if='dishes.length !== 0'>
-      <listings-dish-item v-for='(dish, index) in dishes' :key='index' :name='dish.name' :location='dish.location' :price='dish.price' :id='dish.id'/>
+      <listings-dish-item v-for='(dish, index) in dishes' :key='index' :name='dish.name' :location='dish.location' :price='dish.price' :dish='dish'/>
     </v-list>
     <div v-else> No results </div>
   </div>

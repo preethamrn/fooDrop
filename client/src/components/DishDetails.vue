@@ -12,7 +12,7 @@
           <v-container grid-list-md>
             <v-layout wrap>
               <v-flex xs12>
-                <v-text-field v-model='url' label='Description' readonly></v-text-field>
+                <v-text-field v-model='description' label='Description' readonly></v-text-field>
               </v-flex>
               <v-flex xs6>
                 <v-text-field v-model='locationLat' label='LocationLat' readonly></v-text-field>
@@ -69,13 +69,15 @@ export default {
   },
   props: {
     name: String,
+    description: String,
     locationLat: Number,
     locationLong: Number,
     price: Number,
     dietaryRestrictions: Array,
     ingredients: Array,
     url: String,
-    maxQuantity: 5,
+    maxQuantity: Number,
+    sellerId: String,
     id: String
   }
 }
