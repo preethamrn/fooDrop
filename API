@@ -11,13 +11,11 @@ POST at /dish/new_dish
     Result: creates a new post in MongoDB
 
 POST at /user/create
-<<<<<<< HEAD
+
     Input: facebookID, paypalID, radius, transactions, name and dietaryRestrictions in the request body
 Result: creates a new user in MongoDB
 
 
-
-=======
         Input: facebookID, paypalID, radius, transactions, name and dietaryRestrictions in the request body
         Result: creates a new user in MongoDB
         
@@ -53,4 +51,27 @@ Put at /user/update
     {
     "status": "fail"
     }
->>>>>>> 692500931780f4057514432495f97baacb906d6d
+
+
+POST at /dish/transaction
+
+    format body as follows 
+    {
+        "buyer_id":"5bed10592a98ce0db03be154",
+        "seller_id":"5bed10602a98ce0db03be155",
+        "post_id":"5bed10b22a98ce0db03be158",
+        "quantity": 1
+    }
+
+    adds a transaction entry to both users, decrements one from post quantaity. if quantity becomes 0 it 
+    deletes post. if quantity becomes < 0 fails and returns. 
+    returns 
+    {
+        "status": "pass"
+    }
+
+    or
+
+    {
+        "status": "fail"
+    }
