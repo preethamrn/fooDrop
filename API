@@ -70,3 +70,7 @@ POST at /dish/transaction
     {
         "status": "fail"
     }
+
+POST /dish/get_dishes_by_radius 
+
+   /dish/get_dishes?priceLow=1&priceHigh=100&lat=34.0653079&lon=-118.45305689999999&radius=100&ingredients[0]=peanut&ingredients[1]=chicken
