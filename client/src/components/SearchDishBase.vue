@@ -118,9 +118,7 @@ export default {
       this.searchDishName = ''
       this.searchDishIngredients = []
       this.searchDishDietaryRestrictions = this.$store.state.defaultDietaryRestrictions
-      // TODO: fix price range and other values in vuex store depending on how backend user profile integrates
-      //this.searchDishPrice = this.$store.state.defaultPriceRange
-      this.searchDishPrice = [0, 5]
+      this.searchDishPrice = this.$store.state.defaultPriceRange
       this.searchDishRadius = this.$store.state.defaultRadius
     },
     removeDietaryRestriction (item) {

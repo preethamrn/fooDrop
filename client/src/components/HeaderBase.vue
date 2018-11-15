@@ -51,7 +51,7 @@ export default {
         let user = response.data.user
         this.$store.commit('setUserId', user._id)
         this.$store.commit('setDefaultDietaryRestrictions', user.restrictions)
-        this.$store.commit('setDefaultPriceRange', user.priceRange)
+        this.$store.commit('setDefaultPriceRange', [user.priceLow, user.priceHigh])
         this.$store.commit('setDefaultRadius', user.radius)
         this.$store.commit('setPaypalId', user.paypalID)
       } else {

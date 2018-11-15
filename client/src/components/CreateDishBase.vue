@@ -93,7 +93,11 @@ export default {
       nameRules: [(v) => { return !!v || 'Name is required' }],
       dietaryRestrictionsList: ['gluten free', 'vegan', 'vegetarian', 'lactose free', 'nut free'],
       dietaryRestrictionsRules: [(v) => { return (v && v.every((d) => { return this.dietaryRestrictionsList.includes(d); })) || 'Dietary Restrictions must be from dropdown!' }],
-      priceRules: [(v) => { return !!v || 'Price is required'}, (v) => { return (v && v > 0 && v <= 100) || 'Price must be between $0 and $100' }],
+      priceRules: [
+        (v) => { return !!v || 'Price is required'}, 
+        (v) => { return (v && v > 0 && v <= 100) || 'Price must be between $0 and $100' }, 
+        (v) => { return (v && (100*v - Math.floor(100*v) === 0)) || 'Price cannot have more than two decimal places' }
+      ],
       quantityRules: [(v) => { return !!v || 'Quantity is required'}, (v) => { return (v && v > 0) || 'Quantity cannot be negative' }],
 
       // new dish details
@@ -114,9 +118,13 @@ export default {
       if (this.$refs.form.validate()) {
         let response = await DishesService.newDish({
           name: this.newDishName,
-          ingredients: this.newDishIngredients,
+          description: this.newDishDescription,
+          imageUrl: this.newDishUrl,
           dietaryRestrictions: this.newDishDietaryRestrictions,
+          ingredients: this.newDishIngredients,
+          location: {lat: this.newDishlocationLat, lon: this.newDishLocationLong},
           price: this.newDishPrice,
+          sellerId: this.$store.state.userId,
           quantity: this.newDishQuantity
         })
         if (response.data.success) {

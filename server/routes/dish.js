@@ -72,7 +72,7 @@ router.get('/get_dishes', function(req, res, next) {
 });
 
 
-router.get('/get_dishes_by_rad', function(req, res, next) {
+router.get('/get_dishes_by_radius', function(req, res, next) {
 
     var ingredients = []; 
     var dietaryRestrictions = []; 
@@ -109,12 +109,15 @@ router.post('/new_dish', (req, res) => {
 
   console.log("Enter")
   var new_dish = new Post({
-    dietaryRestrictions: (req.body.dietaryRestrictions),
-    title: req.body.title,
+    name: req.body.name,
     description: req.body.description,
-    location: (req.body.location),
+    imageUrl: req.body.imageUrl,
+    dietaryRestrictions: (req.body.dietaryRestrictions),
     ingredients: (req.body.ingredients),
-    price: req.body.price
+    location: (req.body.location),
+    price: req.body.price,
+    sellerId: req.body.sellerId,
+    quantity: req.body.quantity
   })
 
   //console.log(req.body.FirstName);
@@ -125,6 +128,7 @@ router.post('/new_dish', (req, res) => {
   new_dish.save(function (error, result) {
     if (error) {
       console.log(error)
+      res.send({ success: false, errorMessage: 'Database error.' })
     }
     res.send({
       success: true,
