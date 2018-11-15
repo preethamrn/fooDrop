@@ -92,7 +92,57 @@ describe('/GET user', () => {
       });
       });
 
+      //Test Case #4: Testing /user/get_users
+      describe('/GET users', () => {
+        it('it should GET all the users', (done) => {
+              chai.request(app)
+              .get('/user/get_users')
+              .end((err, res) => {
+                    console.log(res.body);
+                    res.should.have.status(200);
+                    res.body.posts.should.be.a('array'); //the posts returned should be an array
+                done();
+              });
+        });
+    });
+
   });
+
+  describe('/update', () => {
+    it('it should UPDATE a user given the id', (done) => {
+
+      let tmp_user = new User(
+        { name: "andrew", priceLow: 3, priceHigh:10,radius:5, restrictions:["peanuts", "seafood"]}
+        );
+
+        tmp_user.save((err, tmp_user) => {
+              chai.request(app)
+              .put('/user/update')
+              .send({_id:tmp_user.id, values: {"facebookID": "FACEBOOK SECURE ID", "paypalID": "PAYPAL secure id", 
+              "restrictions": ["chocolate", "dairy"]}}) //send is for sending over in the request body
+              .end((err, res) => {
+
+                    console.log(res.body);
+                    res.should.have.status(200);
+                    res.body.should.be.a('object');
+                    // res.body.should.have.property('message').eql('Book updated!');
+                    // res.body.book.should.have.property('year').eql(1950);
+                    res.body.user.restrictions.should.be.a('array');
+                    res.body.user.should.have.property('_id');
+                    res.body.user.should.have.property('priceLow');
+                    res.body.user.should.have.property('priceHigh');
+                    res.body.user.should.have.property('radius');
+                    res.body.user.should.have.property('transactions');
+                    res.body.user.should.have.property('facebookID');
+                    res.body.user.should.have.property('paypalID');
+
+                done();
+              });
+        });
+    });
+});
+
+
 
 
 
