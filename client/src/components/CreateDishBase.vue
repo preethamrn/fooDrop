@@ -122,7 +122,7 @@ export default {
           imageUrl: this.newDishUrl,
           dietaryRestrictions: this.newDishDietaryRestrictions,
           ingredients: this.newDishIngredients,
-          location: {lat: this.newDishlocationLat, lon: this.newDishLocationLong},
+          location: {lat: this.newDishLocationLat, lon: this.newDishLocationLong},
           price: this.newDishPrice,
           sellerId: this.$store.state.userId,
           quantity: this.newDishQuantity
