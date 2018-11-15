@@ -52,15 +52,7 @@ Post_Controller.updatePostQ(post_id,quantity,function(error,post)
   var result = post;
   var new_transaction = 
     {    
-          // ingredients: result["ingredients"],
-          // restrictions: result["dietaryRestrictions"],
-          // name: result["title"],
-          // photo: "",
-          // location: result["location"],
-          // price: result["price"],
-          // sellerID: seller_id,
-          // buyerID: buyer_id,
-          // quantity: quantity
+      
           name: post["name"],
           description: post["description"],
           imageUrl: post["imageUrl"],
