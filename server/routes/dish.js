@@ -113,7 +113,7 @@ router.get('/get_dishes', function(req, res, next) {
 });
 
 
-router.get('/a', function(req, res, next) {
+router.get('/get_dishes_by_radius', function(req, res, next) {
 
     var ingredients = req.query.ingredients || [];
     var dietaryRestrictions = req.query.dietaryRestrictions || [];
