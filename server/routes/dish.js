@@ -20,7 +20,11 @@ router.post('/', function(request, response){
 router.get('/get_dish', function(req, res){
   var post_id = ObjectId(req.query.post_id); 
   Post.findById(post_id, function(err,result){
-    if (err) return console.error(err);
+    if (err || res==null) {
+      // res.send()
+      res.status(500).send({ error: "boo:(" });
+      return console.error(err);
+    }
     else {
       res.contentType('application/json');
       res.send(JSON.stringify(result));
@@ -34,11 +38,12 @@ router.post('/transaction', function(req, res){
 var buyer_id = ObjectId(req.body.buyer_id);
 var buyer_id = ObjectId(req.body.seller_id);
 var post_id = ObjectId(req.body.post_id);
+var quantity = req.body.quantity; 
 
 Post.get_dish_by_id(post_id, function(result){
 
-
   })
+
 })
 
 
