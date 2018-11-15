@@ -1,8 +1,82 @@
 const mongoose = require('mongoose');
 var Post = require("../models/post");
+var User = require("../models/user");
 const ObjectId = mongoose.Types.ObjectId;
 
 
+exports.addTransaction = function(user_id,transaction,callback){
+
+    User.findById(user_id, function(error, user){
+      if (error || !user) {
+        console.error(error);
+        callback(1,user);
+        return; 
+      }
+
+      console.log(user["transactions"]);
+      console.log(transaction);
+
+      user["transactions"].push(transaction);
+
+      user.save(function(error)
+      {
+        if(error)
+        {
+          console.err(error);
+          callback(1,user);
+          return; 
+        }
+        
+      })
+
+      callback(0,user);
+
+    })
+}
+
+
+
+
+
+exports.updatePostQ = function(post_id,quantity,callback){
+
+    Post.findById(post_id, function(error, post){
+      if (error || !post) {
+        console.error(error);
+        callback(1,post);
+        return; 
+      }
+
+      var new_quantity = post["quantity"] - quantity;
+
+      if(new_quantity == 0)
+      {
+        var temp_post = JSON.parse(JSON.stringify(post));
+        post.remove();
+        callback(0,temp_post);
+        return; 
+      }
+      else if(new_quantity <= 0){
+        callback(1,post); 
+        return; 
+      } 
+      
+      post["quantity"] = new_quantity; 
+      post.save(function(error)
+      {
+        if(error)
+        {
+          console.log(error);
+          callback(1,post);
+          return; 
+        }
+        
+      })
+
+      callback(0,post);
+
+    })
+}
 
 exports.getDistanceFromLatLonInMiles = function(lat1,lon1,lat2,lon2) {
 
@@ -34,26 +108,23 @@ exports.get_dish_by_id = function(object_id,callback){
   })
 }
 
-exports.get_dishes = function(ingredients,dietaryRestrictions,callback){
 
+exports.get_dishes = function(ingredients,dietaryRestrictions,price_low,price_high,callback){
 
-	var query;
+	var query = Post.find({});
 
-    if(ingredients.length >= 1){
+    if(ingredients.length >= 1)
+      query.where('ingredients').in(ingredients)
 
-      query = Post.find({}).
-      where('ingredients').in(ingredients).
-      where('dietaryRestrictions').nin(dietaryRestrictions);
-    }
-    else 
-    {
-      query = Post.find({}).
-      where('dietaryRestrictions').nin(dietaryRestrictions);
-    }
+    if(dietaryRestrictions.length >= 1)
+      query.where('dietaryRestrictions').in(dietaryRestrictions)
+
+    query.where('price').gt(price_low).lt(price_high)
 
 
     query.exec(function (err, result) {
         if (err) return console.error(err);
+         console.log(result);
          callback(result); 
       })
 }

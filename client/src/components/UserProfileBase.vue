@@ -40,7 +40,7 @@
             </v-layout>
 
             <v-card-actions>
-              <v-btn flat color='green' :disabled='!valid'>Update Defaults</v-btn>
+              <v-btn flat color='green' :disabled='!valid' @click='update'>Update Defaults</v-btn>
             </v-card-actions>
           </v-form>
         </v-card>
@@ -51,6 +51,7 @@
 
 <script>
 import HeaderBase from '@/components/HeaderBase'
+import FacebookAuth from '@/services/FacebookAuth';
 export default {
   name: 'user-profile-base',
   components: {
@@ -76,9 +77,29 @@ export default {
     },
     resetDefaults () {
       this.defaultDietaryRestrictions = this.$store.state.defaultDietaryRestrictions
-      // TODO: fix price range and other values in vuex store depending on how backend user profile integrates
-      //this.defaultPriceRange = this.$store.state.defaultPriceRange
+      this.defaultPriceRange = this.$store.state.defaultPriceRange
       this.defaultRadius = this.$store.state.defaultRadius
+    },
+    async update () {
+      try {
+        let response = await FacebookAuth.updateUser({
+          _id: this.$store.state.userId,
+          values: {
+            radius: this.defaultRadius,
+            priceLow: this.defaultPriceRange[0],
+            priceHigh: this.defaultPriceRange[1],
+            restrictions: this.defaultDietaryRestrictions,
+          }
+        })
+        let user = response.data.user
+        if (user) {
+          this.$store.commit('setDefaultDietaryRestrictions', user.restrictions)
+          this.$store.commit('setDefaultPriceRange', [user.priceLow, user.priceHigh])
+          this.$store.commit('setDefaultRadius', user.radius)
+        }
+      } catch (error) {
+        alert("Error: Couldn't save settings")
+      }
     }
   },
   computed: {

@@ -20,10 +20,14 @@ router.post('/', function(request, response){
 router.get('/get_dish', function(req, res){
   var post_id = ObjectId(req.query.post_id); 
   Post.findById(post_id, function(err,result){
-    if (err) return console.error(err);
+    if (err || res==null) {
+      // res.send()
+      res.status(400).send({ error: "boo :(" });
+      return console.error(err);
+    }
     else {
       res.contentType('application/json');
-      res.send(JSON.stringify(result));
+      res.send({ success: true, dishes: result });
     }
 
   })
@@ -32,67 +36,91 @@ router.get('/get_dish', function(req, res){
 router.post('/transaction', function(req, res){
 
 var buyer_id = ObjectId(req.body.buyer_id);
-var buyer_id = ObjectId(req.body.seller_id);
+var seller_id = ObjectId(req.body.seller_id);
 var post_id = ObjectId(req.body.post_id);
+var quantity = req.body.quantity; 
 
-Post.get_dish_by_id(post_id, function(result){
+Post_Controller.updatePostQ(post_id,quantity,function(error,post)
+{
+  if(error){
+    res.status(400).send({
+      status: "fail"
+    })
+      return;
+    }
+
+  var result = post;
+  var new_transaction = 
+    {    
+
+          name: post["name"],
+          description: post["description"],
+          imageUrl: post["imageUrl"],
+          ingredients: post["ingredients"],
+          dietaryRestrictions: post["dietaryRestrictions"],
+          location: post["location"],
+          price: post["price"],
+          sellerID: seller_id,
+          buyerID: buyer_id,
+          quantity: quantity
+    }
 
 
+  Post_Controller.addTransaction(seller_id,new_transaction,function(error,seller){
+      if(error){
+        res.status(400).send({
+          status: "fail"
+        })
+        return console.err(error);
+      }
+
+      Post_Controller.addTransaction(buyer_id,new_transaction,function(error,seller){
+        if(error){
+          res.status(400).send({
+            status: "fail"
+          })
+          return;
+        }
+
+        res.send({status: "pass"})
+
+      })
+    })
   })
 })
 
 
 router.get('/get_dishes', function(req, res, next) {
 
+  var ingredients = req.query.ingredients || [];
+  var dietaryRestrictions = req.query.dietaryRestrictions || [];
+  var price_low = req.query.priceLow
+  var price_high = req.query.priceHigh
 
-    var ingredients = []; 
-    var dietaryRestrictions = []; 
-
-
-    if (!req.query.ingredients)
-      ingredients = []
-    else 
-      ingredients = JSON.parse(req.query.ingredients);
-
-    if (!req.query.dietaryRestrictions)
-      dietaryRestrictions = []
-    else 
-      dietaryRestrictions = JSON.parse(req.query.dietaryRestrictions);
-
-    Post_Controller.get_dishes(ingredients,dietaryRestrictions, function(result){
-            res.contentType('application/json');
-            res.send(JSON.stringify(result));
-    });
+  Post_Controller.get_dishes(ingredients,dietaryRestrictions,price_low,price_high, function(result){
+          res.contentType('application/json');
+          res.send({ success: true, dishes: result });
+  });
 
 });
 
 
-router.get('/get_dishes_by_rad', function(req, res, next) {
+router.get('/get_dishes_by_radius', function(req, res, next) {
 
-    var ingredients = []; 
-    var dietaryRestrictions = []; 
+    var ingredients = req.query.ingredients || [];
+    var dietaryRestrictions = req.query.dietaryRestrictions || [];
     var radius = req.query.radius; 
     var user_lat = req.query.lat; 
-    var user_lon = req.query.lon; 
-    
+    var user_lon = req.query.lon;
+    var price_low = req.query.priceLow
+    var price_high = req.query.priceHigh
 
-    if (!req.query.ingredients)
-      ingredients = []
-    else 
-      ingredients = JSON.parse(req.query.ingredients);
-
-    if (!req.query.dietaryRestrictions)
-      dietaryRestrictions = []
-    else 
-      dietaryRestrictions = JSON.parse(req.query.dietaryRestrictions);
-
-    Post_Controller.get_dishes(ingredients,dietaryRestrictions, function(result){
+    Post_Controller.get_dishes(ingredients,dietaryRestrictions,price_low,price_high, function(result){
             result = result.filter(post => Post_Controller.
               getDistanceFromLatLonInMiles(user_lat,user_lon,post["location"]["lat"],post["location"]["lon"]) < radius);
 
-
             res.contentType('application/json');
-            res.send(JSON.stringify(result));
+            res.send({ success: true, dishes: result });
     });
 
 });
@@ -104,12 +132,15 @@ router.post('/new_dish', (req, res) => {
 
   console.log("Enter")
   var new_dish = new Post({
-    dietaryRestrictions: (req.body.dietaryRestrictions),
-    title: req.body.title,
+    name: req.body.name,
     description: req.body.description,
-    location: (req.body.location),
+    imageUrl: req.body.imageUrl,
+    dietaryRestrictions: (req.body.dietaryRestrictions),
     ingredients: (req.body.ingredients),
-    price: req.body.price
+    price: req.body.price,
+    quantity: req.body.quantity, 
+    sellerId: req.body.sellerId,
+    location: req.body.location
   })
 
   //console.log(req.body.FirstName);
@@ -120,11 +151,12 @@ router.post('/new_dish', (req, res) => {
   new_dish.save(function (error, result) {
     if (error) {
       console.log(error)
+      res.send({ success: false, errorMessage: 'Database error.' })
     }
     res.send({
       success: true,
       message: 'Post saved successfully!',
-      body: body,
+      body: result,
       _id: result.id 
     })
   })

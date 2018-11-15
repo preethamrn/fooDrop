@@ -6,5 +6,8 @@ export default {
   },
   validateUser(params, headers) {
     return Api().get('auth/validateUser', {params: params, headers: headers})
+  },
+  updateUser(params) {
+    return Api().put('user/update', params)
   }
 }

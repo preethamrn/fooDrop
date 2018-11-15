@@ -1,13 +1,13 @@
 import Api from '@/services/Api'
 
 export default {
-  getDishes (params) {
-    return Api().get('get_dishes', { params: params })
-  },
   newDish (params) {
-    return Api().post('new_dish', params)
+    return Api().post('dish/new_dish', params)
   },
   searchDish (params) {
-    return Api().get('search_dish', {params: params })
+    return Api().get('dish/get_dishes_by_radius', { params: params })
+  },
+  buyDish (params) {
+    return Api().post('dish/transaction', params)
   }
 }
