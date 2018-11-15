@@ -3,16 +3,40 @@ GET at /dish/get_dishes
     optional parameters - Search by ingredient and allergies 
     Example - http://localhost:8081/dish/get_dishes?ingredients=carrots&ingredients=peas&dietaryRestrictions=peanut
 
-POST at /dish/new_dish 
-    send request body with paramaters as JSON 
-
 POST at /dish/new_dish
     Input: need dietaryRestrictions, title, description, ingredient and price in the request body
     Result: creates a new post in MongoDB
+    
+    {
+	"ingredients": ["chicken"], 
+	"dietaryRestrictions": ["peanut","fish","chicken","eggs"],
+	"title": "wow",
+	"price": 5, 
+	"decription": "ok", 
+	"quantity": 2,
+	"imageUrl": "", 
+	"sellerId": "5bed10672a98ce0db03be156",
+	"location": {"lat": 27.176,"lon":78.008}
+    }
 
 POST at /user/create
     Input: facebookID, paypalID, radius, transactions, name and dietaryRestrictions in the request body
     Result: creates a new user in MongoDB
+    
+    {
+    "success": true,
+    "message": "User created successfully!",
+    "user": {
+        "restrictions": [],
+        "_id": "5bed10672a98ce0db03be156",
+        "name": "Leslie",
+        "facebookID": "facebookID",
+        "paypalID": "paypalID",
+        "radius": 5,
+        "transactions": []
+    },
+    "_id": "5bed10672a98ce0db03be156"
+    }
         
 Put at /user/update
        
