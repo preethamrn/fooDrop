@@ -76,14 +76,15 @@ describe('/GET user', () => {
         .end((err, res) => {
           // console.log(res);
              //console.log(err);
-             console.log(res.body);
+             console.log(res.body.posts);
               res.should.have.status(200);
               res.body.should.be.a('object');
-             // res.body.should.have.property('user');
-             // res.body.should.have.property('priceLow');
-              // res.body.should.have.property('priceHigh');
-              // res.body.should.have.property('restrictions');
-              // res.body.should.have.property('_id').eql(user.id);
+              res.body.should.have.property('posts');
+              res.body.posts[0].should.have.property('_id');
+              res.body.posts[0].should.have.property('name');
+              res.body.posts[0].should.have.property('priceLow');
+              res.body.posts[0].should.have.property('priceHigh');
+              //weird how we need to do res.body.post to get our desired values instead of res.body
           done();
         });
       });
