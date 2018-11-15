@@ -21,7 +21,8 @@ var router = new Router({
       component: ListingsBase,
       meta: {
         title: 'Listings'
-      }
+      },
+      props: true
     },
     {
       path: '/new',

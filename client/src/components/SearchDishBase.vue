@@ -112,8 +112,7 @@ export default {
         })
         if (response.data.success) {
           console.log(response.data.dishes)
-          alert('Success!')
-          // TODO: redirect to ListingsBase with the dishes updated
+          this.$router.push({ path: `/`, name: 'Listings', params: { dishesProp: response.data.dishes, searched: true }})
         } else {
           alert('Error: ' + response.data.errorMessage)
         }
