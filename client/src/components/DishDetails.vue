@@ -48,6 +48,7 @@
 </template>
 
 <script>
+import DishesService from '@/services/DishesService'
 export default {
   name: 'dish-details',
   data () {
@@ -57,13 +58,23 @@ export default {
     }
   },
   methods: {
-    purchaseDish () {
+    async purchaseDish () {
       if (this.quantity <= 0) {
         alert('Quantity must be positive')
       } else if (this.quantity > this.maxQuantity) {
         alert('Quantity must be less than maximum available dishes (' + this.maxQuantity + ')')
       } else {
-        // purchase with Api
+        let response = await DishesService.buyDish({
+          buyer_id: this.$store.state.userId,
+          seller_id: this.sellerId,
+          post_id: this.id,
+          quantity: this.quantity
+        })
+        if (response.data.status === 'fail') {
+          alert('Error: Failed to buy dish')
+        } else {
+          alert('Success!')
+        }
       }
     }
   },
