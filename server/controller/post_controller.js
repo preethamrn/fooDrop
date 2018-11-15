@@ -117,7 +117,7 @@ exports.get_dishes = function(ingredients,dietaryRestrictions,price_low,price_hi
       query.where('ingredients').in(ingredients)
 
     if(dietaryRestrictions.length >= 1)
-      query.where('dietaryRestrictions').in(dietaryRestrictions)
+      query.where('dietaryRestrictions').all(dietaryRestrictions)
 
     query.where('price').gt(price_low).lt(price_high)
 
