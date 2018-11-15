@@ -36,14 +36,55 @@ router.get('/get_dish', function(req, res){
 router.post('/transaction', function(req, res){
 
 var buyer_id = ObjectId(req.body.buyer_id);
-var buyer_id = ObjectId(req.body.seller_id);
+var seller_id = ObjectId(req.body.seller_id);
 var post_id = ObjectId(req.body.post_id);
 var quantity = req.body.quantity; 
 
-Post.get_dish_by_id(post_id, function(result){
+Post_Controller.updatePostQ(post_id,quantity,function(error,post)
+{
+  if(error){
+    res.status(400).send({
+      status: "fail"
+    })
+      return;
+    }
 
+  var result = post;
+  var new_transaction = 
+    {    
+          ingredients: result["ingredients"],
+          restrictions: result["dietaryRestrictions"],
+          name: result["title"],
+          photo: "",
+          location: result["location"],
+          price: result["price"],
+          sellerID: seller_id,
+          buyerID: buyer_id,
+          quantity: quantity
+    }
+
+
+  Post_Controller.addTransaction(seller_id,new_transaction,function(error,seller){
+      if(error){
+        res.status(401).send({
+          status: "fail"
+        })
+        return console.err(error);
+      }
+
+      Post_Controller.addTransaction(buyer_id,new_transaction,function(error,seller){
+        if(error){
+          res.status(402).send({
+            status: "fail"
+          })
+          return;
+        }
+
+        res.send({status: "pass"})
+
+      })
+    })
   })
-
 })
 
 
@@ -114,7 +155,9 @@ router.post('/new_dish', (req, res) => {
     description: req.body.description,
     location: (req.body.location),
     ingredients: (req.body.ingredients),
-    price: req.body.price
+    price: req.body.price,
+    quantity: req.body.quantity, 
+    sellerId: req.body.sellerId 
   })
 
   //console.log(req.body.FirstName);
@@ -129,7 +172,7 @@ router.post('/new_dish', (req, res) => {
     res.send({
       success: true,
       message: 'Post saved successfully!',
-      body: body,
+      body: result,
       _id: result.id 
     })
   })

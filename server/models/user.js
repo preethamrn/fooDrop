@@ -14,9 +14,10 @@ var UserSchema = new Schema({
 		restrictions: [{type: String}],
 		name: String,
 		photo: String,
-		location: String,
+		location: {lat:Number, lon:Number},
 		price: Number,
 		sellerID: String,
+		buyerID: String,
 		quantity: Number
 	}]
 },{ versionKey: false });

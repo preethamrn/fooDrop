@@ -21,7 +21,7 @@ exports.updateUser = function(user_id,values,callback){
         if(error)
         {
           console.log(error);
-          callback(error,user);
+          callback(1,user);
           return; 
         }
         

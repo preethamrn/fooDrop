@@ -17,3 +17,6 @@ Result: creates a new post in MongoDB
 POST at /user/create
     Input: facebookID, paypalID, radius, transactions, name and dietaryRestrictions in the request body
 Result: creates a new user in MongoDB
+
+
+

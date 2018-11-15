@@ -1,8 +1,82 @@
 const mongoose = require('mongoose');
 var Post = require("../models/post");
+var User = require("../models/user");
 const ObjectId = mongoose.Types.ObjectId;
 
 
+exports.addTransaction = function(user_id,transaction,callback){
+
+    User.findById(user_id, function(error, user){
+      if (error || !user) {
+        console.error(error);
+        callback(1,user);
+        return; 
+      }
+
+      console.log(user["transactions"]);
+      console.log(transaction);
+
+      user["transactions"].push(transaction);
+
+      user.save(function(error)
+      {
+        if(error)
+        {
+          console.err(error);
+          callback(1,user);
+          return; 
+        }
+        
+      })
+
+      callback(0,user);
+
+    })
+}
+
+
+
+
+
+exports.updatePostQ = function(post_id,quantity,callback){
+
+    Post.findById(post_id, function(error, post){
+      if (error || !post) {
+        console.error(error);
+        callback(1,post);
+        return; 
+      }
+
+      var new_quantity = post["quantity"] - quantity;
+
+      if(new_quantity == 0)
+      {
+        var temp_post = JSON.parse(JSON.stringify(post));
+        post.remove();
+        callback(0,temp_post);
+        return; 
+      }
+      else if(new_quantity <= 0){
+        callback(1,post); 
+        return; 
+      } 
+      
+      post["quantity"] = new_quantity; 
+      post.save(function(error)
+      {
+        if(error)
+        {
+          console.log(error);
+          callback(1,post);
+          return; 
+        }
+        
+      })
+
+      callback(0,post);
+
+    })
+}
 
 exports.getDistanceFromLatLonInMiles = function(lat1,lon1,lat2,lon2) {
 
