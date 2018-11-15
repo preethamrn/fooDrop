@@ -52,7 +52,15 @@ Post_Controller.updatePostQ(post_id,quantity,function(error,post)
   var result = post;
   var new_transaction = 
     {    
-      
+          // ingredients: result["ingredients"],
+          // restrictions: result["dietaryRestrictions"],
+          // name: result["title"],
+          // photo: "",
+          // location: result["location"],
+          // price: result["price"],
+          // sellerID: seller_id,
+          // buyerID: buyer_id,
+          // quantity: quantity
           name: post["name"],
           description: post["description"],
           imageUrl: post["imageUrl"],
@@ -105,7 +113,7 @@ router.get('/get_dishes', function(req, res, next) {
 });
 
 
-router.get('/a', function(req, res, next) {
+router.get('/get_dishes_by_radius', function(req, res, next) {
 
     var ingredients = req.query.ingredients || [];
     var dietaryRestrictions = req.query.dietaryRestrictions || [];
