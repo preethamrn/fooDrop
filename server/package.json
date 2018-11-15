@@ -21,6 +21,7 @@
     "mongoose": "^5.3.11",
     "morgan": "~1.9.0",
     "passport": "^0.4.0",
+    "chai": "^4.2.0",
     "passport-facebook-token": "^3.3.0",
     "socket.io": "^2.1.1"
   },
