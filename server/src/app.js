@@ -1,6 +1,6 @@
 const createError = require('http-errors');
 const path = require('path');
-const cookieParser = require('cookie-parser');
+//const cookieParser = require('cookie-parser');
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
@@ -37,7 +37,7 @@ var Post = require("../models/post");
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+//app.use(cookieParser());
 app.use(bodyParser.json())
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors())
@@ -150,8 +150,6 @@ app.get('/auth/validateUser', function(req,res) {
 	})
 })
 
-<<<<<<< HEAD
-=======
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -170,4 +168,3 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
->>>>>>> master
