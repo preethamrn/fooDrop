@@ -54,6 +54,16 @@ export default {
       }
     }
   },
+  computed: {
+    storeUserState () {
+      return this.$store.state.userId
+    }
+  },
+  watch: {
+    storeUserState () {
+      this.getDishes()
+    }
+  },
   mounted () {
     if (this.searched) {
       this.dishes = this.dishesProp

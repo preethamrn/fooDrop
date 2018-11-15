@@ -11,3 +11,7 @@ Webapp for buying fresh home-cooked food
 -----------------
 1. `npm start`
 2. `npm run devstart`
+
+## To do client testing
+-----------------
+* `npm run test:unit`
