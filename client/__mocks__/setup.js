@@ -4,3 +4,7 @@ const mockGeolocation = {
 };
 
 global.navigator.geolocation = mockGeolocation;
+
+global.console = {
+  warn: jest.fn()
+}

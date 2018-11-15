@@ -1,13 +1,13 @@
-import { mount, shallowMount, createLocalVue } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import mockAxios from 'axios'
 import ListingsBase from '@/components/ListingsBase.vue'
 
+import Vue from 'vue'
 import Vuex from 'vuex'
 import Vuetify from 'vuetify'
 
-const localVue = createLocalVue()
-localVue.use(Vuex)
-localVue.use(Vuetify)
+Vue.use(Vuex)
+Vue.use(Vuetify)
 
 describe('ListingsBase.vue', () => {
   let store
@@ -20,7 +20,7 @@ describe('ListingsBase.vue', () => {
 
   it('tests get request when not passed in search results as props', () => {    
     // work
-    const wrapper = shallowMount(ListingsBase, { store, localVue })
+    const wrapper = shallowMount(ListingsBase, { store, Vue })
     
     // expect
     expect(navigator.geolocation.getCurrentPosition).toHaveBeenCalledTimes(1)
@@ -35,16 +35,15 @@ describe('ListingsBase.vue', () => {
     );
 
     // work
-    const wrapper = shallowMount(ListingsBase, { store, localVue, propsData: {
+    const wrapper = shallowMount(ListingsBase, { store, Vue, propsData: {
       searched: true,
       dishesProp: [{}]
     }})
 
     // expect
     expect(navigator.geolocation.getCurrentPosition).toHaveBeenCalledTimes(1)
-    localVue.config.errorHandler = done
-    localVue.nextTick(() => {
-      console.log(wrapper.html())
+    Vue.config.errorHandler = done
+    Vue.nextTick(() => {
       expect(wrapper.contains('listingsdishitem-stub')).toBe(true)
       done()
     })
