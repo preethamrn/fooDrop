@@ -89,7 +89,7 @@ router.put('/update', (req, res)=> {
   var values = req.body.values; //expecting an array of values
   User_Controller.updateUser(user_id, values, function(error,result){
     if(error){
-    res.status(500).send({
+    res.status(400).send({
       status: "fail"
     })
     return; 
