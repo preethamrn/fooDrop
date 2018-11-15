@@ -1,9 +1,10 @@
 <template>
   <div name='listings-base'>
     <header-base/>
-    <v-list>
-      <listings-dish-item v-for='(dish, index) in dishes' :key='index' :name='dish.name' :location='dish.location' :price='dish.price' :id='dish.id'/>
+    <v-list v-if='dishes.length !== 0'>
+      <listings-dish-item v-for='(dish, index) in dishes' :key='index' :name='dish.name' :location='dish.location' :price='dish.price' :dish='dish'/>
     </v-list>
+    <div v-else> No results </div>
   </div>
 </template>
 
@@ -22,9 +23,43 @@ export default {
       dishes: []
     }
   },
-  async created () {
-    let response = await DishesService.getDishes({})
-    this.dishes = response.data.dishes
+  props: {
+    dishesProp: {
+      type: Array,
+      default: () => []
+    },
+    searched: {
+      type: Boolean,
+      default: false
+    }
+  },
+  methods: {
+    getDishes () {
+      if (navigator.geolocation) {
+        var self = this;
+        navigator.geolocation.getCurrentPosition(function (position) {
+          DishesService.searchDish({
+            ingredients: self.$store.state.defaultIngredients,
+            dietaryRestrictions: self.$store.state.defaultDietaryRestrictions,
+            lat: position.coords.latitude,
+            lon: position.coords.longitude,
+            radius: self.$store.state.defaultRadius,
+            priceLow: self.$store.state.defaultPriceRange[0],
+            priceHigh: self.$store.state.defaultPriceRange[1]
+          }).then((response) => {
+            console.log(response)
+            self.dishes = response.data.dishes
+          })
+        })
+      }
+    }
+  },
+  mounted () {
+    if (this.searched) {
+      this.dishes = this.dishesProp
+    } else {
+      this.getDishes()
+    }
   }
 }
 </script>

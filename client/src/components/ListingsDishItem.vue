@@ -18,7 +18,19 @@
               Price: {{ price }}
             </v-flex>
             <v-flex xs6 sm3>
-              <dish-details :name='name' :location='location' :price='price' :id='id'/>
+              <dish-details
+                :name='dish.name'
+                :description='dish.description'
+                :locationLat='dish.location.lat'
+                :locationLong='dish.location.lon'
+                :price='dish.price'
+                :dietaryRestrictions='dish.dietaryRestrictions'
+                :ingredients='dish.ingredients'
+                :url='dish.imageUrl'
+                :maxQuantity='dish.quantity'
+                :sellerId='dish.sellerId'
+                :id='dish._id'
+              />
             </v-flex>
           </v-layout>
         </v-list-tile>
@@ -39,9 +51,9 @@ export default {
   },
   props: {
     name: String,
-    location: String,
+    location: Object,
     price: Number,
-    id: String
+    dish: Object
   }
 }
 </script>

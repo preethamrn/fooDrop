@@ -3,7 +3,8 @@
     <v-dialog v-model='dishDetailsDialog' max-width='500px'>
       <v-btn flat outline slot='activator'>View Dish</v-btn>
       <v-card>
-        <v-img :src='url'></v-img>
+        <v-img v-if="url !== ''" :src='url'></v-img>
+        <v-img v-else src='../assets/default_food.png'></v-img>
         <v-card-title>
           <span class='headline'>{{ name }}</span>
         </v-card-title>
@@ -11,7 +12,7 @@
           <v-container grid-list-md>
             <v-layout wrap>
               <v-flex xs12>
-                <v-text-field v-model='url' label='Description' readonly></v-text-field>
+                <v-text-field v-model='description' label='Description' readonly></v-text-field>
               </v-flex>
               <v-flex xs6>
                 <v-text-field v-model='locationLat' label='LocationLat' readonly></v-text-field>
@@ -52,12 +53,6 @@ export default {
   data () {
     return {
       dishDetailsDialog: false,
-      dietaryRestrictions: ['nut free'],
-      ingredients: ['carrots'],
-      url: 'https://images.pexels.com/photos/248797/pexels-photo-248797.jpeg?auto=compress&cs=tinysrgb&h=350',
-      locationLat: 0.0,
-      locationLong: 0.0,
-      maxQuantity: 5,
       quantity: 1
     }
   },
@@ -74,8 +69,15 @@ export default {
   },
   props: {
     name: String,
-    location: String,
+    description: String,
+    locationLat: Number,
+    locationLong: Number,
     price: Number,
+    dietaryRestrictions: Array,
+    ingredients: Array,
+    url: String,
+    maxQuantity: Number,
+    sellerId: String,
     id: String
   }
 }

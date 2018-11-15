@@ -52,22 +52,12 @@ Post_Controller.updatePostQ(post_id,quantity,function(error,post)
   var result = post;
   var new_transaction = 
     {    
-          // ingredients: result["ingredients"],
-          // restrictions: result["dietaryRestrictions"],
-          // name: result["title"],
-          // photo: "",
-          // location: result["location"],
-          // price: result["price"],
-          // sellerID: seller_id,
-          // buyerID: buyer_id,
-          // quantity: quantity
-          name: post["name"],
-          description: post["description"],
-          imageUrl: post["imageUrl"],
-          ingredients: post["ingredients"],
-          dietaryRestrictions: post["dietaryRestrictions"],
-          location: post["location"],
-          price: post["price"],
+          ingredients: result["ingredients"],
+          restrictions: result["dietaryRestrictions"],
+          name: result["title"],
+          photo: "",
+          location: result["location"],
+          price: result["price"],
           sellerID: seller_id,
           buyerID: buyer_id,
           quantity: quantity
@@ -113,7 +103,7 @@ router.get('/get_dishes', function(req, res, next) {
 });
 
 
-router.get('/a', function(req, res, next) {
+router.get('/get_dishes_by_radius', function(req, res, next) {
 
     var ingredients = req.query.ingredients || [];
     var dietaryRestrictions = req.query.dietaryRestrictions || [];
@@ -145,10 +135,16 @@ router.post('/new_dish', (req, res) => {
     imageUrl: req.body.imageUrl,
     dietaryRestrictions: (req.body.dietaryRestrictions),
     ingredients: (req.body.ingredients),
+<<<<<<< HEAD
     price: req.body.price,
     quantity: req.body.quantity, 
+    sellerId: req.body.sellerId 
+=======
+    location: (req.body.location),
+    price: req.body.price,
     sellerId: req.body.sellerId,
-    location: req.body.location
+    quantity: req.body.quantity
+>>>>>>> 692500931780f4057514432495f97baacb906d6d
   })
 
   //console.log(req.body.FirstName);

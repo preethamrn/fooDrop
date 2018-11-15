@@ -11,12 +11,17 @@ var UserSchema = new Schema({
 	restrictions: [{type: String}],
 	transactions: [{
 		name: String,
+<<<<<<< HEAD
+		photo: String,
+=======
 		description: String,
 		imageUrl: String,
 		ingredients: [{type: String}],
 		dietaryRestrictions: [{type: String}],
+>>>>>>> 692500931780f4057514432495f97baacb906d6d
 		location: {lat:Number, lon:Number},
 		price: Number,
+		buyerID: String,
 		sellerID: String,
 		buyerID: String,
 		quantity: Number
