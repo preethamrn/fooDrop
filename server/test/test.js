@@ -108,6 +108,7 @@ describe('/GET user', () => {
 
   });
 
+  //Test Case #5: Testing /user/update
   describe('/update', () => {
     it('it should UPDATE a user given the id', (done) => {
 
