@@ -62,30 +62,33 @@ describe('Users', () => {
     });
 });
 
-// describe('/GET user', () => {
-//   it('it should GET a user by the given id', (done) => {
+describe('/GET user', () => {
+  it('it should GET a user by the given id', (done) => {
 
-//       let tmp_user = new User(
-//         { name: "leslie", priceLow: 2, priceHigh:5, restrictions:["peanuts", "seafood"]}
-//         );
+      let tmp_user = new User(
+        { name: "leslie", priceLow: 2, priceHigh:5, restrictions:["peanuts", "seafood"]}
+        );
 
-//       tmp_user.save((err, user) => {
-//           chai.request(app)
-//         .get('/user/' +'get_users?user_id=' + user.id)
-//         .send(book)
-//         .end((err, res) => {
-//               res.should.have.status(200);
-//               res.body.should.be.a('object');
-//               res.body.should.have.property('name');
-//               res.body.should.have.property('priceLow');
-//               res.body.should.have.property('priceHigh');
-//               res.body.should.have.property('restrictions');
-//               res.body.should.have.property('_id').eql(user.id);
-//           done();
-//         });
-//       });
-//       });
+      tmp_user.save((err, tmp_user) => {
+          chai.request(app)
+        .get('/user/' +'get_users?user_id=' + tmp_user.id)
+        .send(tmp_user)
+        .end((err, res) => {
+          // console.log(res);
+             //console.log(err);
+             console.log(res.body);
+              res.should.have.status(200);
+              res.body.should.be.a('object');
+             // res.body.should.have.property('user');
+             // res.body.should.have.property('priceLow');
+              // res.body.should.have.property('priceHigh');
+              // res.body.should.have.property('restrictions');
+              // res.body.should.have.property('_id').eql(user.id);
+          done();
+        });
+      });
+      });
 
-//   });
+  });
 
 });

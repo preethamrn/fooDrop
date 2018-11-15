@@ -72,8 +72,12 @@ router.get('/get_user', (req, res) => {
   User.findById(user_id, function(err,result){
     if (err) return console.error(err);
     else {
-      res.contentType('application/json');
-      res.send(JSON.stringify(result));
+      // res.send({
+      //   user: result,
+      //   status: "pass"
+      // });
+
+      res.json(result);
     }
   })
 })
