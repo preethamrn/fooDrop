@@ -5,7 +5,7 @@ export default {
     return Api().post('dish/new_dish', params)
   },
   searchDish (params) {
-    return Api().get('search_dish', { params: params })
+    return Api().get('dish/get_dishes_by_radius', { params: params })
   },
   // Buy dishes
 }

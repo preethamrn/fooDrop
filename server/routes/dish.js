@@ -27,7 +27,7 @@ router.get('/get_dish', function(req, res){
     }
     else {
       res.contentType('application/json');
-      res.send(JSON.stringify(result));
+      res.send({ success: true, dishes: result });
     }
 
   })
@@ -49,55 +49,35 @@ Post.get_dish_by_id(post_id, function(result){
 
 router.get('/get_dishes', function(req, res, next) {
 
+  var ingredients = req.query.ingredients || [];
+  var dietaryRestrictions = req.query.dietaryRestrictions || [];
+  var price_low = req.query.priceLow
+  var price_high = req.query.priceHigh
 
-    var ingredients = []; 
-    var dietaryRestrictions = []; 
-
-
-    if (!req.query.ingredients)
-      ingredients = []
-    else 
-      ingredients = JSON.parse(req.query.ingredients);
-
-    if (!req.query.dietaryRestrictions)
-      dietaryRestrictions = []
-    else 
-      dietaryRestrictions = JSON.parse(req.query.dietaryRestrictions);
-
-    Post_Controller.get_dishes(ingredients,dietaryRestrictions, function(result){
-            res.contentType('application/json');
-            res.send(JSON.stringify(result));
-    });
+  Post_Controller.get_dishes(ingredients,dietaryRestrictions, function(result){
+          res.contentType('application/json');
+          res.send({ success: true, dishes: result });
+  });
 
 });
 
 
 router.get('/get_dishes_by_radius', function(req, res, next) {
 
-    var ingredients = []; 
-    var dietaryRestrictions = []; 
+    var ingredients = req.query.ingredients || [];
+    var dietaryRestrictions = req.query.dietaryRestrictions || [];
     var radius = req.query.radius; 
     var user_lat = req.query.lat; 
-    var user_lon = req.query.lon; 
-    
-
-    if (!req.query.ingredients)
-      ingredients = []
-    else 
-      ingredients = JSON.parse(req.query.ingredients);
-
-    if (!req.query.dietaryRestrictions)
-      dietaryRestrictions = []
-    else 
-      dietaryRestrictions = JSON.parse(req.query.dietaryRestrictions);
+    var user_lon = req.query.lon;
+    var price_low = req.query.priceLow
+    var price_high = req.query.priceHigh
 
     Post_Controller.get_dishes(ingredients,dietaryRestrictions, function(result){
             result = result.filter(post => Post_Controller.
               getDistanceFromLatLonInMiles(user_lat,user_lon,post["location"]["lat"],post["location"]["lon"]) < radius);
 
-
             res.contentType('application/json');
-            res.send(JSON.stringify(result));
+            res.send({ success: true, dishes: result });
     });
 
 });

@@ -63,7 +63,7 @@
 
             <v-card-actions>
               <v-btn flat color='red' @click='clear'>x Clear</v-btn>
-              <v-btn flat color='green' :disabled='!valid'>- Search</v-btn>
+              <v-btn flat color='green' :disabled='!valid' @click='searchDish'>- Search</v-btn>
             </v-card-actions>
           </v-form>
         </v-card>
@@ -104,11 +104,16 @@ export default {
           name: this.searchDishName,
           ingredients: this.searchDishIngredients,
           dietaryRestrictions: this.searchDishDietaryRestrictions,
-          price: this.searchDishPrice,
-          quantity: this.searchDishQuantity
+          lat: this.searchDishLocationLat,
+          lon: this.searchDishLocationLong,
+          radius: this.searchDishRadius,
+          priceLow: this.searchDishPrice[0],
+          priceHigh: this.searchDishPrice[1]
         })
         if (response.data.success) {
+          console.log(response.data.dishes)
           alert('Success!')
+          // TODO: redirect to ListingsBase with the dishes updated
         } else {
           alert('Error: ' + response.data.errorMessage)
         }

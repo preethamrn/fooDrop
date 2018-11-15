@@ -22,7 +22,7 @@ export default {
       dishes: []
     }
   },
-  async created () {
+  async mounted () {
     let response = await DishesService.getDishes({})
     this.dishes = response.data.dishes
   }
