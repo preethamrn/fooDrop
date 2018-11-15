@@ -1,56 +1,58 @@
-const config = require('../config')
+const createError = require('http-errors');
+const path = require('path');
+const cookieParser = require('cookie-parser');
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const morgan = require('morgan')
 const jwt = require('jsonwebtoken')
-const moment = require('moment')
 const passport = require('passport')
 const facebookToken = require('passport-facebook-token')
+const config = require('../config')
 
 // express
 const app = express()
 app.use(morgan('combined'))
-app.use(bodyParser.json())
-app.use(cors())
+
+var dishRouter = require('../routes/dish');
+var userRouter = require('../routes/user_info');
+
+// mongodb
+const mongoose = require('mongoose')
+const mongodb_conn_module = require('./mongodbConnModule')
+var db = mongodb_conn_module.connect()
+var User = require("../models/user")
 
 // socket.io
 const http = require('http').Server(app)
 const io = require('socket.io')(http)
 
-// mongodb
-const mongoose = require('mongoose')
-const mongodb_conn_module = require('./mongodbConnModule')
-var userSchema = require('./Models/Users.js')
-var db = mongodb_conn_module.connect()
-var User = db.model('Users', userSchema)
+// view engine setup
+app.set('views', path.join(__dirname, '../views'));
+app.set('view engine', 'jade');
 
-//socket.io connection listening
-http.listen(config.SERVER_PORT)
+//database model
+var Post = require("../models/post");
+
+app.use(morgan('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(bodyParser.json())
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(cors())
 
 io.use(function(socket, next) {
-    next()
+  next()
 })
 
 app.use(function(req, res, next) {
-    req.io = io
-    next()
+  req.io = io
+  next()
 })
 
-app.get('/', function(req, res) {
-	res.send("Hello World")
-})
-
-app.get('/get_dishes', (req, res) => {
-    res.send({ dishes: [
-        { name: 'testDish1', ingredients: ['carrots'], dietaryRestrictions: [], price: 100, amount: 1, sellerId: '1234' },
-        { name: 'testDish2', ingredients: ['apples', 'bananas', 'milk'], dietaryRestrictions: ['lactose'], price: 500, amount: 7, sellerId: '1234' }
-    ] })
-})
-
-app.post('/new_dish', (req, res) => {
-    res.send({ success: true, dish: { name: 'testDish', ingredients: ['carrots'], dietaryRestrictions: [], price: 100, amount: 1, sellerId: '1234' } })
-})
+app.use('/user', userRouter);
+app.use('/dish', dishRouter);
 
 // Using passport's facebook token strategy to authenticate accessToken
 passport.use(new facebookToken({
@@ -107,7 +109,7 @@ function(req, res, next) {
 	req.token = jwt.sign({
 		facebookID: req.auth.id,
 	}, 'AFB7E158AB3E2C9F590F4F9F94684C42391C236777239C6EB6E46B6E585255E0', {
-		expiresIn: '1h'
+		expiresIn: '7d'
 	})
 
 	console.log(req.token)
@@ -117,7 +119,7 @@ function(req, res, next) {
 function(req, res) {
 	console.log("Sending Token")
 	res.setHeader('x-auth-token', req.token);
-	res.send({auth: true, token: req.token})
+	res.send({auth: true, token: req.token, facebookID: req.auth.id})
 })
 
 
@@ -125,24 +127,47 @@ function(req, res) {
 // TODO: Change the implementation to check database with decoded id and send the rest of the information.
 app.get('/auth/validateUser', function(req,res) {
 	var token = req.headers['x-auth-token']
-	console.log(req.headers)
+	var facebookID = req.query.facebookID
 	if(!token) {
 		console.log("No Token!")
 	}
 
 	jwt.verify(token, 'AFB7E158AB3E2C9F590F4F9F94684C42391C236777239C6EB6E46B6E585255E0', function(err, payload) {
-		if(err) {
+		if (err) {
 			console.log(err)
+			res.send({auth: false})
+		} else if (payload.facebookID !== facebookID) {
+			res.send({auth: false})
+		} else {
+			User.findOne({facebookID: payload.facebookID}, function(err, result) {
+				if(err) {
+					console.log(err)
+				} else {
+					res.send({auth: true, user: result})
+				}
+			})
 		}
-		
-		User.findOne({facebookID: payload.facebookID}, function(err, result) {
-			if(err) {
-				console.log(err)
-			}
-			else {
-				res.send(result)
-			}
-		})
 	})
 })
 
+<<<<<<< HEAD
+=======
+
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  next(createError(404));
+});
+
+// error handler
+app.use(function(err, req, res, next) {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+  // render the error page
+  res.status(err.status || 500);
+  res.render('error');
+});
+
+module.exports = app;
+>>>>>>> master
