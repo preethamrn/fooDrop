@@ -1,19 +1,18 @@
-import { mount, shallowMount } from '@vue/test-utils'
+import { mount, shallowMount, createLocalVue } from '@vue/test-utils'
 import mockAxios from 'axios'
 import SearchDishBase from '@/components/SearchDishBase.vue'
+import ListingsBase from '@/components/ListingsBase.vue'
 
 import Vue from 'vue'
 import Vuex from 'vuex'
-import Router, { VueRouter } from 'vue-router'
+import Router from 'vue-router'
 import Vuetify from 'vuetify'
 
 Vue.use(Vuex)
 Vue.use(Vuetify)
-Vue.use(Router)
 
 describe('SearchDishBase.vue', () => {
   let store
-  let router
 
   beforeEach(() => {
     Vue.config.silent = true
@@ -23,63 +22,85 @@ describe('SearchDishBase.vue', () => {
         defaultPriceRange: [0, 10],
         defaultRadius: 7,
       }
-    }),
-    router = new Router({
-      routes: []
     })
   })
 
   it('tests clearing search parameters', () => {
-    Vue.config.silent = true
-    // setup
     // work
-    const wrapper = mount(SearchDishBase, { store, router, Vue })
+    const wrapper = mount(SearchDishBase, { store, Vue })
     wrapper.setData({searchDishRadius: 10})
     wrapper.find('button.clear').trigger('click')
 
     // expect
     expect(wrapper.vm.searchDishRadius).toBe(7)
   })
-/*
+
   it('tests get search results', (done) => {
     // setup
-    mockAxios.get.mockImplementationOnce(() =>
-      Promise.resolve({
-        data: {}
-      })
+    mockAxios.create.mockImplementationOnce(() => {
+      return {
+          get: Promise.resolve({
+              data: {success: true, dishes: []}
+            })
+        }
+      }
     );
+    
+    // mocking router
+    const localVue = createLocalVue()
+    localVue.use(Router)
+    const routes = [{
+        path: '/search',
+        component: SearchDishBase
+      },
+      {
+        path: '/',
+        component: ListingsBase
+      }
+    ]
+    const router = new Router({
+      routes
+    })
+    
+    // mocking localStorage
+    var localStorageMock = (function() {
+      var store = {};
+      return {
+        getItem: function(key) {
+          return store[key];
+        },
+        setItem: function(key, value) {
+          store[key] = value.toString();
+        },
+        clear: function() {
+          store = {};
+        },
+        removeItem: function(key) {
+          delete store[key];
+        }
+      };
+    })();
+    Object.defineProperty(window, 'localStorage', { value: localStorageMock });
+    localStorage.setItem('authToken', '1234')
 
     // work
-    const wrapper = shallowMount(SearchDishBase, { store, Vue })
+    const wrapper = mount(SearchDishBase, { localVue, store, router })
+    wrapper.find('button.search').trigger('click')
 
     // expect
-    expect(mockAxios.get).toHaveBeenCalledTimes(1)
-    Vue.config.errorHandler = done
-    Vue.nextTick(() => {
-      console.log(wrapper.html())
-      expect(wrapper.contains('listingsdishitem-stub')).toBe(true)
-      done()
-    })
+    expect(mockAxios.create).toHaveBeenCalledTimes(1)
+    expect(wrapper.vm.$route.path).toBe('/')
+    done()
   })
-  
+
   it('tests invalid search parameters', (done) => {
     // setup
-    mockAxios.get.mockImplementationOnce(() =>
-      Promise.resolve({
-        data: {}
-      })
-    );
-
     // work
-    const wrapper = shallowMount(SearchDishBase, { store, Vue })
-
+    const wrapper = mount(SearchDishBase, { store, Vue })
+    wrapper.setData({searchDishPrice: [0, 1000]})
+    
     // expect
-    expect(mockAxios.get).toHaveBeenCalledTimes(0)
-    Vue.config.errorHandler = done
-    Vue.nextTick(() => {
-      console.log(wrapper.html())
-      expect(wrapper.contains('listingsdishitem-stub')).toBe(true)
-      done()
-    })
-  })*/
+    expect(wrapper.vm.searchDishPrice).toEqual([0, 100])
+    done()
+  })
 })

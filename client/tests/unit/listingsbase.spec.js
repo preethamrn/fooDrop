@@ -28,12 +28,6 @@ describe('ListingsBase.vue', () => {
 
   it('tests no get request when passed in search results as props', (done) => {
     // setup
-    mockAxios.get.mockImplementationOnce(() =>
-      Promise.resolve({
-        data: {}
-      })
-    );
-
     // work
     const wrapper = shallowMount(ListingsBase, { store, Vue, propsData: {
       searched: true,

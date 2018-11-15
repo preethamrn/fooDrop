@@ -1,3 +1,3 @@
 export default {
-  get: jest.fn(() => Promise.resolve({ data: {} }))
+  create: jest.fn(() => { return {get: {}, post: {}, put: {}} })
 };
