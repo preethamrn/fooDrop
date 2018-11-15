@@ -1,6 +1,6 @@
 const createError = require('http-errors');
 const path = require('path');
-const cookieParser = require('cookie-parser');
+//const cookieParser = require('cookie-parser');
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
@@ -37,7 +37,7 @@ var Post = require("../models/post");
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+//app.use(cookieParser());
 app.use(bodyParser.json())
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors())
