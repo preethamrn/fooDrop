@@ -72,12 +72,11 @@ router.get('/get_user', (req, res) => {
   User.findById(user_id, function(err,result){
     if (err) return console.error(err);
     else {
-      // res.send({
-      //   user: result,
-      //   status: "pass"
-      // });
+      res.send({
+        user: result,
+        status: "pass"
+      });
 
-      res.json(result);
     }
   })
 })

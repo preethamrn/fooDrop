@@ -24,7 +24,7 @@ describe('Users', () => {
 
   //Test case #1: /user/create
   describe('/Post user', () => {
-      it('it should create a user', (done) => {
+      it('Test case #1: it should create a user', (done) => {
 
         let user = {
           name: "leslie"
@@ -44,7 +44,7 @@ describe('Users', () => {
 
  //Test case #2: /user/create
   describe('/Post user', () => {
-    it('it should create a user', (done) => {
+    it('Test case #2: it should create a user', (done) => {
 
       let user = {
         name: "andrew"
@@ -62,8 +62,9 @@ describe('Users', () => {
     });
 });
 
+//Test Case #3: Testing /user/get_user given an id in the query string
 describe('/GET user', () => {
-  it('it should GET a user by the given id', (done) => {
+  it('Test case #3: it should GET a user by the given id', (done) => {
 
       let tmp_user = new User(
         { name: "leslie", priceLow: 2, priceHigh:5, restrictions:["peanuts", "seafood"]}
@@ -71,25 +72,29 @@ describe('/GET user', () => {
 
       tmp_user.save((err, tmp_user) => {
           chai.request(app)
-        .get('/user/' +'get_users?user_id=' + tmp_user.id)
+        .get('/user/' +'get_user?user_id=' + tmp_user.id) //i see, it's bc got get_users, it's posts: post
         .send(tmp_user)
         .end((err, res) => {
           // console.log(res);
              //console.log(err);
-             console.log(res.body.posts);
+             console.log(res.body);
               res.should.have.status(200);
               res.body.should.be.a('object');
-              res.body.should.have.property('posts');
-              res.body.posts[0].should.have.property('_id');
-              res.body.posts[0].should.have.property('name');
-              res.body.posts[0].should.have.property('priceLow');
-              res.body.posts[0].should.have.property('priceHigh');
-              //weird how we need to do res.body.post to get our desired values instead of res.body
+              res.body.should.have.property('user');
+              res.body.should.have.property('status');
+              res.body.user.should.have.property('priceLow');
+              res.body.user.should.have.property('priceHigh');
+              res.body.user.should.have.property('_id');
+              res.body.user.should.have.property('name');
+              res.body.user.should.have.property('transactions');
           done();
         });
       });
       });
 
   });
+
+
+
 
 });
