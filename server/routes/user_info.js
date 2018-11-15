@@ -55,6 +55,10 @@ router.post('/create', function(req,res,next){
       console.log(error)
     }
 
+    console.log(result._id);
+    console.log(result.restrictions);
+    console.log(result.name);
+
     res.send({
       success: true,
       message: 'User created successfully!',
@@ -69,10 +73,12 @@ router.get('/get_user', (req, res) => {
   User.findById(user_id, function(err,result){
     if (err) return console.error(err);
     else {
-      res.contentType('application/json');
-      res.send(JSON.stringify(result));
-    }
+      res.send({
+        user: result,
+        status: "pass"
+      });
 
+    }
   })
 })
 

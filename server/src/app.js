@@ -151,10 +151,11 @@ app.get('/auth/validateUser', function(req,res) {
 })
 
 
+//LESLIE: "this might cause errors if we are catching errors twice, commenting the lines below"
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
-});
+// app.use(function(req, res, next) {
+//   next(createError(404));
+// });
 
 // error handler
 app.use(function(err, req, res, next) {

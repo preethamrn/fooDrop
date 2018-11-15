@@ -24,7 +24,6 @@ exports.updateUser = function(user_id,values,callback){
           callback(1,user);
           return; 
         }
-        
       })
 
       callback(0,user);
