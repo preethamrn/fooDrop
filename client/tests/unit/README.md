@@ -1,7 +1,7 @@
 \section{Frontend Testing}
 The frontend Listings and Search pages are tested in various scenarios using Jest and Vue-test-utils. These frameworks allow us to create mock objects and mock function calls so we can run unit tests without running an actual server for the backend. The tests can be found at http://github.com/preethamrn/fooDrop/client/tests/unit
 \subsection{Setup}
-The setup can be found at http://github.com/preethamrn/fooDrop/client/\_\_mocks\_\_. The setup creates mock objects for Axios to act like the backend, and navigator.geolocation, localStorage, console, and alert to act like a browser.
+The setup can be found at http://github.com/preethamrn/fooDrop/client/__mocks__. The setup creates mock objects for Axios to act like the backend, and navigator.geolocation, localStorage, console, and alert to act like a browser.
 
 \subsection{ListingsBase.vue}
 \paragraph{Regular request}\\
