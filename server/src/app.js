@@ -68,7 +68,9 @@ passport.use(new facebookToken({
 				name: profile.displayName,
 				facebookID: profile.id,
 				paypalID: -1,
-				radius: 2,
+        radius: 2,
+        priceHigh: 20,
+        priceLow: 0,
 				restrictions: [],
 				transactions: []
 			})
