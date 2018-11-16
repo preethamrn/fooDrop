@@ -62,8 +62,8 @@
             </v-layout>
 
             <v-card-actions>
-              <v-btn flat color='red' @click='clear'>x Clear</v-btn>
-              <v-btn flat color='green' :disabled='!valid' @click='searchDish'>- Search</v-btn>
+              <v-btn flat class='clear' color='red' @click='clear'>x Clear</v-btn>
+              <v-btn flat class='search' color='green' :disabled='!valid' @click='searchDish'>- Search</v-btn>
             </v-card-actions>
           </v-form>
         </v-card>
@@ -100,21 +100,25 @@ export default {
   methods: {
     async searchDish () {
       if (this.$refs.form.validate()) {
-        let response = await DishesService.searchDish({
-          name: this.searchDishName,
-          ingredients: this.searchDishIngredients,
-          dietaryRestrictions: this.searchDishDietaryRestrictions,
-          lat: this.searchDishLocationLat,
-          lon: this.searchDishLocationLong,
-          radius: this.searchDishRadius,
-          priceLow: this.searchDishPrice[0],
-          priceHigh: this.searchDishPrice[1]
-        })
-        if (response.data.success) {
-          console.log(response.data.dishes)
-          this.$router.push({ path: `/`, name: 'Listings', params: { dishesProp: response.data.dishes, searched: true }})
-        } else {
-          alert('Error: ' + response.data.errorMessage)
+        try {
+          let response = await DishesService.searchDish({
+            name: this.searchDishName,
+            ingredients: this.searchDishIngredients,
+            dietaryRestrictions: this.searchDishDietaryRestrictions,
+            lat: this.searchDishLocationLat,
+            lon: this.searchDishLocationLong,
+            radius: this.searchDishRadius,
+            priceLow: this.searchDishPrice[0],
+            priceHigh: this.searchDishPrice[1]
+          })
+          if (response.data.success) {
+            console.log(response.data.dishes)
+            this.$router.push({ path: `/`, name: 'Listings', params: { dishesProp: response.data.dishes, searched: true }})
+          } else {
+            alert('Error: ' + response.data.errorMessage)
+          }
+        } catch (error) {
+          alert('Error: ' + error)
         }
       }
     },
