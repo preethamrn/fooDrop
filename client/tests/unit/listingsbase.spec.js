@@ -24,6 +24,7 @@ describe('ListingsBase.vue', () => {
     
     // expect
     expect(navigator.geolocation.getCurrentPosition).toHaveBeenCalledTimes(1)
+    expect(wrapper.vm.searched).toBe(false)
   })
 
   it('tests no get request when passed in search results as props', (done) => {
@@ -36,6 +37,7 @@ describe('ListingsBase.vue', () => {
 
     // expect
     expect(navigator.geolocation.getCurrentPosition).toHaveBeenCalledTimes(1)
+    expect(wrapper.vm.searched).toBe(true)
     Vue.config.errorHandler = done
     Vue.nextTick(() => {
       expect(wrapper.contains('listingsdishitem-stub')).toBe(true)

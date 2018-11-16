@@ -1,8 +1,8 @@
 <template>
  <div class="user-profile-base">
    <header-base/>
-   <v-layout>
-      <v-flex xs12 sm6 offset-sm3>
+   <v-layout column>
+      <v-flex xs12 sm6>
         <v-card class='user-profile-card'>
           <v-form ref='form' v-model='valid' lazy-validation>
             <v-card-title><h3 class="headline mb-0">User Profile</h3></v-card-title>
@@ -44,6 +44,12 @@
             </v-card-actions>
           </v-form>
         </v-card>
+        <v-card class='user-profile-card'>
+          <v-card-title><h3 class="headline mb-0">Transactions</h3></v-card-title>
+          <v-list v-if='transactions.length !== 0'>
+            <listings-dish-item v-for='(dish, index) in transactions' :key='index' :name='dish.name' :location='dish.location' :price='dish.price' :dish='dish'/>
+          </v-list>
+        </v-card>
       </v-flex>
    </v-layout>
  </div>
@@ -51,11 +57,13 @@
 
 <script>
 import HeaderBase from '@/components/HeaderBase'
-import FacebookAuth from '@/services/FacebookAuth';
+import FacebookAuth from '@/services/FacebookAuth'
+import ListingsDishItem from '@/components/ListingsDishItem'
 export default {
   name: 'user-profile-base',
   components: {
-    HeaderBase
+    HeaderBase,
+    ListingsDishItem
   },
   data () {
     return {
@@ -67,7 +75,8 @@ export default {
       // default search values
       defaultDietaryRestrictions: [],
       defaultPriceRange: [0, 5],
-      defaultRadius: 5
+      defaultRadius: 5,
+      transactions: []
     }
   },
   methods: {
@@ -79,6 +88,7 @@ export default {
       this.defaultDietaryRestrictions = this.$store.state.defaultDietaryRestrictions
       this.defaultPriceRange = this.$store.state.defaultPriceRange
       this.defaultRadius = this.$store.state.defaultRadius
+      this.transactions = this.$store.state.transactions
     },
     async update () {
       try {

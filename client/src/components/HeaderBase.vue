@@ -54,6 +54,7 @@ export default {
         this.$store.commit('setDefaultPriceRange', [user.priceLow, user.priceHigh])
         this.$store.commit('setDefaultRadius', user.radius)
         this.$store.commit('setPaypalId', user.paypalID)
+        this.$store.commit('setTransactions', user.transactions)
       } else {
         alert('Error: Authentication failed')
       }

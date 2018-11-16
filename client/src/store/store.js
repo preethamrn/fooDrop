@@ -10,7 +10,8 @@ export default new Vuex.Store({
     defaultDietaryRestrictions: [],
     defaultPriceRange: [0, 5],
     defaultRadius: 5,
-    paypalId: ''
+    paypalId: '',
+    transactions: []
   },
   mutations: {
     setAuthToken (state, authToken) {
@@ -30,6 +31,9 @@ export default new Vuex.Store({
     },
     setPaypalId (state, paypalId) {
       state.paypalId = paypalId
+    },
+    setTransactions (state, transactions) {
+      state.transactions = transactions
     }
   },
   actions: {
