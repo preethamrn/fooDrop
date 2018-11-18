@@ -15,6 +15,7 @@
 <script>
 /* eslint-disable */
 import FacebookAuth from '@/services/FacebookAuth'
+import io from 'socket.io-client'
 export default {
   name: 'header-base',
   data () {
@@ -55,6 +56,12 @@ export default {
         this.$store.commit('setDefaultRadius', user.radius)
         this.$store.commit('setPaypalId', user.paypalID)
         this.$store.commit('setTransactions', user.transactions)
+
+        var socket = io.connect('http://localhost:8081/', {
+          query: {
+            userId: this.$store.state.userId
+          }
+        })
       } else {
         alert('Error: Authentication failed')
       }

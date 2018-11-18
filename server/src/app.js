@@ -23,6 +23,9 @@ const mongodb_conn_module = require('./mongodbConnModule')
 var db = mongodb_conn_module.connect()
 var User = require("../models/user")
 
+// set app port
+app.set('port', config.SERVER_PORT);
+
 // socket.io
 const http = require('http').Server(app)
 const io = require('socket.io')(http)
@@ -43,6 +46,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors())
 
 io.use(function(socket, next) {
+  var handshakeData = socket.request
+  console.log("User joined:", handshakeData._query['userId'])
   next()
 })
 
@@ -170,4 +175,4 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-module.exports = app;
+module.exports = http;
