@@ -40,6 +40,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color='blue darken-1' flat @click.native='dishDetailsDialog = false'>Close</v-btn>
+          <v-btn color='blue darken-1' flat @click.native='dishDetailsDialog = false; contactSeller();'>Contact Seller</v-btn>
           <v-btn color='blue darken-1' flat @click.native='dishDetailsDialog = false; purchaseDish();'>Buy</v-btn>
         </v-card-actions>
       </v-card>
@@ -58,6 +59,9 @@ export default {
     }
   },
   methods: {
+    contactSeller () {
+      this.$router.push({ path: `/chat/${this.chatId}`, params: { id: this.chatId } })
+    },
     async purchaseDish () {
       if (this.quantity <= 0) {
         alert('Quantity must be positive')
@@ -76,6 +80,14 @@ export default {
           alert('Success!')
         }
       }
+    }
+  },
+  computed: {
+    chatId () {
+      const userId = this.$store.state.userId
+      let id1 = userId > this.sellerId ? this.sellerId : userId
+      let id2 = userId < this.sellerId ? this.sellerId : userId
+      return id1 + id2
     }
   },
   props: {

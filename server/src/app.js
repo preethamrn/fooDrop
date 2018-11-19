@@ -16,6 +16,7 @@ app.use(morgan('combined'))
 
 var dishRouter = require('../routes/dish');
 var userRouter = require('../routes/user_info');
+var chatRouter = require('../routes/chat');
 
 // mongodb
 const mongoose = require('mongoose')
@@ -48,6 +49,7 @@ app.use(cors())
 io.use(function(socket, next) {
   var handshakeData = socket.request
   console.log("User joined:", handshakeData._query['userId'])
+  socket.join(handshakeData._query['chatId'])
   next()
 })
 
@@ -56,6 +58,7 @@ app.use(function(req, res, next) {
   next()
 })
 
+app.use('/chat', chatRouter);
 app.use('/user', userRouter);
 app.use('/dish', dishRouter);
 
