@@ -26,6 +26,22 @@ export default {
     }
   },
   methods: {
+    chatSocketConnect () {
+      this.socket = io.connect('http://localhost:8081/', {
+        query: {
+          userId: this.$store.state.userId,
+          chatId: this.chatId
+        }
+      })
+
+      this.socket.on('chat', (data) => {
+        this.chats.push(data)
+      })
+      this.socket.on('initFail', (data) => {
+        alert('Error - Could not connect due to: ' + data.errorMessage)
+        this.$router.push({ path: `/` })
+      })
+    },
     async sendChat () {
       let response = await ChatsService.sendChat({ 
         chatId: this.chatId,
@@ -46,6 +62,10 @@ export default {
       alert('Error - Could not get previous messages in this conversation')
       this.$router.push({ path: `/` })
     }
+
+    if (this.$store.state.userId !== '') {
+      this.chatSocketConnect()
+    }
   },
   computed: {
     storeUserState () {
@@ -54,20 +74,7 @@ export default {
   },
   watch: {
     storeUserState () {
-      this.socket = io.connect('http://localhost:8081/', {
-        query: {
-          userId: this.$store.state.userId,
-          chatId: this.chatId
-        }
-      })
-
-      this.socket.on('chat', (data) => {
-        this.chats.push(data)
-      })
-      this.socket.on('initFail', (data) => {
-        alert('Error - Could not connect due to: ' + data.errorMessage)
-        this.$router.push({ path: `/` })
-      })
+      this.chatSocketConnect()
     }
   },
   destroyed () {

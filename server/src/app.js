@@ -49,6 +49,7 @@ app.use(cors())
 io.use(function(socket, next) {
   var handshakeData = socket.request
   console.log("User joined:", handshakeData._query['userId'])
+  // TODO: only let user join the room if they have authToken and userId is in chatId (either first or second half)
   socket.join(handshakeData._query['chatId'])
   next()
 })
