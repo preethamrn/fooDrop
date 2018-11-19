@@ -7,6 +7,7 @@ import CreateDishBase from '@/components/CreateDishBase'
 import SearchDishBase from '@/components/SearchDishBase'
 import FacebookLogin from '@/components/FacebookLogin'
 import UserProfileBase from '@/components/UserProfileBase'
+import Maps from '@/components/GoogleMap'
 
 Vue.use(Vuetify)
 Vue.use(Router)
@@ -54,6 +55,14 @@ var router = new Router({
       component: UserProfileBase,
       meta: {
         title: 'Profile'
+      }
+    },
+    {
+      path: '/maps',
+      name: 'Maps',
+      component: Maps,
+      meta: {
+        title: 'Maps'
       }
     }
   ]
