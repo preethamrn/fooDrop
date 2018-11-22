@@ -137,7 +137,7 @@ describe('/GET user', () => {
                     res.body.user.should.have.property('facebookID');
                     res.body.user.should.have.property('paypalID');
 
-                done();
+                done();a
               });
         });
     });

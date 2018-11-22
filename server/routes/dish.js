@@ -9,7 +9,7 @@ const ObjectId = mongoose.Types.ObjectId;
 /* GET home page. */
 
 var search = function(radius, ingredients, dietaryRestrictions){
-};
+;}
 
 router.post('/', function(request, response){
   console.log(request.body);      // your JSON
@@ -20,7 +20,7 @@ router.post('/', function(request, response){
 router.get('/get_dish', function(req, res){
   var post_id = ObjectId(req.query.post_id); 
   Post.findById(post_id, function(err,result){
-    if (err || res==null) {
+    if (err || res==null){ 
       // res.send()
       res.status(400).send({ error: "boo :(" });
       return console.error(err);
