@@ -95,13 +95,24 @@
 
         payment: function(data, actions) {
             return actions.payment.create({
-                payment: {
-                    transactions: [
-                        {
-                            amount: { total: '10.00', currency: 'USD' }
-                        }
-                    ]
+                payment: 
+                {
+                    intent:'sale',
+                    payer:{
+                        payment_method:'paypal'
+                    },
+                    transactions:[{
+                        amount:{
+                            total:'10',
+                            currency:'USD'
+                        },
+                        payee:{
+                            email: 'andrew@ucla.edu'
+                        },
+                        description:'My amazing product'
+                    }]
                 }
+                
             });
         },
 
