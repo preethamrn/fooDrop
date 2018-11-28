@@ -22,6 +22,8 @@ export default {
       chatId: '',
       message: '',
       chats: [],
+      buyer: '',
+      seller: '',
       socket: null
     }
   },
@@ -45,7 +47,8 @@ export default {
     async sendChat () {
       let response = await ChatsService.sendChat({ 
         chatId: this.chatId,
-        userId: this.$store.state.userId, 
+        userId: this.$store.state.userId,
+        username: this.$store.state.username,
         message: this.message
       })
       if (response.data.success) {
@@ -57,7 +60,9 @@ export default {
     this.chatId = this.$route.params.id
     let response = await ChatsService.getChats({ id: this.chatId })
     if (response.data.success) {
-      this.chats = response.data.chats
+      this.chats = response.data.result.chats
+      this.buyer = response.data.result.buyer
+      this.seller = response.data.result.seller
     } else {
       alert('Error - Could not get previous messages in this conversation')
       this.$router.push({ path: `/` })

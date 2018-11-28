@@ -7,6 +7,7 @@ export default new Vuex.Store({
   state: {
     authToken: '',
     userId: '',
+    username: '',
     defaultDietaryRestrictions: [],
     defaultPriceRange: [0, 5],
     defaultRadius: 5,
@@ -19,6 +20,9 @@ export default new Vuex.Store({
     },
     setUserId (state, userId) {
       state.userId = userId
+    },
+    setUsername (state, username) {
+      state.username = username
     },
     setDefaultDietaryRestrictions (state, defaultDietaryRestrictions) {
       state.defaultDietaryRestrictions = defaultDietaryRestrictions

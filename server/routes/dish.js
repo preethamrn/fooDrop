@@ -73,7 +73,7 @@ Post_Controller.updatePostQ(post_id,quantity,function(error,post)
         res.status(400).send({
           status: "fail"
         })
-        return console.err(error);
+        return console.error(error);
       }
 
       Post_Controller.addTransaction(buyer_id,new_transaction,function(error,seller){
