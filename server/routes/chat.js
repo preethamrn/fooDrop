@@ -11,7 +11,6 @@ router.get('/get_chats', function(req, res, next) {
       res.send({ success: false })
       return console.error(err);
     }
-    console.log(result)
     if (result !== null) {
       res.send({ success: true, result: result })
     } else {

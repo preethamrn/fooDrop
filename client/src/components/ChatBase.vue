@@ -1,10 +1,23 @@
 <template>
   <div class="chat-base">
     <header-base/>
-    <div v-for='(chat, index) in chats' :key='index'> {{ chat }} </div>
+    <div style='padding-left: 1vw; padding-right: 1vw'>
+      <!--<v-list three-line>
+        <v-list-tile v-for='(chat, index) in chats' :key='index'>
+          <v-list-content>
+            <v-list-tile-title> {{ chat.username }} </v-list-tile-title>
+            <v-list-tile-sub-title class='text--primary'> {{ chat.message }} </v-list-tile-sub-title>
+          </v-list-content>
+        </v-list-tile>
+      </v-list>-->
+      <v-card v-for='(chat, index) in chats' :key='index'>
+        <v-card-title><strong> {{ chat.username }} </strong></v-card-title>
+        <v-card-text> {{ chat.message }} </v-card-text>
+      </v-card>
       <div style="width: 100%">
         <v-textarea class='chatbox' v-model='message' placeholder='Send a message' @keydown.enter='sendChat' :disabled='socket === null'></v-textarea>
       </div>
+    </div>
   </div>
 </template>
 
@@ -86,5 +99,13 @@ export default {
     this.socket.disconnect()
   }
 }
-
 </script>
+
+<style scoped>
+.v-card__text {
+  padding-top: 0px
+}
+.v-card__title {
+  padding-bottom: 0px
+}
+</style>
