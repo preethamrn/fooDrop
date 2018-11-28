@@ -50,6 +50,12 @@
             <listings-dish-item v-for='(dish, index) in transactions' :key='index' :name='dish.name' :location='dish.location' :price='dish.price' :dish='dish'/>
           </v-list>
         </v-card>
+        <v-card class='user-profile-card'>
+          <v-card-title><h3 class="headline mb-0">Chats</h3></v-card-title>
+          <v-list v-if='chats.length !== 0'>
+            <div v-for='(chat, index) in chats' :key='index'>{{ chat }}</div>
+          </v-list>
+        </v-card>
       </v-flex>
    </v-layout>
  </div>
@@ -76,7 +82,8 @@ export default {
       defaultDietaryRestrictions: [],
       defaultPriceRange: [0, 5],
       defaultRadius: 5,
-      transactions: []
+      transactions: [],
+      chats: []
     }
   },
   methods: {
@@ -89,6 +96,7 @@ export default {
       this.defaultPriceRange = this.$store.state.defaultPriceRange
       this.defaultRadius = this.$store.state.defaultRadius
       this.transactions = this.$store.state.transactions
+      this.chats = this.$store.state.chats
     },
     async update () {
       try {

@@ -11,15 +11,17 @@ router.get('/get_chats', function(req, res, next) {
       res.send({ success: false })
       return console.error(err);
     }
-    
-    if (result !== null) res.send({ success: true, result: result })
-    else {
+    console.log(result)
+    if (result !== null) {
+      res.send({ success: true, result: result })
+    } else {
       // if chat log isn't found then return the dummy result
       res.send({ success: true, result: { chats: [], buyer: 'Buyer', seller: 'Seller' } })
     }
   })
 });
 
+/* Broadcast chat messages and stores message in database. Creates chat log in buyer, seller, and chat databases if not present */
 router.post('/send_chat', function(req, res, next) {
   // TODO: add message to chats collection (findOne, then save)
   // TODO: if chatId doesn't exist (findOne returns null) then create model in chats collection and add message to user and seller collections
@@ -62,32 +64,34 @@ router.post('/send_chat', function(req, res, next) {
           let sellerName = 'Seller'
           User.findById(buyerId, function (err, result) {
             buyerName = result.name
+            
+            User.findById(sellerId, function (err, result) {
+              sellerName = result.name
+
+              User.update({_id: buyerId }, {
+                $push: {
+                  chats: {
+                    chatId: chatId,
+                    buyer: buyerName,
+                    buyerId: buyerId,
+                    seller: sellerName,
+                    sellerId: sellerId
+                  }
+                }
+              }, () => {})
+              User.update({_id: sellerId }, {
+                $push: {
+                  chats: {
+                    chatId: chatId,
+                    buyer: buyerName,
+                    buyerId: buyerId,
+                    seller: sellerName,
+                    sellerId: sellerId
+                  }
+                }
+              }, () => {})
+            })
           })
-          User.findById(sellerId, function (err, result) {
-            sellerName = result.name
-          })
-          User.update({_id: buyerId }, {
-            $push: {
-              chats: {
-                chatId: chatId,
-                buyer: buyerName,
-                buyerId: buyerId,
-                seller: sellerName,
-                sellerId: sellerId
-              }
-            }
-          }, () => {})
-          User.update({_id: sellerId }, {
-            $push: {
-              chats: {
-                chatId: chatId,
-                buyer: buyerName,
-                buyerId: buyerId,
-                seller: sellerName,
-                sellerId: sellerId
-              }
-            }
-          }, () => {})
         }
       })
     } else {

@@ -12,7 +12,8 @@ export default new Vuex.Store({
     defaultPriceRange: [0, 5],
     defaultRadius: 5,
     paypalId: '',
-    transactions: []
+    transactions: [],
+    chats: []
   },
   mutations: {
     setAuthToken (state, authToken) {
@@ -38,6 +39,9 @@ export default new Vuex.Store({
     },
     setTransactions (state, transactions) {
       state.transactions = transactions
+    },
+    setChats (state, chats) {
+      state.chats = chats
     }
   },
   actions: {

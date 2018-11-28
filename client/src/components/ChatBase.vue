@@ -58,9 +58,9 @@ export default {
   },
   async created () {
     this.chatId = this.$route.params.id
-    let response = await ChatsService.getChats({ id: this.chatId })
+    let response = await ChatsService.getChats({ chatId: this.chatId })
     if (response.data.success) {
-      this.chats = response.data.result.chats
+      this.chats = response.data.result.messages
       this.buyer = response.data.result.buyer
       this.seller = response.data.result.seller
     } else {
