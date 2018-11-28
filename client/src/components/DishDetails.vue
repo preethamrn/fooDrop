@@ -1,6 +1,6 @@
 <template>
   <div class="dish-details">
-    <v-dialog v-model='dishDetailsDialog' max-width='500px'>
+    <v-dialog v-model='dishDetailsDialog' max-width='1000px'>
       <v-btn flat outline slot='activator'>View Dish</v-btn>
       <v-card>
         <v-img v-if="url !== ''" :src='url'></v-img>
