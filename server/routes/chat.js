@@ -28,7 +28,7 @@ router.post('/send_chat', function(req, res, next) {
 		username: req.body.username,
     message: req.body.message
   })
-  Chat.findOne({ chatId: req.query.chatId }, function(err, result) {
+  Chat.findOne({ chatId: req.body.chatId }, function(err, result) {
     if (err) {
       console.error(err)
       res.send({ success: false })
@@ -36,9 +36,68 @@ router.post('/send_chat', function(req, res, next) {
     }
 
     if (result === null) {
-      // chat log doesn't exists so create chatId in chats collection and add to buyer and seller collections 
+      // chat log doesn't exists so create chatId in chats collection and add to buyer and seller collections
+      let chatId = req.body.chatId
+      let buyerId = req.body.userId
+      if (chatId.substr(0, buyerId.length) === buyerId) {
+        sellerId = chatId.substr(buyerId.length, chatId.length)
+      } else {
+        sellerId = chatId.substr(0, chatId.length - buyerId.length)
+      }
+      let newChat = new Chat({
+        chatId: req.body.chatId,
+        buyer: buyerId,
+        seller: sellerId,
+        messages: [{
+          userId: req.body.userId,
+          username: req.body.username,
+          message: req.body.message
+        }]
+      })
+      newChat.save(function (error) {
+        if (error) {
+          console.error(error)
+        } else {
+          let buyerName = 'Buyer'
+          let sellerName = 'Seller'
+          User.findById(buyerId, function (err, result) {
+            buyerName = result.name
+          })
+          User.findById(sellerId, function (err, result) {
+            sellerName = result.name
+          })
+          User.update({_id: buyerId }, {
+            $push: {
+              chats: {
+                chatId: chatId,
+                buyer: buyerName,
+                buyerId: buyerId,
+                seller: sellerName,
+                sellerId: sellerId
+              }
+            }
+          }, () => {})
+          User.update({_id: sellerId }, {
+            $push: {
+              chats: {
+                chatId: chatId,
+                buyer: buyerName,
+                buyerId: buyerId,
+                seller: sellerName,
+                sellerId: sellerId
+              }
+            }
+          }, () => {})
+        }
+      })
+    } else {
+      result.messages.push({
+        userId: req.body.userId,
+        username: req.body.username,
+        message: req.body.message
+      })
+      result.save(() => {})
     }
-    // add message to chats collection
   })
   res.send({ success: true })
 });
