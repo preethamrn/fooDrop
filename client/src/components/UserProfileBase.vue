@@ -47,7 +47,20 @@
         <v-card class='user-profile-card'>
           <v-card-title><h3 class="headline mb-0">Transactions</h3></v-card-title>
           <v-list v-if='transactions.length !== 0'>
-            <listings-dish-item v-for='(dish, index) in transactions' :key='index' :name='dish.name' :location='dish.location' :price='dish.price' :dish='dish'/>
+            <transactions-dish-item v-for='(dish, index) in transactions' :key='index' :name='dish.name' :location='dish.location' :dish='dish'/>
+          </v-list>
+        </v-card>
+        <v-card class='user-profile-card'>
+          <v-card-title><h3 class="headline mb-0">Chats</h3></v-card-title>
+          <v-list v-if='chats.length !== 0'>
+            <user-profile-chat-item v-for='(chat, index) in chats'
+              :key='index'
+              :buyer='chat.buyer'
+              :seller='chat.seller'
+              :buyerId='chat.buyerId'
+              :sellerId='chat.sellerId'
+              :chatId='chat.chatId'
+            />
           </v-list>
         </v-card>
       </v-flex>
@@ -58,12 +71,14 @@
 <script>
 import HeaderBase from '@/components/HeaderBase'
 import FacebookAuth from '@/services/FacebookAuth'
-import ListingsDishItem from '@/components/ListingsDishItem'
+import TransactionsDishItem from '@/components/TransactionsDishItem'
+import UserProfileChatItem from '@/components/UserProfileChatItem'
 export default {
   name: 'user-profile-base',
   components: {
     HeaderBase,
-    ListingsDishItem
+    TransactionsDishItem,
+    UserProfileChatItem
   },
   data () {
     return {
@@ -76,7 +91,8 @@ export default {
       defaultDietaryRestrictions: [],
       defaultPriceRange: [0, 5],
       defaultRadius: 5,
-      transactions: []
+      transactions: [],
+      chats: []
     }
   },
   methods: {
@@ -89,6 +105,7 @@ export default {
       this.defaultPriceRange = this.$store.state.defaultPriceRange
       this.defaultRadius = this.$store.state.defaultRadius
       this.transactions = this.$store.state.transactions
+      this.chats = this.$store.state.chats
     },
     async update () {
       try {
