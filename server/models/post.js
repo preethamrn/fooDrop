@@ -10,6 +10,7 @@ var PostSchema = new Schema({
   location: {lat:Number, lon:Number},
   price: Number,
   sellerId: String,
+  sellerPaypalId: String,
   quantity: Number
 },{ versionKey: false });
 

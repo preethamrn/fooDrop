@@ -142,6 +142,7 @@ router.post('/new_dish', (req, res) => {
     price: req.body.price,
     quantity: req.body.quantity, 
     sellerId: req.body.sellerId,
+    sellerPaypalId: req.body.sellerPaypalId,
     location: req.body.location
   })
 

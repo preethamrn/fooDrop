@@ -39,8 +39,14 @@
               <v-flex xs2><v-text-field class='padded-input' label='Radius' suffix='mi' v-model='defaultRadius'></v-text-field></v-flex>
             </v-layout>
 
+            <v-text-field
+              placeholder='Paypal Email'
+              v-model='paypalId'
+              :rules="[(v) => { return !!v || 'Paypal Email cannot be empty'}]"
+            ></v-text-field>
+
             <v-card-actions>
-              <v-btn flat color='green' :disabled='!valid' @click='update'>Update Defaults</v-btn>
+              <v-btn flat color='green' :disabled='!valid' @click='update'>Update Profile</v-btn>
             </v-card-actions>
           </v-form>
         </v-card>
@@ -91,6 +97,7 @@ export default {
       defaultDietaryRestrictions: [],
       defaultPriceRange: [0, 5],
       defaultRadius: 5,
+      paypalId: '',
       transactions: [],
       chats: []
     }
@@ -104,6 +111,7 @@ export default {
       this.defaultDietaryRestrictions = this.$store.state.defaultDietaryRestrictions
       this.defaultPriceRange = this.$store.state.defaultPriceRange
       this.defaultRadius = this.$store.state.defaultRadius
+      this.paypalId = this.$store.state.paypalId
       this.transactions = this.$store.state.transactions
       this.chats = this.$store.state.chats
     },
@@ -115,6 +123,7 @@ export default {
             radius: this.defaultRadius,
             priceLow: this.defaultPriceRange[0],
             priceHigh: this.defaultPriceRange[1],
+            paypalID: this.paypalId,
             restrictions: this.defaultDietaryRestrictions,
           }
         })
@@ -123,6 +132,7 @@ export default {
           this.$store.commit('setDefaultDietaryRestrictions', user.restrictions)
           this.$store.commit('setDefaultPriceRange', [user.priceLow, user.priceHigh])
           this.$store.commit('setDefaultRadius', user.radius)
+          this.$store.commit('setPaypalId', user.paypalId)
         }
       } catch (error) {
         alert("Error: Couldn't save settings")

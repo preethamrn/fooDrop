@@ -116,21 +116,26 @@ export default {
     async createDish () {
       // TODO: also include seller userId and paypalId in dish details
       if (this.$refs.form.validate()) {
-        let response = await DishesService.newDish({
-          name: this.newDishName,
-          description: this.newDishDescription,
-          imageUrl: this.newDishUrl,
-          dietaryRestrictions: this.newDishDietaryRestrictions,
-          ingredients: this.newDishIngredients,
-          location: {lat: this.newDishLocationLat, lon: this.newDishLocationLong},
-          price: this.newDishPrice,
-          sellerId: this.$store.state.userId,
-          quantity: this.newDishQuantity
-        })
-        if (response.data.success) {
-          alert('Success!')
+        if (this.$store.state.paypalId !== '') {
+          let response = await DishesService.newDish({
+            name: this.newDishName,
+            description: this.newDishDescription,
+            imageUrl: this.newDishUrl,
+            dietaryRestrictions: this.newDishDietaryRestrictions,
+            ingredients: this.newDishIngredients,
+            location: {lat: this.newDishLocationLat, lon: this.newDishLocationLong},
+            price: this.newDishPrice,
+            sellerId: this.$store.state.userId,
+            sellerPaypalId: this.$store.state.paypalId,
+            quantity: this.newDishQuantity
+          })
+          if (response.data.success) {
+            alert('Success!')
+          } else {
+            alert('Error: ' + response.data.errorMessage)
+          }
         } else {
-          alert('Error: ' + response.data.errorMessage)
+          alert('You must enter your paypal email in your user profile to buy this dish')
         }
       }
     },
