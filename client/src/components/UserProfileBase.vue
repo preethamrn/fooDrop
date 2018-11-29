@@ -71,14 +71,12 @@
 <script>
 import HeaderBase from '@/components/HeaderBase'
 import FacebookAuth from '@/services/FacebookAuth'
-import ListingsDishItem from '@/components/ListingsDishItem'
 import TransactionsDishItem from '@/components/TransactionsDishItem'
 import UserProfileChatItem from '@/components/UserProfileChatItem'
 export default {
   name: 'user-profile-base',
   components: {
     HeaderBase,
-    ListingsDishItem,
     TransactionsDishItem,
     UserProfileChatItem
   },
