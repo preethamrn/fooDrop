@@ -16,12 +16,16 @@ app.use(morgan('combined'))
 
 var dishRouter = require('../routes/dish');
 var userRouter = require('../routes/user_info');
+var chatRouter = require('../routes/chat');
 
 // mongodb
 const mongoose = require('mongoose')
 const mongodb_conn_module = require('./mongodbConnModule')
 var db = mongodb_conn_module.connect()
 var User = require("../models/user")
+
+// set app port
+app.set('port', config.SERVER_PORT);
 
 // socket.io
 const http = require('http').Server(app)
@@ -43,6 +47,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors())
 
 io.use(function(socket, next) {
+  var handshakeData = socket.request
+  console.log("User joined:", handshakeData._query['userId'])
+  // TODO: only let user join the room if they have authToken and userId is in chatId (either first or second half)
+  socket.join(handshakeData._query['chatId'])
   next()
 })
 
@@ -51,6 +59,7 @@ app.use(function(req, res, next) {
   next()
 })
 
+app.use('/chat', chatRouter);
 app.use('/user', userRouter);
 app.use('/dish', dishRouter);
 
@@ -170,4 +179,4 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-module.exports = app;
+module.exports = http;

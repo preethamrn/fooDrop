@@ -50,11 +50,13 @@ export default {
         // set default values for user in Vuex store
         let user = response.data.user
         this.$store.commit('setUserId', user._id)
+        this.$store.commit('setUsername', user.name)
         this.$store.commit('setDefaultDietaryRestrictions', user.restrictions)
         this.$store.commit('setDefaultPriceRange', [user.priceLow, user.priceHigh])
         this.$store.commit('setDefaultRadius', user.radius)
         this.$store.commit('setPaypalId', user.paypalID)
         this.$store.commit('setTransactions', user.transactions)
+        this.$store.commit('setChats', user.chats)
       } else {
         alert('Error: Authentication failed')
       }
