@@ -1,12 +1,13 @@
-var settings = {"async": true,"crossDomain": true,
-    "url": "https://svcs.sandbox.paypal.com/AdaptivePayments/Pay",
+var settings = {
+  //"async": true,"crossDomain": true,
+   // "url": "https://svcs.sandbox.paypal.com/AdaptivePayments/Pay",
     // xhrFields: {
     //     withCredentials: true
     // },
     "method": "POST",
     "headers": {
-      "content-type": "application/x-www-form-urlencoded",
-      "cache-control": "no-cache",
+      "Content-Type": "application/x-www-form-urlencoded",
+      "cache": "no-cache",
       "X-PAYPAL-SECURITY-USERID": "leslieliang9838-facilitator_api1.g.ucla.edu",
       "X-PAYPAL-SECURITY-PASSWORD": "J84RNPTVRD4SQQJJ",
       "X-PAYPAL-SECURITY-SIGNATURE": "AgbTXNob8HdpRCh-juxF8LVsYo-IA0apfP8pJevw.CtWNXDvA0nCcJe-",
@@ -14,7 +15,7 @@ var settings = {"async": true,"crossDomain": true,
       "X-PAYPAL-RESPONSE-DATA-FORMAT": "JSON",  
       "X-PAYPAL-APPLICATION-ID": "APP-80W284485P519543T" 
     },
-    "data": JSON.stringify({
+    "body": JSON.stringify({
         "actionType": "PAY",
         "currencyCode": "USD",
         "receiverList": {
@@ -32,6 +33,8 @@ var settings = {"async": true,"crossDomain": true,
     })
   }
   
-  $.ajax(settings).done(function (response) {
-    console.log(response);
+  fetch('https://svcs.sandbox.paypal.com/AdaptivePayments/Pay', settings).then(function (response) {
+    console.log(response.json());
+  },function(error) {
+    error.message //=> String
   });
