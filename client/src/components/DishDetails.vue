@@ -49,7 +49,6 @@
 </template>
 
 <script>
-import DishesService from '@/services/DishesService'
 export default {
   name: 'dish-details',
   data () {
@@ -68,17 +67,46 @@ export default {
       } else if (this.quantity > this.maxQuantity) {
         alert('Quantity must be less than maximum available dishes (' + this.maxQuantity + ')')
       } else {
-        let response = await DishesService.buyDish({
-          buyer_id: this.$store.state.userId,
-          seller_id: this.sellerId,
-          post_id: this.id,
-          quantity: this.quantity
-        })
-        if (response.data.status === 'fail') {
-          alert('Error: Failed to buy dish')
-        } else {
-          alert('Success!')
+        let settings = {
+          "method": "POST",
+          "headers": {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "cache": "no-cache",
+            "X-PAYPAL-SECURITY-USERID": "foodrop-merchant_api1.foodrop.com",
+            "X-PAYPAL-SECURITY-PASSWORD": "ZCT6QET5AWB8EMRB",
+            "X-PAYPAL-SECURITY-SIGNATURE": "ANjVNayFQiI-hdVyaruFBuha2z6bA7DMMLICtgNrzBCHpuKPX3eGz0xa",
+            "X-PAYPAL-REQUEST-DATA-FORMAT": "JSON",
+            "X-PAYPAL-RESPONSE-DATA-FORMAT": "JSON",
+            "X-PAYPAL-APPLICATION-ID": "APP-80W284485P519543T"
+          },
+          "body": JSON.stringify({
+              "actionType": "PAY",
+              "currencyCode": "USD",
+              "receiverList": {
+                "receiver": [{
+                  "amount": this.quantity * this.price,
+                  "email": this.sellerPaypalId
+                }]
+              },
+              "returnUrl": "http://localhost:8080/transaction?success=true&sellerId=" + this.sellerId + "&userId=" + this.$store.state.userId + "&postId=" + this.id + "&quantity=" + this.quantity,
+              "cancelUrl": "http://localhost:8080/transaction?success=false",
+              "requestEnvelope": {
+                "errorLanguage": "en_US",
+                "detailLevel": "ReturnAll"
+              }
+          })
         }
+
+        fetch('https://svcs.sandbox.paypal.com/AdaptivePayments/Pay', settings).then(function (response) {
+          return response.json()
+        }, function(error) {
+          alert('Error: Failed to complete transaction with PayPal')
+        }).then(function (json) {
+          console.log(json)
+          if (json.responseEnvelope.ack === 'Success') {
+            window.open("https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_ap-payment&paykey=" + json.payKey)
+          }
+        })
       }
     }
   },
@@ -101,6 +129,7 @@ export default {
     url: String,
     maxQuantity: Number,
     sellerId: String,
+    sellerPaypalId: String,
     id: String
   }
 }

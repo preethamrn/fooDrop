@@ -116,7 +116,7 @@ export default {
     async createDish () {
       // TODO: also include seller userId and paypalId in dish details
       if (this.$refs.form.validate()) {
-        if (this.$store.state.paypalId !== '') {
+        if (this.$store.state.paypalId && this.$store.state.paypalId !== '') {
           let response = await DishesService.newDish({
             name: this.newDishName,
             description: this.newDishDescription,

@@ -34,6 +34,7 @@
                 :url='dish.imageUrl'
                 :maxQuantity='dish.quantity'
                 :sellerId='dish.sellerId'
+                :sellerPaypalId='dish.sellerPaypalId'
                 :id='dish._id'
               />
             </v-flex>

@@ -3,6 +3,7 @@ import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 import Router from 'vue-router'
 import ListingsBase from '@/components/ListingsBase'
+import TransactionPendingBase from '@/components/TransactionPendingBase'
 import CreateDishBase from '@/components/CreateDishBase'
 import SearchDishBase from '@/components/SearchDishBase'
 import FacebookLogin from '@/components/FacebookLogin'
@@ -39,6 +40,14 @@ var router = new Router({
       component: SearchDishBase,
       meta: {
         title: 'Search'
+      }
+    },
+    {
+      path: '/transaction',
+      name: 'Transaction Pending',
+      component: TransactionPendingBase,
+      meta: {
+        title: 'Transaction Pending'
       }
     },
     {

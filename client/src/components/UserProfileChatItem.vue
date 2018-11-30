@@ -1,5 +1,5 @@
 <template>
-  <div class="transactions-dish-item">
+  <div class="user-profile-chat-item">
     <v-hover :close-delay='250'>
       <v-card slot-scope='{ hover }' :class='`pl-${hover ? 5 : 0}`'>
         <v-list-tile :key='name' avatar>

@@ -132,7 +132,7 @@ export default {
           this.$store.commit('setDefaultDietaryRestrictions', user.restrictions)
           this.$store.commit('setDefaultPriceRange', [user.priceLow, user.priceHigh])
           this.$store.commit('setDefaultRadius', user.radius)
-          this.$store.commit('setPaypalId', user.paypalId)
+          this.$store.commit('setPaypalId', user.paypalID)
         }
       } catch (error) {
         alert("Error: Couldn't save settings")
