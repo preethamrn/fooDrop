@@ -38,7 +38,7 @@ export default {
     }
   },
   methods: {
-    getDishes (callback) {
+  	getDishes (callback) {
       if (navigator.geolocation) {
         var self = this;
         navigator.geolocation.getCurrentPosition(function (position) {
@@ -58,6 +58,33 @@ export default {
             self.initGoogleMaps()
           })
         })
+      }
+    },
+    getDishesSearched (callback) {
+      if (navigator.geolocation) {
+        var self = this;
+        if (!self.dishes.length){ 
+            self.initGoogleMaps()
+        }
+        else{
+          navigator.geolocation.getCurrentPosition(function (position) {
+          self.lat = position.coords.latitude
+          self.lng = position.coords.longitude
+          DishesService.searchDish({
+            ingredients: self.$store.state.defaultIngredients,
+            dietaryRestrictions: self.$store.state.defaultDietaryRestrictions,
+            lat: position.coords.latitude,
+            lon: position.coords.longitude,
+            radius: self.$store.state.defaultRadius,
+            priceLow: self.$store.state.defaultPriceRange[0],
+            priceHigh: self.$store.state.defaultPriceRange[1]
+          }).then((response) => {
+            console.log(response)
+            self.dishes = response.data.dishes
+            self.initGoogleMaps()
+          })
+        })
+        }
       }
     },
     initGoogleMaps() {
@@ -90,6 +117,7 @@ export default {
   mounted () {
     if (this.searched) {
       this.dishes = this.dishesProp
+      this.getDishesSearched()
     } else {
       this.getDishes()
     }
