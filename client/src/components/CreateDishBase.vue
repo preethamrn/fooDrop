@@ -22,6 +22,10 @@
               </v-flex>
             </v-layout>
 
+            <v-layout>
+              <div id='map'></div>
+            </v-layout>
+
             <v-combobox
               v-model='newDishDietaryRestrictions'
               :rules='dietaryRestrictionsRules'
@@ -78,6 +82,13 @@
   </div>
 </template>
 
+<style>
+  #map{
+    height:400px;
+    width:100%
+  }
+</style>
+
 <script>
 import DishesService from '@/services/DishesService'
 import HeaderBase from '@/components/HeaderBase'
@@ -89,6 +100,9 @@ export default {
   data () {
     return {
       // validation
+      vueGMap: null,
+      marker: null,
+      position: null,
       valid: true,
       nameRules: [(v) => { return !!v || 'Name is required' }],
       dietaryRestrictionsList: ['gluten free', 'vegan', 'vegetarian', 'lactose free', 'nut free'],
@@ -150,9 +164,48 @@ export default {
     removeIngredient (item) {
       this.newDishIngredients.splice(this.newDishIngredients.indexOf(item), 1)
       this.newDishIngredients = [...this.newDishIngredients]
+    },
+    createGoogleMaps() {
+      console.log("Create Google Maps")
+      return new Promise((resolve, reject) => {
+        let gmap = document.createElement('script')
+        gmap.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyBL3QjeqDnHoBHItq5CDvnN53b6ep_F1RU'
+        gmap.type = 'text/javascript'
+        gmap.onload = resolve
+        gmap.onerror = reject
+        document.body.appendChild(gmap)
+        console.log("Finished Google Maps")
+      })
+    },
+    placeMarker(latlng, map) {
+      console.log("Place Marker")
+      if(this.marker != null) {
+        this.marker.setMap(null)
+      }
+
+      this.marker = new google.maps.Marker({
+        position: latlng,
+        map: map
+      })
+      this.newDishLocationLat = latlng.lat
+      this.newDishLocationLong = latlng.lng
+      map.panTo(latlng)
+    },
+    initGoogleMaps() {
+      const localOptions = {
+        zoom: 12,
+        center: {lat: 34.0700, lng: -118.4398}
+      }
+      console.log("InitializeGoogle Maps")
+      this.vueGMap = new google.maps.Map(document.getElementById('map'), localOptions)
+      this.vueGMap.addListener('click', (e) => {
+        this.position = {lat: e.latLng.lat(), lng: e.latLng.lng()}
+        this.placeMarker(this.position, this.vueGMap)
+      })
     }
   },
   mounted () {
+    this.createGoogleMaps().then(this.initGoogleMaps)
     if (navigator.geolocation) {
        var self = this;
        navigator.geolocation.getCurrentPosition(function (position) {
