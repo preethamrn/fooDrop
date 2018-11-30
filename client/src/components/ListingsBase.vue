@@ -1,6 +1,7 @@
 <template>
   <div name='listings-base'>
     <header-base/>
+    <div id='map'></div>
     <v-list v-if='dishes.length !== 0'>
       <listings-dish-item v-for='(dish, index) in dishes' :key='index' :name='dish.name' :location='dish.location' :price='dish.price' :dish='dish'/>
     </v-list>
@@ -20,7 +21,10 @@ export default {
   },
   data () {
     return {
-      dishes: []
+      vueGMap: null,
+      dishes: [],
+      lat: 0,
+      lng: 0
     }
   },
   props: {
@@ -34,10 +38,12 @@ export default {
     }
   },
   methods: {
-    getDishes () {
+    getDishes (callback) {
       if (navigator.geolocation) {
         var self = this;
         navigator.geolocation.getCurrentPosition(function (position) {
+          self.lat = position.coords.latitude
+          self.lng = position.coords.longitude
           DishesService.searchDish({
             ingredients: self.$store.state.defaultIngredients,
             dietaryRestrictions: self.$store.state.defaultDietaryRestrictions,
@@ -49,7 +55,24 @@ export default {
           }).then((response) => {
             console.log(response)
             self.dishes = response.data.dishes
+            self.initGoogleMaps()
           })
+        })
+      }
+    },
+    initGoogleMaps() {
+      const localOptions = {
+        zoom: 15,
+        center: {lat: this.lat, lng: this.lng}
+      }
+      console.log("InitializeGoogle Maps")
+      console.log(this.dishes)
+      this.vueGMap = new google.maps.Map(document.getElementById('map'), localOptions)
+      for(var i = 0; i < this.dishes.length; i++) {
+        console.log(i + " " + this.dishes[i])
+        var marker = new google.maps.Marker({
+          position: {lat: this.dishes[i].location.lat, lng: this.dishes[i].location.lon},
+          map: this.vueGMap
         })
       }
     }
