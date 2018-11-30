@@ -9,6 +9,7 @@ import SearchDishBase from '@/components/SearchDishBase'
 import FacebookLogin from '@/components/FacebookLogin'
 import UserProfileBase from '@/components/UserProfileBase'
 import ChatBase from '@/components/ChatBase'
+import Maps from '@/components/GoogleApp'
 
 Vue.use(Vuetify)
 Vue.use(Router)
