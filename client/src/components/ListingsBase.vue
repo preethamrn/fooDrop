@@ -3,7 +3,15 @@
     <header-base/>
     <div id='map'></div>
     <v-list v-if='dishes.length !== 0'>
-      <listings-dish-item v-for='(dish, index) in dishes' :key='index' :name='dish.name' :location='dish.location' :price='dish.price' :dish='dish'/>
+      <listings-dish-item 
+        v-for='(dish, index) in dishes' 
+        :key='index' 
+        :ref="'listingsdishitem' + index" 
+        :name='dish.name' 
+        :location='dish.location' 
+        :price='dish.price' 
+        :dish='dish'
+      />
     </v-list>
     <div v-else> No results </div>
   </div>
@@ -60,16 +68,24 @@ export default {
       }
       console.log("InitializeGoogle Maps")
       console.log(this.dishes)
+      var self = this
       this.vueGMap = new google.maps.Map(document.getElementById('map'), localOptions)
       for(var i = 0; i < this.dishes.length; i++) {
         console.log(i + " " + this.dishes[i])
+        /*var icon = {
+          url: this.dishes[i].imageUrl,
+          scaledSize: new google.maps.Size(25,25),
+          origin: new google.maps.Point(0,0),
+          anchor: new google.maps.Point(25,25)
+        }*/
         var marker = new google.maps.Marker({
           position: {lat: this.dishes[i].location.lat, lng: this.dishes[i].location.lon},
           map: this.vueGMap,
+          //icon: icon,
           index: i
         })
         marker.addListener('click', function() {
-          alert(this.index)
+          self.$refs['listingsdishitem' + this.index][0].openDishDetails()
         })
       }
     }

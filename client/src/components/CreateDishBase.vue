@@ -186,8 +186,8 @@ export default {
     },
     initGoogleMaps() {
       const localOptions = {
-        zoom: 12,
-        center: {lat: 34.0700, lng: -118.4398}
+        zoom: 17,
+        center: {lat: this.newDishLocationLat, lng: this.newDishLocationLong}
       }
       console.log("InitializeGoogle Maps")
       this.vueGMap = new google.maps.Map(document.getElementById('map'), localOptions)
@@ -198,12 +198,12 @@ export default {
     }
   },
   mounted () {
-    this.initGoogleMaps()
     if (navigator.geolocation) {
        var self = this;
        navigator.geolocation.getCurrentPosition(function (position) {
         self.newDishLocationLat = position.coords.latitude
         self.newDishLocationLong = position.coords.longitude
+        self.initGoogleMaps()
       })
     }
   }
