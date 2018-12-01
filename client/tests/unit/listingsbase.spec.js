@@ -36,7 +36,7 @@ describe('ListingsBase.vue', () => {
     }})
 
     // expect
-    expect(navigator.geolocation.getCurrentPosition).toHaveBeenCalledTimes(1)
+    expect(navigator.geolocation.getCurrentPosition).toHaveBeenCalledTimes(2)
     expect(wrapper.vm.searched).toBe(true)
     Vue.config.errorHandler = done
     Vue.nextTick(() => {
