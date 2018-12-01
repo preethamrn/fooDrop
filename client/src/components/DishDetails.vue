@@ -28,7 +28,7 @@
                 <v-text-field v-model='price' prefix='$' label='Price' readonly></v-text-field>
               </v-flex>
 
-              <v-flex xs12>
+              <v-flex xs12 v-if='maxQuantity > 0'>
                 <v-layout row>
                   <v-flex xs10><v-slider class='padded-slider' v-model='quantity' :max='maxQuantity' :min='0'></v-slider></v-flex>
                   <v-flex xs2><v-text-field class='padded-input' label='Quantity' v-model='quantity'></v-text-field></v-flex>
@@ -41,7 +41,7 @@
           <v-spacer></v-spacer>
           <v-btn color='blue darken-1' flat @click.native='dishDetailsDialog = false'>Close</v-btn>
           <v-btn color='blue darken-1' flat @click.native='dishDetailsDialog = false; contactSeller();'>Contact Seller</v-btn>
-          <v-btn color='blue darken-1' flat @click.native='dishDetailsDialog = false; purchaseDish();'>Buy</v-btn>
+          <v-btn v-if='maxQuantity > 0' color='blue darken-1' flat @click.native='dishDetailsDialog = false; purchaseDish();'>Buy</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
