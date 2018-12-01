@@ -37,15 +37,12 @@ describe('SearchDishBase.vue', () => {
 
   it('tests get search results', (done) => {
     // setup
-    mockAxios.create.mockImplementationOnce(() => {
-      return {
-          get: Promise.resolve({
-              data: {success: true, dishes: []}
-            })
-        }
-      }
+    mockAxios.get.mockImplementationOnce(() => 
+      Promise.resolve({
+        data: {success: true, dishes: []}
+      })
     );
-    
+
     // mocking router
     const localVue = createLocalVue()
     localVue.use(Router)
@@ -61,7 +58,7 @@ describe('SearchDishBase.vue', () => {
     const router = new Router({
       routes
     })
-    
+
     // mocking localStorage
     var localStorageMock = (function() {
       var store = {};
@@ -85,10 +82,11 @@ describe('SearchDishBase.vue', () => {
 
     // work
     const wrapper = mount(SearchDishBase, { localVue, store, router })
+    wrapper.setData({searchDishPrice: [0, 100], searchDishRadius: 5})
     wrapper.find('button.search').trigger('click')
 
     // expect
-    expect(mockAxios.create).toHaveBeenCalledTimes(1)
+    expect(mockAxios.get).toHaveBeenCalledTimes(1)
     expect(wrapper.vm.$route.path).toBe('/')
     done()
   })
