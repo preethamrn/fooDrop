@@ -30,7 +30,7 @@ describe('ChatBase.vue', () => {
         }}
       })
     );
-    
+
     // mocking router
     let id = '1234'
     let $route = {
