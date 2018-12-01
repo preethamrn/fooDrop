@@ -24,6 +24,7 @@
             </v-flex>
             <v-flex xs6 sm3>
               <dish-details
+                ref='dishdetails'
                 :name='dish.name'
                 :description='dish.description'
                 :locationLat='dish.location.lat'
@@ -55,6 +56,11 @@ export default {
   data () {
     return {
       distanceInMiles: 0.0
+    }
+  },
+  methods: {
+    openDishDetails () {
+      this.$refs.dishdetails.dishDetailsDialog = true
     }
   },
   mounted () {

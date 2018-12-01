@@ -40,6 +40,7 @@
             </v-layout>
 
             <v-text-field
+              label='Paypal Email'
               placeholder='Paypal Email'
               v-model='paypalId'
               :rules="[(v) => { return !!v || 'Paypal Email cannot be empty'}]"
