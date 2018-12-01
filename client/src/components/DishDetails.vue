@@ -39,8 +39,8 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color='blue darken-1' flat @click.native='dishDetailsDialog = false'>Close</v-btn>
-          <v-btn color='blue darken-1' flat @click.native='dishDetailsDialog = false; contactSeller();'>Contact Seller</v-btn>
+          <v-btn color='blue darken-1' class='close' flat @click.native='dishDetailsDialog = false'>Close</v-btn>
+          <v-btn color='blue darken-1' class='contact' flat @click.native='dishDetailsDialog = false; contactSeller();'>Contact Seller</v-btn>
           <v-btn v-if='maxQuantity > 0' color='blue darken-1' flat @click.native='dishDetailsDialog = false; purchaseDish();'>Buy</v-btn>
         </v-card-actions>
       </v-card>
