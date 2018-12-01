@@ -20,7 +20,7 @@
               </v-list-tile-content>
             </v-flex>
             <v-flex xs6 sm3>
-              <span :style="[cost > 0 ? {'color': 'green'} : {'color': 'red'}]">{{ cost }}</span>
+              <span :style="[cost > 0 ? {'color': 'green'} : {'color': 'red'}]">{{ dish.quantity }} * {{ dish.price }} = {{ cost }}</span>
             </v-flex>
             <v-flex xs6 sm3>
               <dish-details
@@ -32,7 +32,7 @@
                 :dietaryRestrictions='dish.dietaryRestrictions'
                 :ingredients='dish.ingredients'
                 :url='dish.imageUrl'
-                :maxQuantity='dish.quantity'
+                :maxQuantity=0
                 :sellerId='dish.sellerId'
                 :sellerPaypalId='dish.sellerPaypalId'
                 :id='dish._id'

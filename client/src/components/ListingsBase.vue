@@ -70,6 +70,13 @@ export default {
       console.log(this.dishes)
       var self = this
       this.vueGMap = new google.maps.Map(document.getElementById('map'), localOptions)
+      // current position
+      new google.maps.Marker({
+        position: {lat: this.lat, lng: this.lon},
+        map: this.vueGMap,
+        icon: 'http://i.stack.imgur.com/orZ4x.png'
+      })
+      // position of all food items on map
       for(var i = 0; i < this.dishes.length; i++) {
         console.log(i + " " + this.dishes[i])
         /*var icon = {
