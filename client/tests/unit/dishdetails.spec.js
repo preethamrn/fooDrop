@@ -34,8 +34,6 @@ describe('DishDetails.vue', () => {
         sellerPaypalId: "",
         id: ""
         }})
-    //check whole
-    console.log(wrapper.html())
     
     //press close button
     wrapper.find('.close').trigger('click')
@@ -61,19 +59,18 @@ it('tests for clicking contact seller button', () => {
       state: {}})
 
     // mocking router
+    const localVue = createLocalVue()
+    localVue.use(Router)
     var routes = [{
         path: '/chat/' + tempseller,
         component: ChatBase
       }
     ]
-    const $router = new Router({
+    const router = new Router({
       routes
     })
 
-    const localVue = createLocalVue()
-    localVue.use($router)
-
-    const wrapper = mount(DishDetails, { store, Vue ,localVue, propsData: {
+    const wrapper = mount(DishDetails, { store, Vue, localVue, router, propsData: {
         name: "",
         description: "",
         locationLat: 0,
@@ -87,9 +84,6 @@ it('tests for clicking contact seller button', () => {
         sellerPaypalId: "",
         id: ""
         }})
-
-    //check whole
-    console.log(wrapper.html())
     
     //press close button
     wrapper.find('.contact').trigger('click')
@@ -99,6 +93,5 @@ it('tests for clicking contact seller button', () => {
     
     //expect this to be 1 after button click for close
     expect(wrapper.vm.quantity).toBe(1)
-
-
+    expect(wrapper.vm.$route.path.startsWith('/chat/')).toBe(true)
   })

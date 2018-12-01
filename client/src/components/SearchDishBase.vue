@@ -153,7 +153,6 @@ export default {
   },
   mounted () {
     if (navigator.geolocation) {
-       console.log(navigator.geolocation)
        var self = this;
        navigator.geolocation.getCurrentPosition(function (position) {
         self.searchDishLocationLat = position.coords.latitude
