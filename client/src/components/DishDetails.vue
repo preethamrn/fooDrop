@@ -3,7 +3,7 @@
     <v-dialog v-model='dishDetailsDialog' max-width='1000px'>
       <v-btn flat outline slot='activator'>View Dish</v-btn>
       <v-card>
-        <v-img v-if="url !== ''" :src='url'></v-img>
+        <v-img v-if="url !== ''" :src='url' max-height='450'></v-img>
         <v-img v-else src='../assets/default_food.png'></v-img>
         <v-card-title>
           <span class='headline'>{{ name }}</span>
