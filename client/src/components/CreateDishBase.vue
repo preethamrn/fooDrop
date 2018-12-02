@@ -130,7 +130,7 @@ export default {
   methods: {
     async createDish () {
       if (this.$refs.form.validate()) {
-        if (this.$store.state.paypalId && this.$store.state.paypalId !== '') {
+        if (this.$store.state.paypalId && this.$store.state.paypalId !== '' && this.$store.state.paypalId !== '-1') {
           let response = await DishesService.newDish({
             name: this.newDishName,
             description: this.newDishDescription,
