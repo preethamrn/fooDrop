@@ -45,13 +45,17 @@ router.get('/transactions', function(req, res, next) {
 // });
 
 /**
- * Route creating a new user in MongoDB
- * @name post/user_info/create
+ * Route creating a new user in MongoDB using POST request
+ * @name create
  * @function
  * @memberof module:routers/user_info~userRouter
- * @inner
- * @param {string} path - Express path
- * @param {callback} middleware - Express middleware
+ * @static
+ * @param {string} facebookID - facebookID of the user when he logged in
+ * @param {string} paypalID - paypalID of the user
+ * @param {...number} radius - radius 
+ * @param {string | Array} transactions - array of transactions
+ * @param {string} name - name of the user
+ * @param {string | Array} restrictions - array of restrictions
  */
 router.post('/create', function(req,res,next){
   var	facebookID = req.body.facebookID;
