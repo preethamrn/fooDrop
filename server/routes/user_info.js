@@ -1,5 +1,5 @@
 /** Express router providing 
- * @module routers/user_info
+ * @module routes/user_info
  * @requires express
  */
 
