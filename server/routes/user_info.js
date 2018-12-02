@@ -45,17 +45,17 @@ router.get('/transactions', function(req, res, next) {
 // });
 
 /**
- * Route creating a new user in MongoDB using POST request
+ * function creating a new user in MongoDB using a POST request
  * @name create
  * @function
  * @memberof module:routers/user_info~userRouter
  * @static
- * @param {string} facebookID - facebookID of the user when he logged in
- * @param {string} paypalID - paypalID of the user
- * @param {...number} radius - radius 
- * @param {string | Array} transactions - array of transactions
- * @param {string} name - name of the user
- * @param {string | Array} restrictions - array of restrictions
+ * @param {String} facebookID - facebookID of the user when he logged in
+ * @param {String} paypalID - paypalID of the user
+ * @param {Number} radius - radius 
+ * @param {String[]} transactions - array of transactions
+ * @param {String} name - name of the user
+ * @param {String[]} restrictions - array of restrictions
  */
 router.post('/create', function(req,res,next){
   var	facebookID = req.body.facebookID;
@@ -97,6 +97,14 @@ router.post('/create', function(req,res,next){
   })
 })
 
+/**
+ * function retrieving a single user in MongoDB based on the user_id passed into the function
+ * @name get_user
+ * @function
+ * @memberof module:routers/user_info~userRouter
+ * @static
+ * @param {String} user_id - user_id of the user that we want to retrieve from MongoDB
+ */
 router.get('/get_user', (req, res) => {
   var user_id = ObjectId(req.query.user_id); 
   User.findById(user_id, function(err,result){
@@ -111,6 +119,13 @@ router.get('/get_user', (req, res) => {
   })
 })
 
+/**
+ * function retrieving all users in MongoDB
+ * @name get_users
+ * @function
+ * @memberof module:routers/user_info~userRouter
+ * @static
+ */
 router.get('/get_users', (req, res) => {
   User.find({}, function (error, posts) {
 	  if (error) { console.error(error); }
@@ -120,6 +135,15 @@ router.get('/get_users', (req, res) => {
 	})
 })
 
+/**
+ * function updating a new user in MongoDB using a PUT request
+ * @name update
+ * @function
+ * @memberof module:routers/user_info~userRouter
+ * @static
+ * @param {String} user_id - id of the user that we want to update in MongoDB
+ * @param {String[]} values - array of values that we want to update
+ */
 router.put('/update', (req, res)=> {
   var user_id = req.body._id
   var values = req.body.values; //expecting an array of values
