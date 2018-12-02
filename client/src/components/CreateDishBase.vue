@@ -145,6 +145,7 @@ export default {
           })
           if (response.data.success) {
             alert('Success!')
+            window.location.href = 'http://localhost:8080/'
           } else {
             alert('Error: ' + response.data.errorMessage)
           }
@@ -191,6 +192,7 @@ export default {
       }
       console.log("InitializeGoogle Maps")
       this.vueGMap = new google.maps.Map(document.getElementById('map'), localOptions)
+      this.placeMarker({lat: this.newDishLocationLat, lng: this.newDishLocationLong}, this.vueGMap)
       this.vueGMap.addListener('click', (e) => {
         this.position = {lat: e.latLng.lat(), lng: e.latLng.lng()}
         this.placeMarker(this.position, this.vueGMap)
