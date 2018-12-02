@@ -22,8 +22,6 @@ router.get('/get_chats', function(req, res, next) {
 
 /* Broadcast chat messages and stores message in database. Creates chat log in buyer, seller, and chat databases if not present */
 router.post('/send_chat', function(req, res, next) {
-  // TODO: add message to chats collection (findOne, then save)
-  // TODO: if chatId doesn't exist (findOne returns null) then create model in chats collection and add message to user and seller collections
   req.io.to(req.body.chatId).emit('chat', {
 		userId: req.body.userId,
 		username: req.body.username,

@@ -47,7 +47,7 @@
             ></v-text-field>
 
             <v-card-actions>
-              <v-btn flat color='green' :disabled='!valid' @click='update'>Update Profile</v-btn>
+              <v-btn flat color='green' class='updatebtn' :disabled='!valid' @click='update'>Update Profile</v-btn>
             </v-card-actions>
           </v-form>
         </v-card>

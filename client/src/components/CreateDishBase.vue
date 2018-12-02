@@ -72,8 +72,8 @@
             <v-text-field label='Quantity' :rules='quantityRules' v-model.number='newDishQuantity'></v-text-field>
 
             <v-card-actions>
-              <v-btn flat color='red' @click='clearForm'>x Clear</v-btn>
-              <v-btn flat color='green' :disabled='!valid' @click='createDish'>- Post</v-btn>
+              <v-btn flat color='red' class='clearbtn' @click='clearForm'>x Clear</v-btn>
+              <v-btn flat color='green' class='createbtn' :disabled='!valid' @click='createDish'>- Post</v-btn>
             </v-card-actions>
           </v-form>
         </v-card>
@@ -99,10 +99,11 @@ export default {
   },
   data () {
     return {
-      // validation
       vueGMap: null,
       marker: null,
       position: null,
+
+      // validation
       valid: true,
       nameRules: [(v) => { return !!v || 'Name is required' }],
       dietaryRestrictionsList: ['gluten free', 'vegan', 'vegetarian', 'lactose free', 'nut free'],
@@ -128,7 +129,6 @@ export default {
   },
   methods: {
     async createDish () {
-      // TODO: also include seller userId and paypalId in dish details
       if (this.$refs.form.validate()) {
         if (this.$store.state.paypalId && this.$store.state.paypalId !== '') {
           let response = await DishesService.newDish({
