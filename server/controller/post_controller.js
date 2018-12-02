@@ -3,6 +3,17 @@ var Post = require("../models/post");
 var User = require("../models/user");
 const ObjectId = mongoose.Types.ObjectId;
 
+/** 
+ * User Controller Module
+ * @module Post_Controller
+ */
+
+/**
+ * Add a transaction to a given user
+ * @param {String} user_id - The id of the user
+ * @param {Object} transaction - The transaction object to add to the user
+ * @param {callback} - A function to call after this is done executing
+ */
 
 exports.addTransaction = function(user_id,transaction,callback){
 
@@ -37,7 +48,12 @@ exports.addTransaction = function(user_id,transaction,callback){
 
 
 
-
+/**
+ * Update the quantity on a given post. 
+ * @param {String} post_id - Uses the post_id
+ * @param {Number} quantity - The quantity to be subtracted from the post
+ * @param {callback} - A function to call after this is done executing
+ */
 exports.updatePostQ = function(post_id,quantity,callback){
 
     Post.findById(post_id, function(error, post){
@@ -78,6 +94,14 @@ exports.updatePostQ = function(post_id,quantity,callback){
     })
 }
 
+/**
+ * Get the location from two lat/long pairs
+ * @param {Number} Latitude 1 - Latitude of the first co-ordinate
+ * @param {Number} Longitude 1 - Longitude of the first co-ordinate
+ * @param {Number} Latitude 2 - Latitude of the second co-ordinate
+ * @param {Number} Longitude 2 - Longitude of the second co-ordinate
+ * @returns {Number} - The distance between the two given points 
+*/
 exports.getDistanceFromLatLonInMiles = function(lat1,lon1,lat2,lon2) {
 
   var R = 6371; // Radius of the earth in km
@@ -97,6 +121,12 @@ function deg2rad(deg) {
   return deg * (Math.PI/180)
 }
 
+
+/**
+ * Gets a specifc dish from the database by its id
+ * @param {String} dish_id - id of the dish
+ * @param {callback} - A function to call after this is done executing
+*/
 exports.get_dish_by_id = function(object_id,callback){
   var post_id = ObjectId(object_id); 
   Post.findById(post_id, function(err,result){
@@ -109,6 +139,15 @@ exports.get_dish_by_id = function(object_id,callback){
 }
 
 
+
+/**
+ *Gets all the dishes from db on the basis of the given params. 
+ * @param {String[]} ingredients - Ingridients the user wants in the posts
+ * @param {String[]} dietaryRestrictions - Any dietary restrictions the user has 
+ * @param {Number} priceLow - User's lower price point
+ * @param {Number} priceHigh - User's higher price point
+ * @param {callback} - A function to call after this is done executing
+ */
 exports.get_dishes = function(ingredients,dietaryRestrictions,price_low,price_high,callback){
 
 	var query = Post.find({});

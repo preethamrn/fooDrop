@@ -1,4 +1,22 @@
+/** Express router providing user related routes
+ * @module routers/users
+ * @requires express
+ */
+
+
+
+/**
+ * express module
+ * @const
+ */
 var express = require('express');
+
+/**
+ * Express router to mount user related functions on.
+ * @type {object}
+ * @const
+ * @namespace usersRouter
+ */
 var router = express.Router();
 const mongoose = require('mongoose');
 var Post = require("../models/post");
@@ -17,6 +35,14 @@ router.post('/', function(request, response){
 });
 
 
+
+/**
+ * Route returns a specific dish from the model
+ * @function
+ * @name get_dish
+ * @memberof module:routers/users~usersRouter
+ * @param {Number} Post_Id - The id of the Post
+ */
 router.get('/get_dish', function(req, res){
   var post_id = ObjectId(req.query.post_id); 
   Post.findById(post_id, function(err,result){
@@ -35,6 +61,16 @@ router.get('/get_dish', function(req, res){
 
 
 
+/**
+ * Route creates a transaction between two users
+ * @name create_transaction
+ * @function
+ * @memberof module:routers/users~usersRouter
+ * @param {Number} Post_Id - The id of the Post
+ * @param {Number} Buyer_Id - The id of the Post
+ * @param {Number} Seller_id - The id of the Post
+ * @param {Number} quantity - The id of the Post
+ */
 router.post('/transaction', function(req, res){
 
 var buyer_id = ObjectId(req.body.buyer_id);
@@ -92,6 +128,7 @@ Post_Controller.updatePostQ(post_id,quantity,function(error,post)
 })
 
 
+
 router.get('/get_dishes', function(req, res, next) {
 
   var ingredients = req.query.ingredients || [];
@@ -106,7 +143,19 @@ router.get('/get_dishes', function(req, res, next) {
 
 });
 
-
+/**
+ *Route get all the posts present in the given radius.
+ * @name /get_dishes_by_radius
+ * @function
+ * @memberof module:routers/users~usersRouter
+ * @param {String[]} ingredients - Ingridients the user wants in the posts
+ * @param {String[]} dietaryRestrictions - Any dietary restrictions the user has 
+ * @param {Number} radius - radius within which posts lie
+ * @param {Number} latitude - Inital latitude of user
+ * @param {Number} longitude - Inital longitude of user
+ * @param {Number} priceLow - User's lower price point
+ * @param {Number} priceHigh - User's higher price point
+ */
 router.get('/get_dishes_by_radius', function(req, res, next) {
 
     var ingredients = req.query.ingredients || [];
@@ -129,8 +178,25 @@ router.get('/get_dishes_by_radius', function(req, res, next) {
 //array of info 
 
 
-//TODO: write response back to front end the whole row that was created, including objectID
-router.post('/new_dish', (req, res) => {
+/**
+ *Route get all the posts present in the given radius.
+ * @name /new_dish
+ * @function
+ * @memberof module:routers/users~usersRouter
+ * @param {String} name - Name of the new Dish
+ * @param {String} description - Name of the new Dish
+ * @param {String[]} ingredients - Ingridients the user wants in the posts
+ * @param {String[]} dietaryRestrictions - Any dietary restrictions the user has 
+ * @param {String} imageUrl - URL of a picture of the food 
+ * @param {Number} price - Price of the dish
+ * @param {Number} quantity - Quantity of the dish to be sold
+ * @param {Number} sellerId - ID of the seller.
+ * @param {{
+         lat:Number, 
+         lon:Number
+   }} location - A user's location
+ */
+ router.post('/new_dish', (req, res) => {
 
   console.log("Enter")
   var new_dish = new Post({
