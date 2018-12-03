@@ -176,6 +176,8 @@ We have kept our implementation the same from parts A \& B.
 The user can view the available dishes that match their profile and filter dishes as per their preferences on this page. 
 The radius, dietary restrictions and price range the user sets from the user profile page will automatically filter dishes to match the user's specifications and needs. 
 The user can also search for dishes with more filters from the search page. 
+The user can also see the distance from their current location to the dish on a link in each dish listing.
+They can click on the link to be redirected to a new tab from Google that gives them directions from their current location to the dish.
 \newline\newline
 We have kept this part the same from parts A \& B. 
 
@@ -290,7 +292,7 @@ It does so without the added complexity of having to deal with Map overlays, Lis
 Our back-end class diagram is only responsible for keeping track of and providing information to the front-end. 
 The front-end can manipulate and store this information appropriately in a more complex and intricate structure. 
 
-\newline\newline
+\\\\
 
 Hence, we will only be comparing our front-end class diagram with our old class diagram as it is an accurate indicator of the changes we have implemented since Part A. 
 While our old class diagram is well-suited to an Object oriented programming language such as Java, a callback-based web development language such as JavaScript requires us to make some changes to our class structure. 
@@ -298,25 +300,24 @@ While our old class diagram is well-suited to an Object oriented programming lan
 On the user's side we decided to collapse the inheritance hierarchy of having a buyer and a seller subclass extending the user base class into a a single user class. 
 This not only makes it significantly easier for us to store such an object in Mongoose, but also allows the buyer's and seller's to freely interchange their roles to form a fluid marketplace.
 
-\newline\newline
+\\\\
 
 The chat implementation in the UserProfileChatItem is similar to the old chat class as it uses the same fields and the same basic principles as the old class diagram. 
 However, it uses a new socket.io API through the ChatBase class. We still continue to make use of the Transactions class, but we embed this inside the User class so that each user can keep track of their own transaction information which can be displayed to them.
 
-\newline\newline
+\\\\
 
 We do not make any major implementation and structural changes in the DishListings and the DishItem class.
 However, we have added a new DishDetails class to avoid the problem of primitive obsession which is caused by adding too many primitive type variables. 
 Our DishListings class in the new version has an aggregation of Google Maps objects. 
 This is similar to the old version but we have decided to get rid of the Map pins objects as we found those to be redundant.
 
+For the purpose of this project we have used the following libraries and technologies:
 \newline\newline
-
-For the purpose of this project we have used the following libraries and technologies - 
 
 Node.js - This is an asynchronous JavaScript based library which is usually run on the back-end of a web application to serve a client. 
 We use Node.js to retrieve information from the database and handle any http requests from the client.
-\newline\newpage
+\newline\newline
 
 MongoDB - MongoDB is a NoSQL document based databases that used JSON objects for its schema. 
 We used MongoDB to store our persistent data such as our User and Post information.
@@ -324,24 +325,64 @@ We used MongoDB to store our persistent data such as our User and Post informati
 
 Google Maps Platform - The Google Maps platform allows us to build custom Maps with specific locations indicated by pins. 
 We have used this API to create a map overlay on our front end to help the users get a visual idea of the food options available near them. 
-
 \newline\newline
 
 Paypal REST API - The Paypal payments REST API allows easy and secure online and mobile payments. 
 We use the Paypal payments API to allow the user to effortlessly pay the seller for a dish that they wish to purchase. 
-
 \newline\newline
 
 Vue - 
 
 \section{Description of your APIs}
-Link to the Front-End API Documentation:\begin{verbatim}http://preethamrn.github.io/fooDrop/client/docs
+
+Link to the Front-End API Documentation:
+
+\begin{verbatim}
+http://preethamrn.github.io/fooDrop/client/docs
 \end{verbatim}
+
 Link to the Back-End API Documentation: 
+
 \begin{verbatim}http://preethamrn.github.io/fooDrop/server/docs
 \end{verbatim}
 
 \section{User Interface Snapshots}
+
+\begin{figure}[H]
+\includegraphics[width=\linewidth]{images/login.png}
+    \caption{Login securely with Facebook.}
+\end{figure}
+
+\begin{figure}[H]
+\includegraphics[width=\linewidth]{images/profile.png}
+    \caption{Let sellers know your dietary restrictions so you can eat with ease.}
+\end{figure}
+
+\begin{figure}[H]
+\includegraphics[width=\linewidth]{images/buy_1.png}
+    \caption{Find your food, chat with the seller and buy it instantly}
+\end{figure}
+
+\begin{figure}[H]
+\includegraphics[width=\linewidth]{images/buy_2.png}
+    \caption{Pay securely using PayPal}
+\end{figure}
+
+\begin{figure}[H]
+\includegraphics[width=\linewidth]{images/buy_3.png}
+    \caption{Sellers receive their money instantly}
+\end{figure}
+
+\begin{figure}[H]
+\includegraphics[width=\linewidth]{images/chat_1.png}
+    \caption{Chat with your sellers with ease}
+\end{figure}
+
+\begin{figure}[H]
+\includegraphics[width=\linewidth]{images/distance_feature.png}
+    \caption{Know exactly how far food is}
+\end{figure}
+
 
 
 \section{Test Scenarios and Test Cases in [Jest] and [Selenium]}
@@ -440,10 +481,27 @@ Submitting the credentials tests the /auth/facebook endpoint in the backend and 
 
 \section{Contributions}
 
-Karthik Ramesh: He worked with Farhan on the Google Maps API, and continued front end unit testing from part B with Preetham to test more features the team integrated into the application in part C using the jest framework, and vue-test-utils. For the Google Maps API, he specifically worked with Farhan to make map overlays on both the homepage to display dish listings as markers on the map, and the selling dishes page to select a spot on the map to choose a location from which to sell the dishes. 
-\newline\newline
+\hspace{10mm}
+Karthik Ramesh: He worked with Farhan and Preetham on the Google Maps API. 
+He also continued front end unit testing from part B with Preetham to test more features the team added into the application in part C using the jest framework, and vue-test-utils. 
+Finally, Karthik worked on feature/requirement description, and UI screenshots for the report. 
+\newline
 
-Udayan Sahai : He worked with Leslie on Paypal integration and was responsible for coding JavaScript implementation to create and complete a transaction between two parties. 
+Preetham Narayanareddy: He worked on integrating PayPal with the transaction endpoint and building the chat feature of the application. 
+He also worked on unit testing the application with Karthik, and fixing bugs to help make the application production ready. 
+\newline
 
+Udayan Sahai: He worked with Leslie on Paypal integration and was responsible for coding JavaScript implementation to create and complete a transaction between two parties. 
+\newline
+
+Leslie Liang: Leslie worked with Udayan on PayPal integration. 
+He explored the PayPal documentation and decided with Udayan that the Adaptive Payments API should be the approach. 
+He also wrote a backend integration test for the chat endpoint using mocha, chai and chai-http. 
+Finally, Leslie also worked on revising the usage scenarios for the Part C report.
+\newline
+
+Farhan Alam: Farhan worked with Karthik and Preetham to implement Google Maps API and to uncover any bugs in the frontend. 
+He also worked on utilizing Selenium IDE to create thorough integration tests.
+\newline
 
 \end{document}
