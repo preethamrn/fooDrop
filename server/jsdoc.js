@@ -2,7 +2,8 @@ module.exports = {
   source: {
     include: [
       'routes/',
-      'controller/'
+      'controller/',
+      'src/'
     ],
     includePattern: '\\.(js)$',
   },

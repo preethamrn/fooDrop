@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Module: User_Controller</title>
+    <title>JSDoc: Module: app</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Module: User_Controller</h1>
+    <h1 class="page-title">Module: app</h1>
 
     
 
@@ -38,7 +38,7 @@
     <div class="container-overview">
     
         
-            <div class="description">User Controller Module</div>
+            <div class="description">app module</div>
         
 
         
@@ -87,7 +87,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_user_controller.js.html">controller/user_controller.js</a>, <a href="controller_user_controller.js.html#line5">line 5</a>
+        <a href="src_app.js.html">src/app.js</a>, <a href="src_app.js.html#line12">line 12</a>
     </li></ul></dd>
     
 
@@ -142,7 +142,7 @@
     
 
     
-    <h4 class="name" id=".updateUser"><span class="type-signature">(static) </span>updateUser<span class="signature">(user_id, values, callback)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="~auth_facebook"><span class="type-signature">(inner) </span>auth_facebook<span class="signature">(user, callback)</span><span class="type-signature"></span></h4>
     
 
     
@@ -150,7 +150,7 @@
 
 
 <div class="description">
-    Updates a user based on user_id with values in the values array
+    function that authenticates the user and if the user is valid it returns a json web token
 </div>
 
 
@@ -186,13 +186,13 @@
 
         <tr>
             
-                <td class="name"><code>user_id</code></td>
+                <td class="name"><code>user</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">String</span>
+<span class="param-type">Object</span>
 
 
             
@@ -202,30 +202,7 @@
 
             
 
-            <td class="description last">user_id of the user we are trying to update</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>values</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;String></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">array of values we are trying to update to</td>
+            <td class="description last">facebook user object</td>
         </tr>
 
     
@@ -248,7 +225,7 @@
 
             
 
-            <td class="description last">callback function that is called after processing is done</td>
+            <td class="description last">callback</td>
         </tr>
 
     
@@ -289,7 +266,165 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_user_controller.js.html">controller/user_controller.js</a>, <a href="controller_user_controller.js.html#line16">line 16</a>
+        <a href="src_app.js.html">src/app.js</a>, <a href="src_app.js.html#line120">line 120</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="~passport"><span class="type-signature">(inner) </span>passport<span class="signature">(facebookToken, login_or_sign_up)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Creates a facebook authentication stragety
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>facebookToken</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">has facebookappid field and facebookappsecret field</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>login_or_sign_up</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">callback</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">logs the user in or signs the user up</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="src_app.js.html">src/app.js</a>, <a href="src_app.js.html#line70">line 70</a>
     </li></ul></dd>
     
 
