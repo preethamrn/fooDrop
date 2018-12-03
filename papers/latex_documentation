@@ -331,7 +331,9 @@ Paypal REST API - The Paypal payments REST API allows easy and secure online and
 We use the Paypal payments API to allow the user to effortlessly pay the seller for a dish that they wish to purchase. 
 \newline\newline
 
-Vue - 
+Vue - Vue is a well developed open source framework for frontend web development. 
+It's single file components allows for easy development and documentation. 
+There are also many modules and plugins that support Vue such as Vuex for state management and Vue-Router for single page application routing.
 
 \section{Description of your APIs}
 
