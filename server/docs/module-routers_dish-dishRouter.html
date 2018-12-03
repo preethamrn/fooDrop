@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Module: Post_Controller</title>
+    <title>JSDoc: Namespace: dishRouter</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Module: Post_Controller</h1>
+    <h1 class="page-title">Namespace: dishRouter</h1>
 
     
 
@@ -28,8 +28,8 @@
 
 <header>
     
-        
-            
+        <h2>
+            <span class="ancestors"><a href="module-routers_dish.html">routers/dish</a>~</span>dishRouter</h2>
         
     
 </header>
@@ -38,24 +38,10 @@
     <div class="container-overview">
     
         
-            <div class="description">Post Controller Module</div>
+            <div class="description">Express router to mount user related functions on.</div>
         
 
         
-            
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 <dl class="details">
@@ -87,7 +73,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_post_controller.js.html">controller/post_controller.js</a>, <a href="controller_post_controller.js.html#line6">line 6</a>
+        <a href="routes_dish.js.html">routes/dish.js</a>, <a href="routes_dish.js.html#line14">line 14</a>
     </li></ul></dd>
     
 
@@ -97,22 +83,6 @@
 
     
 </dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         
@@ -142,7 +112,7 @@
     
 
     
-    <h4 class="name" id=".addTransaction"><span class="type-signature">(static) </span>addTransaction<span class="signature">(user_id, transaction, callback)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".create_transaction"><span class="type-signature">(static) </span>create_transaction<span class="signature">(Post_Id, Buyer_Id, Seller_id, quantity)</span><span class="type-signature"></span></h4>
     
 
     
@@ -150,7 +120,7 @@
 
 
 <div class="description">
-    Add a transaction to a given user
+    Route creates a transaction between two users
 </div>
 
 
@@ -186,7 +156,7 @@
 
         <tr>
             
-                <td class="name"><code>user_id</code></td>
+                <td class="name"><code>Post_Id</code></td>
             
 
             <td class="type">
@@ -202,20 +172,20 @@
 
             
 
-            <td class="description last">The id of the user</td>
+            <td class="description last">The id of the Post</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>transaction</code></td>
+                <td class="name"><code>Buyer_Id</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Object</span>
+<span class="param-type">String</span>
 
 
             
@@ -225,20 +195,20 @@
 
             
 
-            <td class="description last">The transaction object to add to the user</td>
+            <td class="description last">The id of the Buyer</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>callback</code></td>
+                <td class="name"><code>Seller_id</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">callback</span>
+<span class="param-type">String</span>
 
 
             
@@ -248,7 +218,30 @@
 
             
 
-            <td class="description last">A function to call after this is done executing</td>
+            <td class="description last">The id of the Seller</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>quantity</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The quantity to be purchased</td>
         </tr>
 
     
@@ -289,7 +282,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_post_controller.js.html">controller/post_controller.js</a>, <a href="controller_post_controller.js.html#line18">line 18</a>
+        <a href="routes_dish.js.html">routes/dish.js</a>, <a href="routes_dish.js.html#line64">line 64</a>
     </li></ul></dd>
     
 
@@ -323,7 +316,7 @@
     
 
     
-    <h4 class="name" id=".get_dish_by_id"><span class="type-signature">(static) </span>get_dish_by_id<span class="signature">(dish_id, callback)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".get_dish"><span class="type-signature">(static) </span>get_dish<span class="signature">(Post_Id)</span><span class="type-signature"></span></h4>
     
 
     
@@ -331,7 +324,7 @@
 
 
 <div class="description">
-    Gets a specifc dish from the database by its id
+    Route returns a specific dish from the model
 </div>
 
 
@@ -367,7 +360,7 @@
 
         <tr>
             
-                <td class="name"><code>dish_id</code></td>
+                <td class="name"><code>Post_Id</code></td>
             
 
             <td class="type">
@@ -383,30 +376,7 @@
 
             
 
-            <td class="description last">id of the dish</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>callback</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">callback</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">A function to call after this is done executing</td>
+            <td class="description last">The id of the Post</td>
         </tr>
 
     
@@ -447,7 +417,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_post_controller.js.html">controller/post_controller.js</a>, <a href="controller_post_controller.js.html#line130">line 130</a>
+        <a href="routes_dish.js.html">routes/dish.js</a>, <a href="routes_dish.js.html#line39">line 39</a>
     </li></ul></dd>
     
 
@@ -481,7 +451,7 @@
     
 
     
-    <h4 class="name" id=".get_dishes"><span class="type-signature">(static) </span>get_dishes<span class="signature">(ingredients, dietaryRestrictions, priceLow, priceHigh, callback)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".get_dishes_by_radius"><span class="type-signature">(static) </span>get_dishes_by_radius<span class="signature">(ingredients, dietaryRestrictions, radius, latitude, longitude, priceLow, priceHigh)</span><span class="type-signature"></span></h4>
     
 
     
@@ -489,7 +459,7 @@
 
 
 <div class="description">
-    Gets all the dishes from db on the basis of the given params.
+    Route get all the posts present in the given radius.
 </div>
 
 
@@ -571,6 +541,75 @@
 
         <tr>
             
+                <td class="name"><code>radius</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">radius within which posts lie</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>latitude</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Inital latitude of user</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>longitude</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Inital longitude of user</td>
+        </tr>
+
+    
+
+        <tr>
+            
                 <td class="name"><code>priceLow</code></td>
             
 
@@ -614,29 +653,6 @@
         </tr>
 
     
-
-        <tr>
-            
-                <td class="name"><code>callback</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">callback</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">A function to call after this is done executing</td>
-        </tr>
-
-    
     </tbody>
 </table>
 
@@ -674,7 +690,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_post_controller.js.html">controller/post_controller.js</a>, <a href="controller_post_controller.js.html#line151">line 151</a>
+        <a href="routes_dish.js.html">routes/dish.js</a>, <a href="routes_dish.js.html#line146">line 146</a>
     </li></ul></dd>
     
 
@@ -708,7 +724,7 @@
     
 
     
-    <h4 class="name" id=".getDistanceFromLatLonInMiles"><span class="type-signature">(static) </span>getDistanceFromLatLonInMiles<span class="signature">(Latitude, Longitude, Latitude, Longitude)</span><span class="type-signature"> &rarr; {Number}</span></h4>
+    <h4 class="name" id=".new_dish"><span class="type-signature">(static) </span>new_dish<span class="signature">(name, description, ingredients, dietaryRestrictions, imageUrl, price, quantity, sellerId, location)</span><span class="type-signature"></span></h4>
     
 
     
@@ -716,7 +732,7 @@
 
 
 <div class="description">
-    Get the location from two lat/long pairs
+    Route get all the posts present in the given radius.
 </div>
 
 
@@ -752,233 +768,7 @@
 
         <tr>
             
-                <td class="name"><code>Latitude</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">1 - Latitude of the first co-ordinate</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>Longitude</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">1 - Longitude of the first co-ordinate</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>Latitude</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">2 - Latitude of the second co-ordinate</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>Longitude</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">2 - Longitude of the second co-ordinate</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_post_controller.js.html">controller/post_controller.js</a>, <a href="controller_post_controller.js.html#line105">line 105</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    - The distance between the two given points
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Number</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id=".updatePostQ"><span class="type-signature">(static) </span>updatePostQ<span class="signature">(post_id, quantity, callback)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    Update the quantity on a given post.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>post_id</code></td>
+                <td class="name"><code>name</code></td>
             
 
             <td class="type">
@@ -994,7 +784,122 @@
 
             
 
-            <td class="description last">Uses the post_id</td>
+            <td class="description last">Name of the new Dish</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>description</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Name of the new Dish</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>ingredients</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;String></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Ingridients the user wants in the posts</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>dietaryRestrictions</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;String></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Any dietary restrictions the user has</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>imageUrl</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">URL of a picture of the food</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>price</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Price of the dish</td>
         </tr>
 
     
@@ -1017,20 +922,20 @@
 
             
 
-            <td class="description last">The quantity to be subtracted from the post</td>
+            <td class="description last">Quantity of the dish to be sold</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>callback</code></td>
+                <td class="name"><code>sellerId</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">callback</span>
+<span class="param-type">String</span>
 
 
             
@@ -1040,7 +945,30 @@
 
             
 
-            <td class="description last">A function to call after this is done executing</td>
+            <td class="description last">ID of the seller.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>location</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">A user's location</td>
         </tr>
 
     
@@ -1081,7 +1009,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="controller_post_controller.js.html">controller/post_controller.js</a>, <a href="controller_post_controller.js.html#line57">line 57</a>
+        <a href="routes_dish.js.html">routes/dish.js</a>, <a href="routes_dish.js.html#line181">line 181</a>
     </li></ul></dd>
     
 
