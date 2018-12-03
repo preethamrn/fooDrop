@@ -133,9 +133,9 @@ This ensures that the sellers are aware of the limitations of some of the food t
     \item PayPal executes the transaction and returns control back to fooDrop
     \item Kim is redirected back to the homepage of fooDrop with the map overlay centered at the middle of the page
 
+\end{enumerate}
 
 \subsection{Scenario: Seller has extra food that he would like to sell using fooDrop}
-
 \begin{enumerate}
     \item Carey presses the ``SIGN IN WITH FACEBOOK" button
     \item fooDrop prompts Carey to enter his Facebook credentials to log him in
@@ -147,11 +147,10 @@ This ensures that the sellers are aware of the limitations of some of the food t
     \item fooDrop will query the backend to upload Carey's data to the database
     \item Backend responds with ``SUCCESS" meaning data has been successfully stored in MongoDB
     \item fooDrop reponds with an alert message ``Success!" to inform Carey that his dish has been successfully created
-    
 \end{enumerate}
     
     
-\end{enumerate}
+
 
 
 
@@ -282,23 +281,58 @@ We have maintained our implementation of the header base from parts A \& B.
     \caption{Updated back-end class diagram for our application. }
 \end{figure}
 
-Our old class diagram had assumed a unified front-end and back-end application. This turned out not to be the case as our back-end and front-end work as independent units and thus require separate class diagrams. 
+Our old class diagram had assumed a unified front-end and back-end application. This turned out to not be the case as our back-end and front-end work as independent units and thus require separate class diagrams.
+
 \newline\newline
-Our back-end side class diagram is a simpler version of the front-end class diagram as it attempts to model the same data as the front-end class diagram but without the added complexity of having to deal with Map overlays, Listings, Facebook authentication etc. It is only responsible for keeping track of and providing information to the front-end which can manipulate and store it appropriately in a more complex and intricate structure. We will this only be comparing out front-end class diagram with our old class diagram as it is an accurate indicator of the changes we have implemented since Part A.  
+
+Our back-end class diagram is a simpler version of the front-end class diagram and attempts to model the same data as the front-end one. 
+It does so without the added complexity of having to deal with Map overlays, Listings, Facebook authentication etc. 
+Our back-end class diagram is only responsible for keeping track of and providing information to the front-end. 
+The front-end can manipulate and store this information appropriately in a more complex and intricate structure. 
+
 \newline\newline
-While our old class diagram is well suited to an Object oriented programming language such as Java, a callback based web development language  such as JavaScript required us to make such changes. Most of our changes have come as a result of this change. On the user's side we decided to collapse the inheritance hierarchy of having a buyer and a seller subclass extending the user base class into a a single user class. We did this as it not only makes it significantly easier for us to store such an object in Mongoose but also allows the buyer's and seller's to freely interchange their roles to form a fluid marketplace.
+
+Hence, we will only be comparing our front-end class diagram with our old class diagram as it is an accurate indicator of the changes we have implemented since Part A. 
+While our old class diagram is well-suited to an Object oriented programming language such as Java, a callback-based web development language such as JavaScript requires us to make some changes to our class structure. 
+
+On the user's side we decided to collapse the inheritance hierarchy of having a buyer and a seller subclass extending the user base class into a a single user class. 
+This not only makes it significantly easier for us to store such an object in Mongoose, but also allows the buyer's and seller's to freely interchange their roles to form a fluid marketplace.
+
 \newline\newline
-The chat implementation in the UserProfileChatItem is similar to the old chat class in that it uses the same fields and the same basic principles as the old class diagram. However it uses a new socket.io API through the ChatBase class. We still constinue to make use of the Transactions class but we embed this inside the User class so that each user can keep track of their own transaction information which can be displayed to them.
+
+The chat implementation in the UserProfileChatItem is similar to the old chat class as it uses the same fields and the same basic principles as the old class diagram. 
+However, it uses a new socket.io API through the ChatBase class. We still continue to make use of the Transactions class, but we embed this inside the User class so that each user can keep track of their own transaction information which can be displayed to them.
+
 \newline\newline
-We do not make any major implementation and structural changes in the DishListings and the DishItem class. However, we have added a new DishDetails class to avoid the problem of primitive obsession which is caused by adding too many primitive type variables. Our DishListings class in the new version has an aggregation of Google Maps objects. This is similar to the old version but we have decided to get rid of the Map pins objects as we found those to be redundant.
+
+We do not make any major implementation and structural changes in the DishListings and the DishItem class.
+However, we have added a new DishDetails class to avoid the problem of primitive obsession which is caused by adding too many primitive type variables. 
+Our DishListings class in the new version has an aggregation of Google Maps objects. 
+This is similar to the old version but we have decided to get rid of the Map pins objects as we found those to be redundant.
 
 \newline\newline
 
 For the purpose of this project we have used the following libraries and technologies - 
 
-Node.js - This is an asynchronous JavaScript based library which is usually run on the back-end of a web application to serve a client. We use Node.js to retrieve information from the database and handle any http requests from the client.
+Node.js - This is an asynchronous JavaScript based library which is usually run on the back-end of a web application to serve a client. 
+We use Node.js to retrieve information from the database and handle any http requests from the client.
+\newline\newpage
 
-MongoDB - MongoDB is a noSQL 
+MongoDB - MongoDB is a NoSQL document based databases that used JSON objects for its schema. 
+We used MongoDB to store our persistent data such as our User and Post information.
+\newline\newline
+
+Google Maps Platform - The Google Maps platform allows us to build custom Maps with specific locations indicated by pins. 
+We have used this API to create a map overlay on our front end to help the users get a visual idea of the food options available near them. 
+
+\newline\newline
+
+Paypal REST API - The Paypal payments REST API allows easy and secure online and mobile payments. 
+We use the Paypal payments API to allow the user to effortlessly pay the seller for a dish that they wish to purchase. 
+
+\newline\newline
+
+Vue - 
 
 \section{Description of your APIs}
 Link to the Front-End API Documentation:\begin{verbatim}http://preethamrn.github.io/fooDrop/client/docs
@@ -313,41 +347,103 @@ Link to the Back-End API Documentation:
 \section{Test Scenarios and Test Cases in [Jest] and [Selenium]}
 
 \subsection{Backend}
-    Here is the link to the unit and integration tests for the backend: \begin{verbatim}
+    Here is the link to the unit and integration tests for the backend: 
+    
+\begin{verbatim}
 https://github.com/preethamrn/fooDrop/tree/master/server/test
 \end{verbatim}
-Instructions: To run tests, do \begin{verbatim} mocha *.js \end{verbatim}
+
+
+Instructions: To run tests, do
+\begin{verbatim}
+mocha *.js 
+\end{verbatim}
+
+
 \subsection{Frontend}
 Here is the link to see all of the unit and integration tests for the frontend:
 \begin{verbatim}
 https://github.com/preethamrn/fooDrop/tree/master/client/tests
 \end{verbatim}
 
+
 \subsubsection{Unit Tests}
-We used the jest framework with vue test-utils for unit testing on our front end. When using the jest framework, we had to create mock versions of Axios, so that we do not continually send HTTPS requests whenever we make a new test. Additionally, we had to create a mock router with jest to reroute mocked components to a new endpoint. From vue test-utils, we used mount, shallowMount, and createLocalVue. We used shallowMount when we wanted to mount isolated components, wherein we do not want/need to render its child components. When we are using a component that will interact with other components and would need us to render its child components, we would use mount. When we test a generic component suite that may get shared across different apps, it was better to test the components in a more isolated setup, without polluting the global Vue constructor, so we used createLocalVue to cretae a local instance of the the global Vue. 
+We used the jest framework with vue test-utils for unit testing on our front end. 
+When using the jest framework, we had to create mock versions of Axios so that we do not continually send HTTPS requests whenever we make a new test. 
+Additionally, we had to create a mock router with jest to reroute mocked components to a new endpoint. 
+From vue test-utils, we used mount, shallowMount, and createLocalVue. 
+We used shallowMount when we wanted to mount isolated components, wherein we do not want/need to render its child components. 
+When we are using a component that will interact with other components and would need us to render its child components, we would use mount. 
+When we test a generic component suite that may get shared across different apps, it was better to test the components in a more isolated setup, without polluting the global Vue constructor, so we used createLocalVue to create a local instance of the the global Vue. 
 
-All of these unit tests suites are located in the tests/unit folder in the client, with the '.spec.js' file types. You can run the tests by going into the client directory and entering: 'npm run test:unit'. This will run all of the 'spec.js' test files in the 'tests/unit' folder, and tell you how many of the test suites passed and failed. We have 6 test suites, and 14 tests altogether. 
+All of these unit tests suites are located in the tests/unit folder in the client, with the '.spec.js' file types. 
+You can run the tests by going into the client directory and entering: 'npm run test:unit'. 
+This will run all of the 'spec.js' test files in the 'tests/unit' folder, and tell you how many of the test suites passed and failed. We have 6 test suites, and 14 tests altogether. 
+
+
 \subsubsection{Integration Tests}
-In order to perform integration tests on the application, we used the testing framework, Selenium. To streamline the process of creating tests, we used the Selenium IDE, which is a browser plugin. Selenium IDE allowed us to view the elements and components and write tests around them, as well as record our actions in order to replicate them. Selenium IDE also has the feature of showing exactly which command breaks the test, thus allowing for easy debugging.
+In order to perform integration tests on the application, we used the testing framework, Selenium. 
+To streamline the process of creating tests, we used the Selenium IDE, which is a browser plugin. 
+Selenium IDE allowed us to view the elements and components and write tests around them, as well as record our actions in order to replicate them. 
+Selenium IDE also has the feature of showing exactly which command breaks the test, thus allowing for easy debugging.
 
-All the integration tests are stored in a file called Integrate Tests.side. In order to run the test script, one must first install the Selenium IDE on the browser. It is recommended that Chrome browser is used as it allows the use of http to get location data. When Selenium is installed, launch it through the browser and open Integration Tests.side. Once the tests have been loaded, locate the test suite tab and select interface to view all tests in order and the details of each test.
+All the integration tests are stored in a file called Integrate Tests.side. 
+In order to run the test script, one must first install the Selenium IDE on the browser. 
+It is recommended that Chrome browser is used as it allows the use of http to get location data. 
+When Selenium is installed, launch it through the browser and open Integration Tests.side. 
+Once the tests have been loaded, locate the test suite tab and select interface to view all tests in order and the details of each test.
 
-Selenium IDE allowed us to quickly create integration tests that mimicked users, however there are some downsides to using it. The main downside is that Selenium IDE does not allow use to create a precondition environment before executing the tests. This means in order to run the tests, the collections in foodrop database (MongoDB) need to be dropped beforehand. Another issue is that if the logout test in the end fails, we needed to manually logout of Facebook.
+Selenium IDE allowed us to quickly create integration tests that mimicked users, however there are some downsides to using it. 
+The main downside is that Selenium IDE does not allow use to create a precondition environment before executing the tests. 
+This means in order to run the tests, the collections in foodrop database (MongoDB) need to be dropped beforehand. 
+Another issue is that if the logout test in the end fails, we needed to manually logout of Facebook.
 
 The following is a rundown of 3 test from the list of 15 integration tests. To view the rest of the tests please go the link:
+
 
 \begin{verbatim}
 https://github.com/preethamrn/fooDrop/blob/master/client/tests/
 integration/Integration%20Tests.side
 \end{verbatim}
 
-\noindent Test\#1: CreateDish \newline
-In this test Selenium simulates a button press on the Search button in order to redirect to the search page. Once on the search page, Selenium looks for the appropriate input elements, such as Name, quantity, price and fills them out with valid data. Selenium then places a marker on the Google Map feature in a location within 2 miles of the Tester's current location. Once all parameters are filled out, the post is submitted and Selenium asserts for a 'Success' alert. The purpose of this test is to see the interaction between the Vue components on the Search page, Google Maps and the calls to the create\_dish endpoint.\newline
 
-\noindent Test\#2: UpdateUserDistance \newline
-In this test Selenium simulates a button press on the Profile button. It then checks if we were redirected to the user's profile page. If the proper elements for the user profile is found, Selenium changes the user's default radius to 15 miles. It then simulates a button press on the Home button to redirect us back to the home page. Once the home page is loaded, Selenium makes an assertion on whether a second entry is now listed with a larger radius. The purpose of the test is to check if the Header Vue component can redirect the user between the home and profile page, the profile page can make successful calls to the user\_update endpoint, and if the home page can make successful calls to the get\_dishes\_by\_radius endpoint and properly display the data. \newline
+\noindent Test\#1: CreateDish 
+\newline\newline
+In this test Selenium simulates a button press on the Search button in order to redirect to the search page. 
+Once on the search page, Selenium looks for the appropriate input elements, such as Name, quantity, price and fills them out with valid data. 
+Selenium then places a marker on the Google Map feature in a location within 2 miles of the Tester's current location. 
+Once all parameters are filled out, the post is submitted and Selenium asserts for a 'Success' alert. 
+The purpose of this test is to see the interaction between the Vue components on the Search page, Google Maps and the calls to the create\_dish endpoint.
+\newline\newline
 
-\noindent Test\#3: Login \newline
-In this test Selenium opens up the login page and clicks the 'Sign In With Facebook' button at the center of the page. This opens up another window prompting the user for Facebook credentials. Selenium inputs mock user information provided by Facebook in order to log in. If successful the window should close and the user is redirected to the home page. From here Selenium makes an assertion on the Header component to determine if the user is at the home page. This test is important as it tests the entire authentication flow from the frontend and the backend. The initial button press checks if the Facebook javascript SDK is properly loaded and if the Vue component can call the Facebook login function. Submitting the credentials tests the /auth/facebook endpoint in the backend and whether the Vue components can properly handle the user information. 
+
+\noindent Test\#2: UpdateUserDistance 
+\newline\newline
+In this test Selenium simulates a button press on the Profile button. 
+It then checks if we were redirected to the user's profile page. 
+If the proper elements for the user profile is found, Selenium changes the user's default radius to 15 miles. 
+It then simulates a button press on the 'home' button to redirect us back to the home page. 
+Once the home page is loaded, Selenium makes an assertion on whether a second entry is now listed with a larger radius or not.
+The purpose of the test is to check if the Header Vue component can redirect the user between the home and profile page, the profile page can make successful calls to the user\_update endpoint, and if the home page can make successful calls to the get\_dishes\_by\_radius endpoint and properly display the data. \newline
+
+\noindent Test\#3: Login 
+\newline\newline
+In this test Selenium opens up the login page and clicks the 'Sign In With Facebook' button at the center of the page. 
+This opens up another window prompting the user for Facebook credentials. 
+Selenium inputs mock user information provided by Facebook in order to log in. 
+If successful the window should close and the user is redirected to the home page. 
+From here Selenium makes an assertion on the Header component to determine if the user is at the home page.
+This test is important as it tests the entire authentication flow from the frontend and the backend. 
+The initial button press checks if the Facebook javascript SDK is properly loaded and if the Vue component can call the Facebook login function. 
+Submitting the credentials tests the /auth/facebook endpoint in the backend and whether the Vue components can properly handle the user information. 
+
+
+\section{Contributions}
+
+Karthik Ramesh: He worked with Farhan on the Google Maps API, and continued front end unit testing from part B with Preetham to test more features the team integrated into the application in part C using the jest framework, and vue-test-utils. For the Google Maps API, he specifically worked with Farhan to make map overlays on both the homepage to display dish listings as markers on the map, and the selling dishes page to select a spot on the map to choose a location from which to sell the dishes. 
+\newline\newline
+
+Udayan Sahai : He worked with Leslie on Paypal integration and was responsible for coding JavaScript implementation to create and complete a transaction between two parties. 
+
 
 \end{document}
