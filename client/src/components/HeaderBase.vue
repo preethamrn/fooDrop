@@ -37,7 +37,7 @@ export default {
             if (response.authResponse) {
               localStorage.removeItem('authToken')
               localStorage.removeItem('facebookID')
-              this.$store.state.userId = ''
+              self.$store.state.userId = ''
               self.$router.push({ path: `/login` })
             }
           })
