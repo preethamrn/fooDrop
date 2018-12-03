@@ -50,37 +50,48 @@ Udayan Sahai: 504646937
 \maketitle
 
 Checklist
-
 \begin{enumerate}
     \item motivation (DONE)
-
     \item DESIGN:
         \subitem class diagrams highlighting the differences **HEAVY EMPHASIS ON THIS**
         \subitem MENTIONED DESIGN PATTERNS (mongoose singleton design patter and observer) a paragraph or two should do the job
-
     \item usage scenarios highlighting the differences (not quite sure how to highlight differences) (DONE)
-
     \item non-functional requirements (talk about user rating system in the future)
-
     \item more details on implementation
-
     \item API documentation for classes and functions
-
     \item unit tests for backend classes and methods, not sure how to do that... ??
-
     \item test scenarios and test cases  (describe 2 - 3 integration tests and have a link in the report to the rests of tests)
-
     \item full and final API documentation, put a link on the report
-    
 \end{enumerate}
 
+
 \section{Motivation}
-In our current era, food waste is an ever-growing problem. From having expired food in the refrigerator to making too much food and having leftovers, we seem to waste food quite frequently. For example, one of our team members’ mom would make a large portion of food for a family gathering only to have half of the food go to waste because half of the family members decided not to show up. Our proposed product aims to solve this very problem. We are creating a web application called fooDrop. Our web app will help users save money by being able to sell their leftovers immediately. We do not want the sellers to wait too long to sell the food because the food may go bad once the buyers have purchased it. Our web app not only helps people save money but it is also beneficial towards the environment because we would be discarding less food into the dumpsters.\\\\
-Our vision is to develop a feature-rich web application with an intuitive user interface to help our sellers sell their leftovers to other nearby buyers. This benefits the seller because they wouldn’t need to risk having their leftovers go bad in the refrigerator. On the other hand, this can also benefit the buyer because the food will be sold at a cheaper price than food at a restaurant. To limit any liability issues that fooDrop might face, we support the ability to filter food by allergens, thereby creating a safe platform for buyers and sellers of food to leverage and minimize food wastage.\\\\
-As developers, we are aware of the health concerns and risks of buying expired food for our buyers. If we decide to deploy this application to the public, we will require the sellers to abide by the Cottage Food Bill, AB1616 by written consent. The Cottage Food Bill allows certain low-risk food products to be prepare and package in private home kitchens in California. This ensures that the sellers are aware of the limitations of some of the food they can provide; this also aims to increase our buyers' shopping confidence. 
+
+In our current era, food waste is an ever-growing problem. 
+From having expired food in the refrigerator to making too much food and having leftovers, we seem to waste food quite frequently. 
+For example, one of our team members’ mom would make a large portion of food for a family gathering only to have half of the food go to waste because half of the family members decided not to show up. 
+Our proposed product aims to solve this very problem. 
+We are creating a web application called fooDrop. 
+Our web app will help users save money by being able to sell their leftovers immediately. 
+We do not want the sellers to wait too long to sell the food because the food may go bad once the buyers have purchased it. 
+Our web app not only helps people save money but it is also beneficial towards the environment because we would be discarding less food into the dumpsters.\\\\
+
+Our vision is to develop a feature-rich web application with an intuitive user interface to help our sellers sell their leftovers to other nearby buyers. 
+This benefits the seller because they wouldn’t need to risk having their leftovers go bad in the refrigerator. 
+On the other hand, this can also benefit the buyer because the food will be sold at a cheaper price than food at a restaurant. 
+To limit any liability issues that fooDrop might face, we support the ability to filter food by allergens, thereby creating a safe platform for buyers and sellers of food to leverage and minimize food wastage.\\\\
+
+As developers, we are aware of the health concerns and risks of buying expired food for our buyers. 
+If we decide to deploy this application to the public, we will require the sellers to abide by the Cottage Food Bill, AB1616 by written consent. 
+The Cottage Food Bill allows certain low-risk food products to be prepare and package in private home kitchens in California. 
+This ensures that the sellers are aware of the limitations of some of the food they can provide; this also aims to increase our buyers' shopping confidence. 
+
 
 \section{User Benefits}
+
 \subsection{Scenario: A successful attempt at purchasing food using fooDrop}
+
+
 \begin{enumerate}
     \item Thomas presses the ``SIGN IN WITH FACEBOOK" button
     \item fooDrop prompts Thomas to enter his Facebook credentials to log him in
@@ -98,9 +109,12 @@ As developers, we are aware of the health concerns and risks of buying expired f
     \item Thomas enters his PayPal credentials
     \item PayPal executes the transaction and returns control back to fooDrop
     \item Thomas is redirected back to the homepage of fooDrop with the map overlay centered at the middle of the page
+    
 \end{enumerate}
 
+
 \subsection{Scenario: Buyer with nut allergies buying food from fooDrop}
+
 \begin{enumerate}
     \item Kim presses the ``SIGN IN WITH FACEBOOK" button
     \item fooDrop prompts Kim to enter her Facebook credentials to log her in
@@ -119,7 +133,9 @@ As developers, we are aware of the health concerns and risks of buying expired f
     \item PayPal executes the transaction and returns control back to fooDrop
     \item Kim is redirected back to the homepage of fooDrop with the map overlay centered at the middle of the page
 
+
 \subsection{Scenario: Seller has extra food that he would like to sell using fooDrop}
+
 \begin{enumerate}
     \item Carey presses the ``SIGN IN WITH FACEBOOK" button
     \item fooDrop prompts Carey to enter his Facebook credentials to log him in
@@ -130,43 +146,118 @@ As developers, we are aware of the health concerns and risks of buying expired f
     \item Carey enters the {\bf Image URL}, {\bf name} of the dish, {\bf description} of the dish. From the dropdown menu, Carey selects {\bf nuts} as one of the ingredients. After that, Carey presses the ``POST" button
     \item fooDrop will query the backend to upload Carey's data to the database
     \item Backend responds with ``SUCCESS" meaning data has been successfully stored in MongoDB
-    \item fooDrop reponds with an alert message ``Success!" to inform Carey that his dish has been successfully created 
+    \item fooDrop reponds with an alert message ``Success!" to inform Carey that his dish has been successfully created
     
 \end{enumerate}
+    
     
 \end{enumerate}
 
+
+
 \section{Feature and Requirements Description}
+
 \subsection{Feature Description}
+
 Our  app  consists  of  various  features:  homepage dish listings, homepage dish details, homepage Google Maps, seller  dish  creation  page,  dish search, seller and buyer chat page, and a user profile page.
+
 \subsubsection{Log in Page (with Facebook Oauth)}
-This log in page allows a user to sign in using their Facebook account in order to access their profile. Pressing the 'log in with facebook' button prompts a pop-up with Facebook log in. If a user enters their proper credentials, they are redirected to the dish listings home page once they have successfully logged in. If a user fails to provide proper authentication, they are prompted to log in with proper credentials. Once a user presses the log out button, they are redirected to this log in page. \newline\newline
+
+This log in page allows a user to sign in using their Facebook account in order to access their profile.
+Pressing the 'log in with facebook' button prompts a pop-up with Facebook log in. 
+If a user enters their proper credentials, they are redirected to the dish listings home page once they have successfully logged in. 
+If a user fails to provide proper authentication, they are prompted to log in with proper credentials. 
+Once a user presses the log out button, they are redirected to this log in page. 
+\newline\newline
 We have kept our implementation the same from parts A \& B. 
+
+
 \subsubsection{Homepage Dish Listings}
-The user can view the available dishes that match their profile and filter dishes as per their preferences on this page. The radius, dietary restrictions and price range the user sets from the user profile page will automatically filter dishes to match the user's specifications and needs. The user can also search for dishes with more filters from the search page. \newline\newline
+
+The user can view the available dishes that match their profile and filter dishes as per their preferences on this page. 
+The radius, dietary restrictions and price range the user sets from the user profile page will automatically filter dishes to match the user's specifications and needs. 
+The user can also search for dishes with more filters from the search page. 
+\newline\newline
 We have kept this part the same from parts A \& B. 
+
+
 \subsubsection{Homepage Dish Details}
-The dish listings page contains information about the corresponding dish. It has fields for description, location, dietary restrictions, ingredients, and price. Furthermore, the user can select a quantity of the dish they would like to buy before pressing the 'buy' button. The user also has the ability to contact the seller about the dish by pressing the 'contact seller' button. This will lead them to a chat page that enables them to directly chat with the seller for that dish.\newline\newline
+
+The dish listings page contains information about the corresponding dish. 
+It has fields for description, location, dietary restrictions, ingredients, and price. 
+Furthermore, the user can select a quantity of the dish they would like to buy before pressing the 'buy' button. 
+The user also has the ability to contact the seller about the dish by pressing the 'contact seller' button. This will lead them to a chat page that enables them to directly chat with the seller for that dish.
+\newline\newline
 We have added on to our implementation from parts A \& B by creating a chat page for the buyer and seller to personally talk about dishes. 
+
+
 \subsubsection{Homepage Google Maps}
-The Google Maps overlay on the home page contains markers for all the dishes listed below from the Dish Listings. Each of the dish listings below the map will be shown as markers on this map overlay. By clicking on a marker, the user can see the dish details, and choose to either buy the dish, or contact the seller for more information via a chat page. \newline\newline
+
+The Google Maps overlay on the home page contains markers for all the dishes listed below from the Dish Listings. 
+Each of the dish listings below the map will be shown as markers on this map overlay. 
+By clicking on a marker, the user can see the dish details, and choose to either buy the dish, or contact the seller for more information via a chat page. 
+\newline\newline
 We have added to our implementation from part B by implementing the Google Maps API that we specified in part A. 
+
+
 \subsubsection{Chat Page}
-A user can access the chat page by clicking on 'contact seller' on the dish details page. This enables a user and seller to communicate through our application. A buyer and seller will have their own unique chat page for each unique dish. \newline\newline
+
+A user can access the chat page by clicking on 'contact seller' on the dish details page. 
+This enables a user and seller to communicate through our application. 
+A buyer and seller will have their own unique chat page for each unique dish. 
+\newline\newline
 We have added to our implementation from part B by implementing this chat page that we specified in part A. 
+
 \subsubsection{Sell Dish Page (with Google Maps)}
-A user who wants to sell their dish can route to this page by clicking on the 'sell' button from the header. This sell dish page provides a form that lets the seller details various dish information, such as the quantity, price, ingredients, location, and dietary restrictions that the dish entails. The location is selected by using the Google Maps overlay feature, similar to the one on the home page. This time, this seller can click to place a marker on the map that shows where they would like to sell their dish. Once the seller presses the 'submit' button, an alert from the browser will let the user know if their listing has been successfully saved to the database or not. This makes things more convenient for the user, since they are now working with a visual feature for the location they will be selling the dish from. \newline\newline
+
+A user who wants to sell their dish can route to this page by clicking on the 'sell' button from the header. 
+This sell dish page provides a form that lets the seller details various dish information, such as the quantity, price, ingredients, location, and dietary restrictions that the dish entails. 
+The location is selected by using the Google Maps overlay feature, similar to the one on the home page.
+This time, this seller can click to place a marker on the map that shows where they would like to sell their dish. 
+Once the seller presses the 'submit' button, an alert from the browser will let the user know if their listing has been successfully saved to the database or not. 
+This makes things more convenient for the user, since they are now working with a visual feature for the location they will be selling the dish from. 
+\newline\newline
 We have added to our implementation from part B by implementing this page with the Google Maps API that we specified in part A. 
+
+
 \subsubsection{User Profile Page}
-This feature allows a user to modify various settings relating to their profile. If logged in through Facebook using OAuth, the user will receive an authentication token and a userId which is linked to their profile. A user would reach this menu by selecting the 'profile' button in the page header. Once on the profile page, the user can see a list of previous transactions that they've completed as well as some settings that they can modify. Clicking on any one of these transactions brings up the dish description page. The settings that can be modified are the dietary restrictions of the user and the default radius which will automatically filter dishes from the listings and map on the homepage as well as the PayPal ID which is linked to the account and used for payment when buying a food item. \newline\newline
+
+This feature allows a user to modify various settings relating to their profile. 
+If logged in through Facebook using OAuth, the user will receive an authentication token and a userId which is linked to their profile. 
+A user would reach this menu by selecting the 'profile' button in the page header. 
+Once on the profile page, the user can see a list of previous transactions that they've completed as well as some settings that they can modify. 
+Clicking on any one of these transactions brings up the dish description page. 
+The modifiable settings are the dietary restrictions of the user and the default radius, which will automatically filter dishes from the listings and map on the homepage. The PayPal ID is linked to the account and used for payment when buying a food item. \newline\newline
 We have added to our implementation from part B by implementing PayPal and the chat page we specified in part A. 
+
+
 \subsubsection{Search Page}
-When the user clicks on the 'search' button in the page header, it will lead them to the search page which allows the user to filter by certain categories. The categories include name, ingredients, dietary restriction, price range, and distance radius. The name category allows the user to type a name and filter the searches by a certain dish name. The user can also specify certain ingredients and/or dietary restrictions they want in their dish. For example, the ingredients can be carrot, onion, and cheese, and the app will search for dishes with all those ingredients in them. We will also have a drop down menu with many dietary restrictions that the user can select from. The results of the search will be filtered against these restrictions. Finally, the user can input a radius in miles that denotes the distance in radius between their home and the pickup location for the food. When the user clicks 'submit', they will be redirected to the homepage with all dishes that satisfy their filters. \newline\newline
+
+When the user clicks on the 'search' button in the page header, it will lead them to the search page which allows the user to filter by certain categories. 
+The categories include name, ingredients, dietary restriction, price range, and distance radius. 
+The name category allows the user to type a name and filter the searches by a certain dish name. 
+The user can also specify certain ingredients and/or dietary restrictions they want in their dish. 
+For example, the ingredients can be carrot, onion, and cheese, and the app will search for dishes with all those ingredients in them. 
+We will also have a drop down menu with many dietary restrictions that the user can select from. 
+The results of the search will be filtered against these restrictions. 
+Finally, the user can input a radius in miles that denotes the distance in radius between their home and the pickup location for the food. 
+When the user clicks 'submit', they will be redirected to the homepage with all dishes that satisfy their filters. 
+\newline\newline
 We have maintained our implementation from parts A \& B.
+
+
 \subsubsection{Header}
-The user can see the header on every page once they log in. The feature contains links to all the main pages in the application, such as the homepage, user profile, logout, sell dishes, and search dishes that are buttons titled with 'home', 'profile', 'logout', 'sell', and 'search', respectively. This feature enables a user to access many parts of our application relatively easily. The header is not found in the 'login' page because a user should not be able to access any of the application's other features until they are logged in. \newline\newline
+
+The user can see the header on every page once they log in. 
+The feature contains links to all the main pages in the application, such as the homepage, user profile, logout, sell dishes, and search dishes that are buttons titled with 'home', 'profile', 'logout', 'sell', and 'search', respectively. 
+This feature enables a user to access many parts of our application relatively easily. 
+The header is not found on the 'login' page because a user should not be able to access any of the application's other features unless they are logged in. 
+\newline\newline
 We have maintained our implementation of the header base from parts A \& B.
+
+
 \subsection{Non-Functional Requirements}
+
 \begin{description}
   \item[$\bullet$] Having 100 concurrent fooDrop users, 80\% of searches should be satisfied within 2 seconds
   \item[$\bullet$] A user of fooDrop should not be able to login to a different user's account
@@ -175,6 +266,7 @@ We have maintained our implementation of the header base from parts A \& B.
 
 
 \section{Design}
+
 \begin{figure}[H]
     \includegraphics[width=\linewidth]{class.png}
     \caption{Old class diagram for our application. }
@@ -202,8 +294,11 @@ We do not make any major implementation and structural changes in the DishListin
 
 \newline\newline
 
-For the purpose of this project we have used the following libraries and technologies
+For the purpose of this project we have used the following libraries and technologies - 
 
+Node.js - This is an asynchronous JavaScript based library which is usually run on the back-end of a web application to serve a client. We use Node.js to retrieve information from the database and handle any http requests from the client.
+
+MongoDB - MongoDB is a noSQL 
 
 \section{Description of your APIs}
 Link to the Front-End API Documentation:\begin{verbatim}http://preethamrn.github.io/fooDrop/client/docs
@@ -221,8 +316,6 @@ Link to the Back-End API Documentation:
     Here is the link to the unit and integration tests for the backend: \begin{verbatim}
 https://github.com/preethamrn/fooDrop/tree/master/server/test
 \end{verbatim}
-\\
-
 Instructions: To run tests, do \begin{verbatim} mocha *.js \end{verbatim}
 \subsection{Frontend}
 Here is the link to see all of the unit and integration tests for the frontend:
