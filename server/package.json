@@ -5,7 +5,8 @@
   "scripts": {
     "start": "node ./bin/www",
     "devstart": "nodemon ./bin/www",
-    "test": "mocha"
+    "test": "mocha",
+    "docs": "jsdoc -d docs -c jsdoc.js"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
