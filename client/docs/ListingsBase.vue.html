@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: ListingsBase.vue</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: ListingsBase.vue</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>&lt;template>
+  &lt;div name='listings-base'>
+    &lt;header-base/>
+    &lt;div id='map'>&lt;/div>
+    &lt;v-list v-if='dishes.length !== 0'>
+      &lt;listings-dish-item 
+        v-for='(dish, index) in dishes' 
+        :key='index' 
+        :ref="'listingsdishitem' + index" 
+        :name='dish.name' 
+        :location='dish.location' 
+        :price='dish.price' 
+        :dish='dish'
+      />
+    &lt;/v-list>
+    &lt;div v-else> No results &lt;/div>
+  &lt;/div>
+&lt;/template>
+
+&lt;script>
+import DishesService from '@/services/DishesService'
+import HeaderBase from '@/components/HeaderBase'
+import ListingsDishItem from '@/components/ListingsDishItem'
+
+/**
+ * @class ListingsBase
+ * @desc It is located at the route /. Contains a list of all dishes to be displayed in a list of ListingsDishItem.vue See ListingsDishItem.vue for more on single dishes
+ * @vue-data {Array.&lt;Dish>} dishes - Actual list of dishes to be displayed
+ * @vue-prop {Boolean} searched - Boolean indicating whether dishesProp has been set
+ * @vue-prop {Array.&lt;Dish>} dishesProp - List of dishes passed in from SearchDishBase.vue
+ * @vue-computed {String} storeUserState - Watcher function that checks for modifications to Vuex state
+ */
+export default {
+  name: 'listings-base',
+  components: {
+    HeaderBase,
+    ListingsDishItem
+  },
+  data () {
+    return {
+      vueGMap: null,
+      dishes: [],
+      lat: 0,
+      lon: 0
+    }
+  },
+  props: {
+    dishesProp: {
+      type: Array,
+      default: () => []
+    },
+    searched: {
+      type: Boolean,
+      default: false
+    }
+  },
+  methods: {
+    /**
+     * Get current location and calls DishesService.searchDish search for dishes based on the default search parameters stored in Vuex.
+     */
+    getDishes () {
+      DishesService.searchDish({
+        ingredients: this.$store.state.defaultIngredients,
+        dietaryRestrictions: this.$store.state.defaultDietaryRestrictions,
+        lat: this.lat,
+        lon: this.lon,
+        radius: this.$store.state.defaultRadius,
+        priceLow: this.$store.state.defaultPriceRange[0],
+        priceHigh: this.$store.state.defaultPriceRange[1]
+      }).then((response) => {
+        console.log(response)
+        this.dishes = response.data.dishes
+        this.initGoogleMaps()
+      })
+    },
+    /**
+     * Initializes google maps for displaying the map with all the dish location markers. Also attaches event listeners for opening DishDetails.
+     */
+    initGoogleMaps() {
+      const localOptions = {
+        zoom: 17,
+        center: {lat: this.lat, lng: this.lon}
+      }
+      console.log("InitializeGoogle Maps")
+      console.log(this.dishes)
+      var self = this
+      this.vueGMap = new google.maps.Map(document.getElementById('map'), localOptions)
+      // current position
+      new google.maps.Marker({
+        position: {lat: this.lat, lng: this.lon},
+        map: this.vueGMap,
+        icon: 'http://i.stack.imgur.com/orZ4x.png'
+      })
+      // position of all food items on map
+      for(var i = 0; i &lt; this.dishes.length; i++) {
+        console.log(i + " " + this.dishes[i])
+        /*var icon = {
+          url: this.dishes[i].imageUrl,
+          scaledSize: new google.maps.Size(25,25),
+          origin: new google.maps.Point(0,0),
+          anchor: new google.maps.Point(25,25)
+        }*/
+        var marker = new google.maps.Marker({
+          position: {lat: this.dishes[i].location.lat, lng: this.dishes[i].location.lon},
+          map: this.vueGMap,
+          //icon: icon,
+          index: i
+        })
+        marker.addListener('click', function() {
+          self.$refs['listingsdishitem' + this.index][0].openDishDetails()
+        })
+      }
+    }
+  },
+  computed: {
+    storeUserState () {
+      return this.$store.state.userId
+    }
+  },
+  watch: {
+    storeUserState () {
+      this.getDishes()
+    }
+  },
+  /**
+   * Automatically called when the page is mounted. It checks if the dishes have been passed in as props from SearchDishBase.vue and calls getDishes if not.
+   */
+  mounted () {
+    if (navigator.geolocation) {
+      let self = this
+      navigator.geolocation.getCurrentPosition(function (position) {
+        self.lat = position.coords.latitude
+        self.lon = position.coords.longitude
+        if (self.searched) {
+          self.dishes = self.dishesProp
+          self.initGoogleMaps()
+        } else {
+          self.getDishes()
+        }
+      })
+    }
+  }
+}
+&lt;/script>
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ChatBase.html">ChatBase</a></li><li><a href="CreateDishBase.html">CreateDishBase</a></li><li><a href="DishDetails.html">DishDetails</a></li><li><a href="FacebookLogin.html">FacebookLogin</a></li><li><a href="GoogleMap.html">GoogleMap</a></li><li><a href="HeaderBase.html">HeaderBase</a></li><li><a href="ListingsBase.html">ListingsBase</a></li><li><a href="ListingsDishItem.html">ListingsDishItem</a></li><li><a href="SearchDishBase.html">SearchDishBase</a></li><li><a href="TransactionDishItem.html">TransactionDishItem</a></li><li><a href="TransactionPendingBase.html">TransactionPendingBase</a></li><li><a href="UserProfileBase.html">UserProfileBase</a></li><li><a href="UserProfileChatItem.html">UserProfileChatItem</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Dec 02 2018 16:34:32 GMT-0800 (Pacific Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

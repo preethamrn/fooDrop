@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/ChatBase.vue</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/ChatBase.vue</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>&lt;template>
+  &lt;div class="chat-base">
+    &lt;header-base/>
+    &lt;div style='padding-left: 1vw; padding-right: 1vw'>
+      &lt;!--&lt;v-list three-line>
+        &lt;v-list-tile v-for='(chat, index) in chats' :key='index'>
+          &lt;v-list-content>
+            &lt;v-list-tile-title> {{ chat.username }} &lt;/v-list-tile-title>
+            &lt;v-list-tile-sub-title class='text--primary'> {{ chat.message }} &lt;/v-list-tile-sub-title>
+          &lt;/v-list-content>
+        &lt;/v-list-tile>
+      &lt;/v-list>-->
+      &lt;v-card v-for='(chat, index) in chats' :key='index'>
+        &lt;v-card-title>&lt;strong> {{ chat.username }} &lt;/strong>&lt;/v-card-title>
+        &lt;v-card-text> {{ chat.message }} &lt;/v-card-text>
+      &lt;/v-card>
+      &lt;div style="width: 100%">
+        &lt;v-textarea class='chatbox' v-model='message' placeholder='Send a message' @keydown.enter='sendChat' :disabled='socket === null'>&lt;/v-textarea>
+      &lt;/div>
+    &lt;/div>
+  &lt;/div>
+&lt;/template>
+
+&lt;script>
+import HeaderBase from '@/components/HeaderBase'
+import ChatsService from '@/services/ChatsService'
+import io from 'socket.io-client'
+
+/**
+ * @class ChatBase
+ * @desc It is located at /chat/:id. Shows all the chat messages between a buyer and seller.
+ * @vue-data {String} chatId - Identifier for receiving chat messages from the backend
+ * @vue-data {String} message - Current message stored in the text field on the page
+ * @vue-data {Array.&lt;Chat>} chats - List of chats containing the chat message, userId, and username of the user sending the message
+ * @vue-data {String} buyer - Buyer name in the conversation
+ * @vue-data {String} seller - Seller name in the conversation
+ * @vue-data {Socket.io} socket - Socket connection object for real time communication with the server
+ * @vue-computed {String} storeUserState - Watcher function that checks for modifications to Vuex state
+ */
+export default {
+  name: 'chat-base',
+  components: {
+      HeaderBase
+  },
+  data () {
+    return {
+      chatId: '',
+      message: '',
+      chats: [],
+      buyer: '',
+      seller: '',
+      socket: null
+    }
+  },
+  methods: {
+    /**
+     * Create and store a real time connection with the server
+     */
+    chatSocketConnect () {
+      this.socket = io.connect('http://localhost:8081/', {
+        query: {
+          userId: this.$store.state.userId,
+          chatId: this.chatId
+        }
+      })
+
+      this.socket.on('chat', (data) => {
+        this.chats.push(data)
+      })
+      this.socket.on('initFail', (data) => {
+        alert('Error - Could not connect due to: ' + data.errorMessage)
+        this.$router.push({ path: `/` })
+      })
+    },
+    /**
+     * Send chat message to the server
+     */
+    async sendChat () {
+      let response = await ChatsService.sendChat({ 
+        chatId: this.chatId,
+        userId: this.$store.state.userId,
+        username: this.$store.state.username,
+        message: this.message
+      })
+      if (response.data.success) {
+        this.message = ''
+      }
+    }
+  },
+  /**
+   * Get chat messages and initialize socket connection
+   */
+  async created () {
+    this.chatId = this.$route.params.id
+    let response = await ChatsService.getChats({ chatId: this.chatId })
+    if (response.data.success) {
+      this.chats = response.data.result.messages
+      this.buyer = response.data.result.buyer
+      this.seller = response.data.result.seller
+    } else {
+      alert('Error - Could not get previous messages in this conversation')
+      this.$router.push({ path: `/` })
+    }
+
+    if (this.$store.state.userId !== '') {
+      this.chatSocketConnect()
+    }
+  },
+  computed: {
+    storeUserState () {
+      return this.$store.state.userId
+    }
+  },
+  watch: {
+    storeUserState () {
+      this.chatSocketConnect()
+    }
+  },
+  /**
+   * Disconnect socket connection
+   */
+  destroyed () {
+    this.socket.disconnect()
+  }
+}
+&lt;/script>
+
+&lt;style scoped>
+.v-card__text {
+  padding-top: 0px
+}
+.v-card__title {
+  padding-bottom: 0px
+}
+&lt;/style></code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-ChatService.html">ChatService</a></li><li><a href="module-DishesService.html">DishesService</a></li><li><a href="module-FacebookAuth.html">FacebookAuth</a></li></ul><h3>Classes</h3><ul><li><a href="ChatBase.html">ChatBase</a></li><li><a href="CreateDishBase.html">CreateDishBase</a></li><li><a href="DishDetails.html">DishDetails</a></li><li><a href="FacebookLogin.html">FacebookLogin</a></li><li><a href="GoogleMap.html">GoogleMap</a></li><li><a href="HeaderBase.html">HeaderBase</a></li><li><a href="ListingsBase.html">ListingsBase</a></li><li><a href="ListingsDishItem.html">ListingsDishItem</a></li><li><a href="SearchDishBase.html">SearchDishBase</a></li><li><a href="TransactionDishItem.html">TransactionDishItem</a></li><li><a href="TransactionPendingBase.html">TransactionPendingBase</a></li><li><a href="UserProfileBase.html">UserProfileBase</a></li><li><a href="UserProfileChatItem.html">UserProfileChatItem</a></li><li><a href="VuexStore.html">VuexStore</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Dec 02 2018 17:39:23 GMT-0800 (Pacific Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

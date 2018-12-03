@@ -72,8 +72,8 @@
             <v-text-field label='Quantity' :rules='quantityRules' v-model.number='newDishQuantity'></v-text-field>
 
             <v-card-actions>
-              <v-btn flat color='red' @click='clearForm'>x Clear</v-btn>
-              <v-btn flat color='green' :disabled='!valid' @click='createDish'>- Post</v-btn>
+              <v-btn flat color='red' class='clearbtn' @click='clearForm'>x Clear</v-btn>
+              <v-btn flat color='green' class='createbtn' :disabled='!valid' @click='createDish'>- Post</v-btn>
             </v-card-actions>
           </v-form>
         </v-card>
@@ -92,6 +92,22 @@
 <script>
 import DishesService from '@/services/DishesService'
 import HeaderBase from '@/components/HeaderBase'
+/**
+ * @class CreateDishBase
+ * @desc Component for creating dishes. Allows a user to enter dish details, select dish location, and create the dish on the backend server for sale.
+ * @vue-data {GoogleMap} vueGMap - Google map display on the page for sale location selection
+ * @vue-data {GoogleMapMarker} marker - Marker displaying the current dish sale position on the map
+ * @vue-data {Boolean} valid - Validate the dish creation details
+ * @vue-data {String} newDishName - Name of the new dish
+ * @vue-data {String} newDishDescription - Description of the new dish
+ * @vue-data {String} newDishUrl - Image URL of the new dish
+ * @vue-data {Number} newDishLocationLat - Location (latitude) of the new dish
+ * @vue-data {Number} newDishLocationLong - Location (longitude) of the new dish
+ * @vue-data {Array.<String>} newDishIngredients - Ingredients of the new dish
+ * @vue-data {Array.<String>} newDishDietaryRestrictions - Dietary restrictions of the new dish
+ * @vue-data {Number} newDishPrice - Price of the new dish
+ * @vue-data {Number} newDishQuantity - Quantity of the new dish available for sale
+ */
 export default {
   name: 'create-dish-base',
   components: {
@@ -99,10 +115,11 @@ export default {
   },
   data () {
     return {
-      // validation
       vueGMap: null,
       marker: null,
       position: null,
+
+      // validation
       valid: true,
       nameRules: [(v) => { return !!v || 'Name is required' }],
       dietaryRestrictionsList: ['gluten free', 'vegan', 'vegetarian', 'lactose free', 'nut free'],
@@ -127,10 +144,12 @@ export default {
     }
   },
   methods: {
+    /**
+     * Sends a request to create the dish on the backend database
+     */
     async createDish () {
-      // TODO: also include seller userId and paypalId in dish details
       if (this.$refs.form.validate()) {
-        if (this.$store.state.paypalId && this.$store.state.paypalId !== '') {
+        if (this.$store.state.paypalId && this.$store.state.paypalId !== '' && this.$store.state.paypalId !== '-1') {
           let response = await DishesService.newDish({
             name: this.newDishName,
             description: this.newDishDescription,
@@ -154,6 +173,9 @@ export default {
         }
       }
     },
+    /**
+     * Clear the form data entered for the new dish
+     */
     clearForm () {
       this.newDishName = ''
       this.newDishDescription = ''
@@ -163,14 +185,23 @@ export default {
       this.newDishPrice = null
       this.newDishQuantity = null
     },
+    /**
+     * Removes a dietary restriction from the new dish dietary restrictions list
+     */
     removeDietaryRestriction (item) {
       this.newDishDietaryRestrictions.splice(this.newDishDietaryRestrictions.indexOf(item), 1)
       this.newDishDietaryRestrictions = [...this.newDishDietaryRestrictions]
     },
+    /**
+     * Removes an ingredient from the new dish ingredients list
+     */
     removeIngredient (item) {
       this.newDishIngredients.splice(this.newDishIngredients.indexOf(item), 1)
       this.newDishIngredients = [...this.newDishIngredients]
     },
+    /**
+     * Place a marker on the Google map display
+     */
     placeMarker(latlng, map) {
       console.log("Place Marker")
       if(this.marker != null) {
@@ -185,6 +216,9 @@ export default {
       this.newDishLocationLong = latlng.lng
       map.panTo(latlng)
     },
+    /**
+     * Initialize the Google map on the page for location selection
+     */
     initGoogleMaps() {
       const localOptions = {
         zoom: 17,
@@ -199,6 +233,9 @@ export default {
       })
     }
   },
+  /**
+   * Get the current location and inialize the google map
+   */
   mounted () {
     if (navigator.geolocation) {
        var self = this;

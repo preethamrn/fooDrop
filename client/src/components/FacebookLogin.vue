@@ -9,12 +9,19 @@
 <script>
 /* eslint-disable */
 import FacebookLogin from '@/services/FacebookAuth'
+/**
+ * @class FacebookLogin
+ * @desc Login component that uses Facebook OAuth
+ */
 export default {
   name: 'facebook-login',
   data() {
     return {}
   },
   methods: {
+    /**
+     * Login to Facebook using OAuth. Opens popup to enter Facebook login details.
+     */
     async login() {
       console.log("Loading SDK")
       let self = this
