@@ -22,18 +22,7 @@ describe('Chat', () => {
     //Tests go in here
     describe('/Get chats', ()=>{
 
-        it('Test case #3: it should GET chats by chatId', (done) => {
-
-            // var ChatSchema = new Schema({
-            //     chatId: String,
-            //     buyer: String,
-            //     seller: String,
-            //     messages: [{
-            //         userId: String,
-            //         username: String,
-            //         message: String
-            //     }]
-            // }
+        it('Test case #1: it should GET chats by chatId', (done) => {
 
             let tmp_chat = new Chat(
               { chatId: "12", buyer: "leslie", seller: "andrew", messages: [{userId:"9", username:"rumman", message: "GET OVER HERE"}]}

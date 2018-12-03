@@ -32,6 +32,8 @@ Webapp for buying fresh home-cooked food
 <br>
 <br>
 
+* We used JSDoc to generate our documentation
+
 ```
 Directory structure 
 
