@@ -1,0 +1,260 @@
+\documentclass[titlepage,12pt]{article}
+
+\usepackage{titling}
+
+\usepackage{array}
+
+\newcommand{\subtitle}[1]{%
+  \posttitle{%
+    \par\end{center}
+    \begin{center}\large#1\end{center}
+    \vskip0.5em}%
+}
+
+\usepackage{graphicx}
+
+\usepackage{subfigure}
+
+\usepackage{float}
+
+\graphicspath{ {./images/} }
+
+\title{\textbf{fooDrop - Food sharing webapp}}
+
+\subtitle{PART C\\URL: {github.com/preethamrn/fooDrop}\\Team Name: {fooDrop Inc.}}
+
+\author{
+Preetham Narayanareddy: 604630101\\ 
+Leslie Liang: 204625818 \\ 
+Farhan Alam: 804595663 \\ 
+Karthik Ramesh: 104687637 \\ 
+Udayan Sahai: 504646937 
+}
+
+\date{\oldstylenums{12}/\oldstylenums{2}/\oldstylenums{2018}}
+
+%--------------------Make usable space all of page
+\setlength{\oddsidemargin}{0in}
+\setlength{\evensidemargin}{0in}
+\setlength{\topmargin}{0in}
+\setlength{\headsep}{-.25in}
+\setlength{\textwidth}{6.5in}
+\setlength{\textheight}{8.5in}
+
+%--------------------Indention
+\setlength{\parindent}{1cm}
+
+
+\begin{document}
+
+\maketitle
+
+Checklist
+
+\begin{enumerate}
+    \item motivation (DONE)
+
+    \item DESIGN:
+        \subitem class diagrams highlighting the differences **HEAVY EMPHASIS ON THIS**
+        \subitem MENTIONED DESIGN PATTERNS (mongoose singleton design patter and observer) a paragraph or two should do the job
+
+    \item usage scenarios highlighting the differences (not quite sure how to highlight differences) (DONE)
+
+    \item non-functional requirements (talk about user rating system in the future)
+
+    \item more details on implementation
+
+    \item API documentation for classes and functions
+
+    \item unit tests for backend classes and methods, not sure how to do that... ??
+
+    \item test scenarios and test cases  (describe 2 - 3 integration tests and have a link in the report to the rests of tests)
+
+    \item full and final API documentation, put a link on the report
+    
+\end{enumerate}
+
+\section{Motivation}
+In our current era, food waste is an ever-growing problem. From having expired food in the refrigerator to making too much food and having leftovers, we seem to waste food quite frequently. For example, one of our team members’ mom would make a large portion of food for a family gathering only to have half of the food go to waste because half of the family members decided not to show up. Our proposed product aims to solve this very problem. We are creating a web application called fooDrop. Our web app will help users save money by being able to sell their leftovers immediately. We do not want the sellers to wait too long to sell the food because the food may go bad once the buyers have purchased it. Our web app not only helps people save money but it is also beneficial towards the environment because we would be discarding less food into the dumpsters.\\\\
+Our vision is to develop a feature-rich web application with an intuitive user interface to help our sellers sell their leftovers to other nearby buyers. This benefits the seller because they wouldn’t need to risk having their leftovers go bad in the refrigerator. On the other hand, this can also benefit the buyer because the food will be sold at a cheaper price than food at a restaurant. To limit any liability issues that fooDrop might face, we support the ability to filter food by allergens, thereby creating a safe platform for buyers and sellers of food to leverage and minimize food wastage.\\\\
+As developers, we are aware of the health concerns and risks of buying expired food for our buyers. If we decide to deploy this application to the public, we will require the sellers to abide by the Cottage Food Bill, AB1616 by written consent. The Cottage Food Bill allows certain low-risk food products to be prepare and package in private home kitchens in California. This ensures that the sellers are aware of the limitations of some of the food they can provide; this also aims to increase our buyers' shopping confidence. 
+
+\section{User Benefits}
+\subsection{Scenario: A successful attempt at purchasing food using fooDrop}
+\begin{enumerate}
+    \item Thomas presses the ``SIGN IN WITH FACEBOOK" button
+    \item fooDrop prompts Thomas to enter his Facebook credentials to log him in
+    \item Thomas enters his Facebook credentials
+    \item fooDrop displays a homepage with a map overlay in the center of the app and a navbar on the upper right side of the app
+    \item Thomas presses the ``SEARCH" button
+    \item fooDrop displays the input field for {\bf Name}, dropdown menu for {\bf Dietary Restrictions}, input field for {\bf Ingredients}, and slider bars for {\bf Price} and {\bf Radius}
+    \item Thomas indicates the dish name is BigMac, no dietary restrictions, ingredients include eggs, tomatoes and sausage, price is \$4 and radius is 1 mile. 
+    \item fooDrop displays a list of dishes that matches satisfies Thomas' inputs
+    \item Thomas presses the ``VIEW DISH" button next to the second option in the listings
+    \item fooDrop opens up more details about the dish. For example {\bf Description}, {\bf Dietary Restrictions}, {\bf Price} and {\bf Quantity} are shown. On the bottom, there are three buttons: {\bf CLOSE}, {\bf CONTACT SELLER} and {\bf BUY}
+    \item Thomas scrolls through the pop-up to see more details about the dish. Thomas then presses the {\bf BUY} button. 
+    \item fooDrop redirects the transaction to PayPal 
+    \item PayPal creates the transaction then prompts Thomas to enter his PayPal credentials
+    \item Thomas enters his PayPal credentials
+    \item PayPal executes the transaction and returns control back to fooDrop
+    \item Thomas is redirected back to the homepage of fooDrop with the map overlay centered at the middle of the page
+\end{enumerate}
+
+\subsection{Scenario: Buyer with nut allergies buying food from fooDrop}
+\begin{enumerate}
+    \item Kim presses the ``SIGN IN WITH FACEBOOK" button
+    \item fooDrop prompts Kim to enter her Facebook credentials to log her in
+    \item Kim enters her Facebook credentials
+    \item fooDrop displays a homepage with a map overlay in the center of the app and a navbar on the upper right side of the app 
+    \item Kim presses on the ``PROFILE" button 
+    \item fooDrop displays Kim's user profile along with the her transaction history
+    \item On dietary restrictions, Kim inputs {\bf nut free}. Kim now presses the ``HOME" button 
+    \item fooDrop filters all the dishes that satisfies Kim's user profile and displays a list of dishes that matches Kim's user profile settings
+    \item Kim selects a dish on the map 
+    \item fooDrop opens up more details about the dish. {\bf Description}, {\bf Dietary Restrictions}, {\bf Price} and {\bf Quantity} are all shown. And on the bottom, there are three buttons: {\bf CLOSE}, {\bf CONTACT SELLER} and {\bf BUY}
+    \item Kim scrolls through the pop-up to see more information about the dish. She notices that the dish has a field called {\bf Dietary Restrictions} and under it says nut free. After she has confirmed that the dish has no nuts, she presses the ``BUY" button
+    \item fooDrop redirects the transaction to PayPal
+    \item PayPal creates the transaction then prompts Kim to enter her PayPal credentials
+    \item Kim enters her PayPal credentials
+    \item PayPal executes the transaction and returns control back to fooDrop
+    \item Kim is redirected back to the homepage of fooDrop with the map overlay centered at the middle of the page
+
+\subsection{Scenario: Seller has extra food that he would like to sell using fooDrop}
+\begin{enumerate}
+    \item Carey presses the ``SIGN IN WITH FACEBOOK" button
+    \item fooDrop prompts Carey to enter his Facebook credentials to log him in
+    \item Carey enters his Facebook credentials
+    \item fooDrop displays a homepage with a map overlay in the center of the app and a navbar on the upper right side of the app
+    \item Carey presses on the ``SELL" button (**previously the button was ``NEW" **)
+    \item fooDrop displays the input field for {\bf Image URL}, input field for {\bf Name}, input field for {\bf Description}, dropdown menu for {\bf Dietary Restrictions}, input field for {\bf Ingredients}, input field for {\bf Price} and and input field for {\bf Quantity}
+    \item Carey enters the {\bf Image URL}, {\bf name} of the dish, {\bf description} of the dish. From the dropdown menu, Carey selects {\bf nuts} as one of the ingredients. After that, Carey presses the ``POST" button
+    \item fooDrop will query the backend to upload Carey's data to the database
+    \item Backend responds with ``SUCCESS" meaning data has been successfully stored in MongoDB
+    \item fooDrop reponds with an alert message ``Success!" to inform Carey that his dish has been successfully created 
+    
+\end{enumerate}
+    
+\end{enumerate}
+
+\section{Feature and Requirements Description}
+\subsection{Feature Description}
+Our  app  consists  of  various  features:  homepage dish listings, homepage dish details, homepage Google Maps, seller  dish  creation  page,  dish search, seller and buyer chat page, and a user profile page.
+\subsubsection{Log in Page (with Facebook Oauth)}
+This log in page allows a user to sign in using their Facebook account in order to access their profile. Pressing the 'log in with facebook' button prompts a pop-up with Facebook log in. If a user enters their proper credentials, they are redirected to the dish listings home page once they have successfully logged in. If a user fails to provide proper authentication, they are prompted to log in with proper credentials. Once a user presses the log out button, they are redirected to this log in page. \newline\newline
+We have kept our implementation the same from parts A \& B. 
+\subsubsection{Homepage Dish Listings}
+The user can view the available dishes that match their profile and filter dishes as per their preferences on this page. The radius, dietary restrictions and price range the user sets from the user profile page will automatically filter dishes to match the user's specifications and needs. The user can also search for dishes with more filters from the search page. \newline\newline
+We have kept this part the same from parts A \& B. 
+\subsubsection{Homepage Dish Details}
+The dish listings page contains information about the corresponding dish. It has fields for description, location, dietary restrictions, ingredients, and price. Furthermore, the user can select a quantity of the dish they would like to buy before pressing the 'buy' button. The user also has the ability to contact the seller about the dish by pressing the 'contact seller' button. This will lead them to a chat page that enables them to directly chat with the seller for that dish.\newline\newline
+We have added on to our implementation from parts A \& B by creating a chat page for the buyer and seller to personally talk about dishes. 
+\subsubsection{Homepage Google Maps}
+The Google Maps overlay on the home page contains markers for all the dishes listed below from the Dish Listings. Each of the dish listings below the map will be shown as markers on this map overlay. By clicking on a marker, the user can see the dish details, and choose to either buy the dish, or contact the seller for more information via a chat page. \newline\newline
+We have added to our implementation from part B by implementing the Google Maps API that we specified in part A. 
+\subsubsection{Chat Page}
+A user can access the chat page by clicking on 'contact seller' on the dish details page. This enables a user and seller to communicate through our application. A buyer and seller will have their own unique chat page for each unique dish. \newline\newline
+We have added to our implementation from part B by implementing this chat page that we specified in part A. 
+\subsubsection{Sell Dish Page (with Google Maps)}
+A user who wants to sell their dish can route to this page by clicking on the 'sell' button from the header. This sell dish page provides a form that lets the seller details various dish information, such as the quantity, price, ingredients, location, and dietary restrictions that the dish entails. The location is selected by using the Google Maps overlay feature, similar to the one on the home page. This time, this seller can click to place a marker on the map that shows where they would like to sell their dish. Once the seller presses the 'submit' button, an alert from the browser will let the user know if their listing has been successfully saved to the database or not. This makes things more convenient for the user, since they are now working with a visual feature for the location they will be selling the dish from. \newline\newline
+We have added to our implementation from part B by implementing this page with the Google Maps API that we specified in part A. 
+\subsubsection{User Profile Page}
+This feature allows a user to modify various settings relating to their profile. If logged in through Facebook using OAuth, the user will receive an authentication token and a userId which is linked to their profile. A user would reach this menu by selecting the 'profile' button in the page header. Once on the profile page, the user can see a list of previous transactions that they've completed as well as some settings that they can modify. Clicking on any one of these transactions brings up the dish description page. The settings that can be modified are the dietary restrictions of the user and the default radius which will automatically filter dishes from the listings and map on the homepage as well as the PayPal ID which is linked to the account and used for payment when buying a food item. \newline\newline
+We have added to our implementation from part B by implementing PayPal and the chat page we specified in part A. 
+\subsubsection{Search Page}
+When the user clicks on the 'search' button in the page header, it will lead them to the search page which allows the user to filter by certain categories. The categories include name, ingredients, dietary restriction, price range, and distance radius. The name category allows the user to type a name and filter the searches by a certain dish name. The user can also specify certain ingredients and/or dietary restrictions they want in their dish. For example, the ingredients can be carrot, onion, and cheese, and the app will search for dishes with all those ingredients in them. We will also have a drop down menu with many dietary restrictions that the user can select from. The results of the search will be filtered against these restrictions. Finally, the user can input a radius in miles that denotes the distance in radius between their home and the pickup location for the food. When the user clicks 'submit', they will be redirected to the homepage with all dishes that satisfy their filters. \newline\newline
+We have maintained our implementation from parts A \& B.
+\subsubsection{Header}
+The user can see the header on every page once they log in. The feature contains links to all the main pages in the application, such as the homepage, user profile, logout, sell dishes, and search dishes that are buttons titled with 'home', 'profile', 'logout', 'sell', and 'search', respectively. This feature enables a user to access many parts of our application relatively easily. The header is not found in the 'login' page because a user should not be able to access any of the application's other features until they are logged in. \newline\newline
+We have maintained our implementation of the header base from parts A \& B.
+\subsection{Non-Functional Requirements}
+\begin{description}
+  \item[$\bullet$] Having 100 concurrent fooDrop users, 80\% of searches should be satisfied within 2 seconds
+  \item[$\bullet$] A user of fooDrop should not be able to login to a different user's account
+  \item[$\bullet$] Having 50 concurrent chats open, 80\% of chat messages should be sent within 3 seconds
+\end{description}
+
+
+\section{Design}
+\begin{figure}[H]
+    \includegraphics[width=\linewidth]{class.png}
+    \caption{Old class diagram for our application. }
+\end{figure}
+
+\begin{figure}[H]
+\includegraphics[width=\linewidth]{images/front-end.png}
+    \caption{Updated front-end class diagram for our application. }
+\end{figure}
+
+\begin{figure}[H]
+\includegraphics[width=\linewidth]{images/back-end.png}
+    \caption{Updated back-end class diagram for our application. }
+\end{figure}
+
+Our old class diagram had assumed a unified front-end and back-end application. This turned out not to be the case as our back-end and front-end work as independent units and thus require separate class diagrams. 
+\newline\newline
+Our back-end side class diagram is a simpler version of the front-end class diagram as it attempts to model the same data as the front-end class diagram but without the added complexity of having to deal with Map overlays, Listings, Facebook authentication etc. It is only responsible for keeping track of and providing information to the front-end which can manipulate and store it appropriately in a more complex and intricate structure. We will this only be comparing out front-end class diagram with our old class diagram as it is an accurate indicator of the changes we have implemented since Part A.  
+\newline\newline
+While our old class diagram is well suited to an Object oriented programming language such as Java, a callback based web development language  such as JavaScript required us to make such changes. Most of our changes have come as a result of this change. On the user's side we decided to collapse the inheritance hierarchy of having a buyer and a seller subclass extending the user base class into a a single user class. We did this as it not only makes it significantly easier for us to store such an object in Mongoose but also allows the buyer's and seller's to freely interchange their roles to form a fluid marketplace.
+\newline\newline
+The chat implementation in the UserProfileChatItem is similar to the old chat class in that it uses the same fields and the same basic principles as the old class diagram. However it uses a new socket.io API through the ChatBase class. We still constinue to make use of the Transactions class but we embed this inside the User class so that each user can keep track of their own transaction information which can be displayed to them.
+\newline\newline
+We do not make any major implementation and structural changes in the DishListings and the DishItem class. However, we have added a new DishDetails class to avoid the problem of primitive obsession which is caused by adding too many primitive type variables. Our DishListings class in the new version has an aggregation of Google Maps objects. This is similar to the old version but we have decided to get rid of the Map pins objects as we found those to be redundant.
+
+\newline\newline
+
+For the purpose of this project we have used the following libraries and technologies
+
+
+\section{Description of your APIs}
+Link to the Front-End API Documentation:\begin{verbatim}http://preethamrn.github.io/fooDrop/client/docs
+\end{verbatim}
+Link to the Back-End API Documentation: 
+\begin{verbatim}http://preethamrn.github.io/fooDrop/server/docs
+\end{verbatim}
+
+\section{User Interface Snapshots}
+
+
+\section{Test Scenarios and Test Cases in [Jest] and [Selenium]}
+
+\subsection{Backend}
+    Here is the link to the unit and integration tests for the backend: \begin{verbatim}
+https://github.com/preethamrn/fooDrop/tree/master/server/test
+\end{verbatim}
+\\
+
+Instructions: To run tests, do \begin{verbatim} mocha *.js \end{verbatim}
+\subsection{Frontend}
+Here is the link to see all of the unit and integration tests for the frontend:
+\begin{verbatim}
+https://github.com/preethamrn/fooDrop/tree/master/client/tests
+\end{verbatim}
+
+\subsubsection{Unit Tests}
+We used the jest framework with vue test-utils for unit testing on our front end. When using the jest framework, we had to create mock versions of Axios, so that we do not continually send HTTPS requests whenever we make a new test. Additionally, we had to create a mock router with jest to reroute mocked components to a new endpoint. From vue test-utils, we used mount, shallowMount, and createLocalVue. We used shallowMount when we wanted to mount isolated components, wherein we do not want/need to render its child components. When we are using a component that will interact with other components and would need us to render its child components, we would use mount. When we test a generic component suite that may get shared across different apps, it was better to test the components in a more isolated setup, without polluting the global Vue constructor, so we used createLocalVue to cretae a local instance of the the global Vue. 
+
+All of these unit tests suites are located in the tests/unit folder in the client, with the '.spec.js' file types. You can run the tests by going into the client directory and entering: 'npm run test:unit'. This will run all of the 'spec.js' test files in the 'tests/unit' folder, and tell you how many of the test suites passed and failed. We have 6 test suites, and 14 tests altogether. 
+\subsubsection{Integration Tests}
+In order to perform integration tests on the application, we used the testing framework, Selenium. To streamline the process of creating tests, we used the Selenium IDE, which is a browser plugin. Selenium IDE allowed us to view the elements and components and write tests around them, as well as record our actions in order to replicate them. Selenium IDE also has the feature of showing exactly which command breaks the test, thus allowing for easy debugging.
+
+All the integration tests are stored in a file called Integrate Tests.side. In order to run the test script, one must first install the Selenium IDE on the browser. It is recommended that Chrome browser is used as it allows the use of http to get location data. When Selenium is installed, launch it through the browser and open Integration Tests.side. Once the tests have been loaded, locate the test suite tab and select interface to view all tests in order and the details of each test.
+
+Selenium IDE allowed us to quickly create integration tests that mimicked users, however there are some downsides to using it. The main downside is that Selenium IDE does not allow use to create a precondition environment before executing the tests. This means in order to run the tests, the collections in foodrop database (MongoDB) need to be dropped beforehand. Another issue is that if the logout test in the end fails, we needed to manually logout of Facebook.
+
+The following is a rundown of 3 test from the list of 15 integration tests. To view the rest of the tests please go the link:
+
+\begin{verbatim}
+https://github.com/preethamrn/fooDrop/blob/master/client/tests/
+integration/Integration%20Tests.side
+\end{verbatim}
+
+\noindent Test\#1: CreateDish \newline
+In this test Selenium simulates a button press on the Search button in order to redirect to the search page. Once on the search page, Selenium looks for the appropriate input elements, such as Name, quantity, price and fills them out with valid data. Selenium then places a marker on the Google Map feature in a location within 2 miles of the Tester's current location. Once all parameters are filled out, the post is submitted and Selenium asserts for a 'Success' alert. The purpose of this test is to see the interaction between the Vue components on the Search page, Google Maps and the calls to the create\_dish endpoint.\newline
+
+\noindent Test\#2: UpdateUserDistance \newline
+In this test Selenium simulates a button press on the Profile button. It then checks if we were redirected to the user's profile page. If the proper elements for the user profile is found, Selenium changes the user's default radius to 15 miles. It then simulates a button press on the Home button to redirect us back to the home page. Once the home page is loaded, Selenium makes an assertion on whether a second entry is now listed with a larger radius. The purpose of the test is to check if the Header Vue component can redirect the user between the home and profile page, the profile page can make successful calls to the user\_update endpoint, and if the home page can make successful calls to the get\_dishes\_by\_radius endpoint and properly display the data. \newline
+
+\noindent Test\#3: Login \newline
+In this test Selenium opens up the login page and clicks the 'Sign In With Facebook' button at the center of the page. This opens up another window prompting the user for Facebook credentials. Selenium inputs mock user information provided by Facebook in order to log in. If successful the window should close and the user is redirected to the home page. From here Selenium makes an assertion on the Header component to determine if the user is at the home page. This test is important as it tests the entire authentication flow from the frontend and the backend. The initial button press checks if the Facebook javascript SDK is properly loaded and if the Vue component can call the Facebook login function. Submitting the credentials tests the /auth/facebook endpoint in the backend and whether the Vue components can properly handle the user information. 
+
+\end{document}
