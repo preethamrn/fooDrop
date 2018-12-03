@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Namespace: chatRouter</title>
+    <title>JSDoc: Module: app</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Namespace: chatRouter</h1>
+    <h1 class="page-title">Module: app</h1>
 
     
 
@@ -28,8 +28,8 @@
 
 <header>
     
-        <h2>
-            <span class="ancestors"><a href="module-routers_chat.html">routers/chat</a>~</span>chatRouter</h2>
+        
+            
         
     
 </header>
@@ -38,10 +38,24 @@
     <div class="container-overview">
     
         
-            <div class="description">Express router to mount user related functions on.</div>
+            <div class="description">app module</div>
         
 
         
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 <dl class="details">
@@ -73,7 +87,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="routes_chat.js.html">routes/chat.js</a>, <a href="routes_chat.js.html#line15">line 15</a>
+        <a href="src_app.js.html">src/app.js</a>, <a href="src_app.js.html#line12">line 12</a>
     </li></ul></dd>
     
 
@@ -83,6 +97,22 @@
 
     
 </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         
@@ -112,7 +142,7 @@
     
 
     
-    <h4 class="name" id=".get_chats"><span class="type-signature">(static) </span>get_chats<span class="signature">(ChatId)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="~auth_facebook"><span class="type-signature">(inner) </span>auth_facebook<span class="signature">(user, callback)</span><span class="type-signature"></span></h4>
     
 
     
@@ -120,7 +150,7 @@
 
 
 <div class="description">
-    Route returns the chat messages
+    function that authenticates the user and if the user is valid it returns a json web token
 </div>
 
 
@@ -156,13 +186,13 @@
 
         <tr>
             
-                <td class="name"><code>ChatId</code></td>
+                <td class="name"><code>user</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">String</span>
+<span class="param-type">Object</span>
 
 
             
@@ -172,7 +202,30 @@
 
             
 
-            <td class="description last">The id of the Chat</td>
+            <td class="description last">facebook user object</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">callback</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">callback</td>
         </tr>
 
     
@@ -213,7 +266,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="routes_chat.js.html">routes/chat.js</a>, <a href="routes_chat.js.html#line29">line 29</a>
+        <a href="src_app.js.html">src/app.js</a>, <a href="src_app.js.html#line120">line 120</a>
     </li></ul></dd>
     
 
@@ -247,7 +300,7 @@
     
 
     
-    <h4 class="name" id=".send_chat"><span class="type-signature">(static) </span>send_chat<span class="signature">(ChatId, userId, username, message)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="~passport"><span class="type-signature">(inner) </span>passport<span class="signature">(facebookToken, login_or_sign_up)</span><span class="type-signature"></span></h4>
     
 
     
@@ -255,7 +308,7 @@
 
 
 <div class="description">
-    /* Broadcast chat messages and stores message in database. Creates chat log in buyer, seller, and chat databases if not present
+    Creates a facebook authentication stragety
 </div>
 
 
@@ -291,13 +344,13 @@
 
         <tr>
             
-                <td class="name"><code>ChatId</code></td>
+                <td class="name"><code>facebookToken</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">String</span>
+<span class="param-type">Object</span>
 
 
             
@@ -307,20 +360,20 @@
 
             
 
-            <td class="description last">The id of the Chat</td>
+            <td class="description last">has facebookappid field and facebookappsecret field</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>userId</code></td>
+                <td class="name"><code>login_or_sign_up</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">String</span>
+<span class="param-type">callback</span>
 
 
             
@@ -330,53 +383,7 @@
 
             
 
-            <td class="description last">The id of the User</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>username</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The username of whom to send message</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>message</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The message to emit</td>
+            <td class="description last">logs the user in or signs the user up</td>
         </tr>
 
     
@@ -417,7 +424,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="routes_chat.js.html">routes/chat.js</a>, <a href="routes_chat.js.html#line51">line 51</a>
+        <a href="src_app.js.html">src/app.js</a>, <a href="src_app.js.html#line70">line 70</a>
     </li></ul></dd>
     
 
