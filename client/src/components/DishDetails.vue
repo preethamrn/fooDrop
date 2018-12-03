@@ -49,6 +49,25 @@
 </template>
 
 <script>
+/**
+ * @class DishDetails
+ * @desc This component is nested in TransactionsDishItem and ListingsDishItem. It displays dish details in a pop-up dialog. Allows users to contact seller and purchase the dish. 
+ * @vue-data {Boolean} dishDetailsDialog - Designates whether dish details dialog is open or not
+ * @vue-data {Number} quantity - Number of dishes to be purchased
+ * @vue-prop {String} name - Name of the dish
+ * @vue-prop {String} description - Description of the dish
+ * @vue-prop {Number} locationLat - Location (latitude) of the dish
+ * @vue-prop {Number} locationLong - Location (longitude) of the dish
+ * @vue-prop {Number} price - Price of the dish
+ * @vue-prop {Array.<String>} dietaryRestrictions - List of dietary restrictions on the dish
+ * @vue-prop {Array.<String>} ingredients - List of ingredients in the dish
+ * @vue-prop {String} url - Image URL of the dish
+ * @vue-prop {Number} maxQuantity - Total number of dishes that can be purchased
+ * @vue-prop {String} sellerId - Dish seller ID
+ * @vue-prop {String} sellerPaypalId - Dish seller PayPal ID
+ * @vue-prop {String} id - Dish ID
+ * @vue-computed {String} chatId - Corresponding chatId for communicating with the seller
+ */
 export default {
   name: 'dish-details',
   data () {
@@ -58,9 +77,15 @@ export default {
     }
   },
   methods: {
+    /**
+     * Contact seller by redirecting user to a new page with the correct chatId
+     */
     contactSeller () {
       this.$router.push({ path: `/chat/${this.chatId}`, params: { id: this.chatId } })
     },
+    /**
+     * Purchase dish through an API call with PayPal
+     */
     async purchaseDish () {
       if (this.quantity <= 0) {
         alert('Quantity must be positive')

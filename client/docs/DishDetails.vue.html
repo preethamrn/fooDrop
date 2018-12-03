@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: DishDetails.vue</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: DishDetails.vue</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>&lt;template>
+  &lt;div class="dish-details">
+    &lt;v-dialog v-model='dishDetailsDialog' max-width='1000px'>
+      &lt;v-btn flat outline slot='activator'>View Dish&lt;/v-btn>
+      &lt;v-card>
+        &lt;v-img v-if="url !== ''" :src='url'>&lt;/v-img>
+        &lt;v-img v-else src='../assets/default_food.png'>&lt;/v-img>
+        &lt;v-card-title>
+          &lt;span class='headline'>{{ name }}&lt;/span>
+        &lt;/v-card-title>
+        &lt;v-card-text>
+          &lt;v-container grid-list-md>
+            &lt;v-layout wrap>
+              &lt;v-flex xs12>
+                &lt;v-text-field v-model='description' label='Description' readonly>&lt;/v-text-field>
+              &lt;/v-flex>
+              &lt;v-flex xs6>
+                &lt;v-text-field v-model='locationLat' label='LocationLat' readonly>&lt;/v-text-field>
+              &lt;/v-flex>
+              &lt;v-flex xs6>
+                &lt;v-text-field v-model='locationLong' label='LocationLong' readonly>&lt;/v-text-field>
+              &lt;/v-flex>
+
+              &lt;v-combobox v-model='dietaryRestrictions' label='Dietary Restrictions' multiple chips readonly>&lt;/v-combobox>
+              &lt;v-combobox v-model='ingredients' label='Ingredients' multiple chips readonly>&lt;/v-combobox>
+
+              &lt;v-flex xs12>
+                &lt;v-text-field v-model='price' prefix='$' label='Price' readonly>&lt;/v-text-field>
+              &lt;/v-flex>
+
+              &lt;v-flex xs12 v-if='maxQuantity > 0'>
+                &lt;v-layout row>
+                  &lt;v-flex xs10>&lt;v-slider class='padded-slider' v-model='quantity' :max='maxQuantity' :min='0'>&lt;/v-slider>&lt;/v-flex>
+                  &lt;v-flex xs2>&lt;v-text-field class='padded-input' label='Quantity' v-model='quantity'>&lt;/v-text-field>&lt;/v-flex>
+                &lt;/v-layout>
+              &lt;/v-flex>
+            &lt;/v-layout>
+          &lt;/v-container>
+        &lt;/v-card-text>
+        &lt;v-card-actions>
+          &lt;v-spacer>&lt;/v-spacer>
+          &lt;v-btn color='blue darken-1' class='close' flat @click.native='dishDetailsDialog = false'>Close&lt;/v-btn>
+          &lt;v-btn color='blue darken-1' class='contact' flat @click.native='dishDetailsDialog = false; contactSeller();'>Contact Seller&lt;/v-btn>
+          &lt;v-btn v-if='maxQuantity > 0' color='blue darken-1' flat @click.native='dishDetailsDialog = false; purchaseDish();'>Buy&lt;/v-btn>
+        &lt;/v-card-actions>
+      &lt;/v-card>
+    &lt;/v-dialog>
+  &lt;/div>
+&lt;/template>
+
+&lt;script>
+/**
+ * @module DishDetails
+ * @desc This component is nested in TransactionsDishItem and ListingsDishItem. It displays dish details in a pop-up dialog. Allows users to contact seller and purchase the dish. 
+ * @vue-data {Boolean} dishDetailsDialog - Designates whether dish details dialog is open or not
+ * @vue-data {Number} quantity - Number of dishes to be purchased
+ * @vue-prop {String} name - Name of the dish
+ * @vue-prop {String} description - Description of the dish
+ * @vue-prop {Number} locationLat - Location (latitude) of the dish
+ * @vue-prop {Number} locationLong - Location (longitude) of the dish
+ * @vue-prop {Number} price - Price of the dish
+ * @vue-prop {Array.&lt;String>} dietaryRestrictions - List of dietary restrictions on the dish
+ * @vue-prop {Array.&lt;String>} ingredients - List of ingredients in the dish
+ * @vue-prop {String} url - Image URL of the dish
+ * @vue-prop {Number} maxQuantity - Total number of dishes that can be purchased
+ * @vue-prop {String} sellerId - Dish seller ID
+ * @vue-prop {String} sellerPaypalId - Dish seller PayPal ID
+ * @vue-prop {String} id - Dish ID
+ * @vue-computed {String} chatId - Corresponding chatId for communicating with the seller
+ */
+export default {
+  name: 'dish-details',
+  data () {
+    return {
+      dishDetailsDialog: false,
+      quantity: 1
+    }
+  },
+  methods: {
+    /**
+     * Contact seller by redirecting user to a new page with the correct chatId
+     */
+    contactSeller () {
+      this.$router.push({ path: `/chat/${this.chatId}`, params: { id: this.chatId } })
+    },
+    /**
+     * Purchase dish through an API call with PayPal
+     */
+    async purchaseDish () {
+      if (this.quantity &lt;= 0) {
+        alert('Quantity must be positive')
+      } else if (this.quantity > this.maxQuantity) {
+        alert('Quantity must be less than maximum available dishes (' + this.maxQuantity + ')')
+      } else {
+        let settings = {
+          "method": "POST",
+          "headers": {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "cache": "no-cache",
+            "X-PAYPAL-SECURITY-USERID": "foodrop-merchant_api1.foodrop.com",
+            "X-PAYPAL-SECURITY-PASSWORD": "ZCT6QET5AWB8EMRB",
+            "X-PAYPAL-SECURITY-SIGNATURE": "ANjVNayFQiI-hdVyaruFBuha2z6bA7DMMLICtgNrzBCHpuKPX3eGz0xa",
+            "X-PAYPAL-REQUEST-DATA-FORMAT": "JSON",
+            "X-PAYPAL-RESPONSE-DATA-FORMAT": "JSON",
+            "X-PAYPAL-APPLICATION-ID": "APP-80W284485P519543T"
+          },
+          "body": JSON.stringify({
+              "actionType": "PAY",
+              "currencyCode": "USD",
+              "receiverList": {
+                "receiver": [{
+                  "amount": this.quantity * this.price,
+                  "email": this.sellerPaypalId
+                }]
+              },
+              "returnUrl": "http://localhost:8080/transaction?success=true&amp;sellerId=" + this.sellerId + "&amp;userId=" + this.$store.state.userId + "&amp;postId=" + this.id + "&amp;quantity=" + this.quantity,
+              "cancelUrl": "http://localhost:8080/transaction?success=false",
+              "requestEnvelope": {
+                "errorLanguage": "en_US",
+                "detailLevel": "ReturnAll"
+              }
+          })
+        }
+
+        fetch('https://svcs.sandbox.paypal.com/AdaptivePayments/Pay', settings).then(function (response) {
+          return response.json()
+        }, function(error) {
+          alert('Error: Failed to complete transaction with PayPal')
+        }).then(function (json) {
+          console.log(json)
+          if (json.responseEnvelope.ack === 'Success') {
+            window.open("https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_ap-payment&amp;paykey=" + json.payKey)
+          }
+        })
+      }
+    }
+  },
+  computed: {
+    chatId () {
+      const userId = this.$store.state.userId
+      let id1 = userId > this.sellerId ? this.sellerId : userId
+      let id2 = userId &lt; this.sellerId ? this.sellerId : userId
+      return id1 + id2
+    }
+  },
+  props: {
+    name: String,
+    description: String,
+    locationLat: Number,
+    locationLong: Number,
+    price: Number,
+    dietaryRestrictions: Array,
+    ingredients: Array,
+    url: String,
+    maxQuantity: Number,
+    sellerId: String,
+    sellerPaypalId: String,
+    id: String
+  }
+}
+&lt;/script>
+
+&lt;style scoped>
+.v-chip .v-chip__content {
+  color: #000000
+}
+
+.padded-slider {
+  margin-left: 1em;
+  margin-right: 1em;
+}
+
+.padded-input {
+  margin-right: 1em;
+}
+&lt;/style></code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-ChatBase.html">ChatBase</a></li><li><a href="module-DishDetails.html">DishDetails</a></li><li><a href="module-FacebookLogin.html">FacebookLogin</a></li><li><a href="module-ListingsBase.html">ListingsBase</a></li><li><a href="module-ListingsDishItem.html">ListingsDishItem</a></li><li><a href="module-TransactionDishItem.html">TransactionDishItem</a></li><li><a href="module-UserProfileBase.html">UserProfileBase</a></li><li><a href="module-UserProfileChatItem.html">UserProfileChatItem</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Dec 02 2018 15:40:57 GMT-0800 (Pacific Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

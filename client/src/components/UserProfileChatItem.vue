@@ -19,6 +19,15 @@
 </template>
 
 <script>
+/**
+ * @class UserProfileChatItem
+ * @desc This component is nested within the UserProfileBase component. It displays a single row of details for a chat in the chats list.
+ * @vue-prop {String} buyer - Buyer name
+ * @vue-prop {String} seller - Seller name
+ * @vue-prop {String} buyerId - Buyer userId
+ * @vue-prop {String} sellerId - Seller userId
+ * @vue-prop {String} chatId - Chat id for getting messages from the backend server [See ChatBase]
+ */
 export default {
   name: 'user-profile-chat-item',
   data () {
