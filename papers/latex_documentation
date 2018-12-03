@@ -176,6 +176,8 @@ We have kept our implementation the same from parts A \& B.
 The user can view the available dishes that match their profile and filter dishes as per their preferences on this page. 
 The radius, dietary restrictions and price range the user sets from the user profile page will automatically filter dishes to match the user's specifications and needs. 
 The user can also search for dishes with more filters from the search page. 
+The user can also see the distance from their current location to the dish on a link in each dish listing.
+They can click on the link to be redirected to a new tab from Google that gives them directions from their current location to the dish.
 \newline\newline
 We have kept this part the same from parts A \& B. 
 
