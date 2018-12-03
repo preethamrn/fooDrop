@@ -1,4 +1,4 @@
-# client
+# fooDrop Client
 
 ## Project setup
 ```
@@ -19,3 +19,11 @@ npm run build
 ```
 npm run lint
 ```
+
+### Run unit tests
+```
+npm run test:unit
+```
+
+### Documentation location
+https://github.com/preethamrn/fooDrop/tree/master/client/docs
