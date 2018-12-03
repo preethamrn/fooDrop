@@ -1,8 +1,17 @@
 <template>
   <div name='listings-base'>
     <header-base/>
+    <div id='map'></div>
     <v-list v-if='dishes.length !== 0'>
-      <listings-dish-item v-for='(dish, index) in dishes' :key='index' :name='dish.name' :location='dish.location' :price='dish.price' :dish='dish'/>
+      <listings-dish-item 
+        v-for='(dish, index) in dishes' 
+        :key='index' 
+        :ref="'listingsdishitem' + index" 
+        :name='dish.name' 
+        :location='dish.location' 
+        :price='dish.price' 
+        :dish='dish'
+      />
     </v-list>
     <div v-else> No results </div>
   </div>
@@ -20,7 +29,10 @@ export default {
   },
   data () {
     return {
-      dishes: []
+      vueGMap: null,
+      dishes: [],
+      lat: 0,
+      lon: 0
     }
   },
   props: {
@@ -35,21 +47,52 @@ export default {
   },
   methods: {
     getDishes () {
-      if (navigator.geolocation) {
-        var self = this;
-        navigator.geolocation.getCurrentPosition(function (position) {
-          DishesService.searchDish({
-            ingredients: self.$store.state.defaultIngredients,
-            dietaryRestrictions: self.$store.state.defaultDietaryRestrictions,
-            lat: position.coords.latitude,
-            lon: position.coords.longitude,
-            radius: self.$store.state.defaultRadius,
-            priceLow: self.$store.state.defaultPriceRange[0],
-            priceHigh: self.$store.state.defaultPriceRange[1]
-          }).then((response) => {
-            console.log(response)
-            self.dishes = response.data.dishes
-          })
+      DishesService.searchDish({
+        ingredients: this.$store.state.defaultIngredients,
+        dietaryRestrictions: this.$store.state.defaultDietaryRestrictions,
+        lat: this.lat,
+        lon: this.lon,
+        radius: this.$store.state.defaultRadius,
+        priceLow: this.$store.state.defaultPriceRange[0],
+        priceHigh: this.$store.state.defaultPriceRange[1]
+      }).then((response) => {
+        console.log(response)
+        this.dishes = response.data.dishes
+        this.initGoogleMaps()
+      })
+    },
+    initGoogleMaps() {
+      const localOptions = {
+        zoom: 17,
+        center: {lat: this.lat, lng: this.lon}
+      }
+      console.log("InitializeGoogle Maps")
+      console.log(this.dishes)
+      var self = this
+      this.vueGMap = new google.maps.Map(document.getElementById('map'), localOptions)
+      // current position
+      new google.maps.Marker({
+        position: {lat: this.lat, lng: this.lon},
+        map: this.vueGMap,
+        icon: 'http://i.stack.imgur.com/orZ4x.png'
+      })
+      // position of all food items on map
+      for(var i = 0; i < this.dishes.length; i++) {
+        console.log(i + " " + this.dishes[i])
+        /*var icon = {
+          url: this.dishes[i].imageUrl,
+          scaledSize: new google.maps.Size(25,25),
+          origin: new google.maps.Point(0,0),
+          anchor: new google.maps.Point(25,25)
+        }*/
+        var marker = new google.maps.Marker({
+          position: {lat: this.dishes[i].location.lat, lng: this.dishes[i].location.lon},
+          map: this.vueGMap,
+          //icon: icon,
+          index: i
+        })
+        marker.addListener('click', function() {
+          self.$refs['listingsdishitem' + this.index][0].openDishDetails()
         })
       }
     }
@@ -65,10 +108,18 @@ export default {
     }
   },
   mounted () {
-    if (this.searched) {
-      this.dishes = this.dishesProp
-    } else {
-      this.getDishes()
+    if (navigator.geolocation) {
+      let self = this
+      navigator.geolocation.getCurrentPosition(function (position) {
+        self.lat = position.coords.latitude
+        self.lon = position.coords.longitude
+        if (self.searched) {
+          self.dishes = self.dishesProp
+          self.initGoogleMaps()
+        } else {
+          self.getDishes()
+        }
+      })
     }
   }
 }

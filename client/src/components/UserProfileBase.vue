@@ -39,15 +39,35 @@
               <v-flex xs2><v-text-field class='padded-input' label='Radius' suffix='mi' v-model='defaultRadius'></v-text-field></v-flex>
             </v-layout>
 
+            <v-text-field
+              label='Paypal Email'
+              placeholder='Paypal Email'
+              v-model='paypalId'
+              :rules="[(v) => { return !!v || 'Paypal Email cannot be empty'}]"
+            ></v-text-field>
+
             <v-card-actions>
-              <v-btn flat color='green' :disabled='!valid' @click='update'>Update Defaults</v-btn>
+              <v-btn flat color='green' :disabled='!valid' @click='update'>Update Profile</v-btn>
             </v-card-actions>
           </v-form>
         </v-card>
         <v-card class='user-profile-card'>
           <v-card-title><h3 class="headline mb-0">Transactions</h3></v-card-title>
           <v-list v-if='transactions.length !== 0'>
-            <listings-dish-item v-for='(dish, index) in transactions' :key='index' :name='dish.name' :location='dish.location' :price='dish.price' :dish='dish'/>
+            <transactions-dish-item v-for='(dish, index) in transactions' :key='index' :name='dish.name' :location='dish.location' :dish='dish'/>
+          </v-list>
+        </v-card>
+        <v-card class='user-profile-card'>
+          <v-card-title><h3 class="headline mb-0">Chats</h3></v-card-title>
+          <v-list v-if='chats.length !== 0'>
+            <user-profile-chat-item v-for='(chat, index) in chats'
+              :key='index'
+              :buyer='chat.buyer'
+              :seller='chat.seller'
+              :buyerId='chat.buyerId'
+              :sellerId='chat.sellerId'
+              :chatId='chat.chatId'
+            />
           </v-list>
         </v-card>
       </v-flex>
@@ -58,12 +78,14 @@
 <script>
 import HeaderBase from '@/components/HeaderBase'
 import FacebookAuth from '@/services/FacebookAuth'
-import ListingsDishItem from '@/components/ListingsDishItem'
+import TransactionsDishItem from '@/components/TransactionsDishItem'
+import UserProfileChatItem from '@/components/UserProfileChatItem'
 export default {
   name: 'user-profile-base',
   components: {
     HeaderBase,
-    ListingsDishItem
+    TransactionsDishItem,
+    UserProfileChatItem
   },
   data () {
     return {
@@ -76,7 +98,9 @@ export default {
       defaultDietaryRestrictions: [],
       defaultPriceRange: [0, 5],
       defaultRadius: 5,
-      transactions: []
+      paypalId: '',
+      transactions: [],
+      chats: []
     }
   },
   methods: {
@@ -88,7 +112,9 @@ export default {
       this.defaultDietaryRestrictions = this.$store.state.defaultDietaryRestrictions
       this.defaultPriceRange = this.$store.state.defaultPriceRange
       this.defaultRadius = this.$store.state.defaultRadius
+      this.paypalId = this.$store.state.paypalId
       this.transactions = this.$store.state.transactions
+      this.chats = this.$store.state.chats
     },
     async update () {
       try {
@@ -98,6 +124,7 @@ export default {
             radius: this.defaultRadius,
             priceLow: this.defaultPriceRange[0],
             priceHigh: this.defaultPriceRange[1],
+            paypalID: this.paypalId,
             restrictions: this.defaultDietaryRestrictions,
           }
         })
@@ -106,6 +133,7 @@ export default {
           this.$store.commit('setDefaultDietaryRestrictions', user.restrictions)
           this.$store.commit('setDefaultPriceRange', [user.priceLow, user.priceHigh])
           this.$store.commit('setDefaultRadius', user.radius)
+          this.$store.commit('setPaypalId', user.paypalID)
         }
       } catch (error) {
         alert("Error: Couldn't save settings")

@@ -11,7 +11,24 @@ export default {
   data () {
     return { }
   },
+  methods: {
+    createGoogleMaps() {
+      console.log("Create Google Maps")
+      return new Promise((resolve, reject) => {
+        let gmap = document.createElement('script')
+        gmap.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyBL3QjeqDnHoBHItq5CDvnN53b6ep_F1RU'
+        gmap.type = 'text/javascript'
+        gmap.onload = resolve
+        gmap.onerror = reject
+        document.body.appendChild(gmap)
+        console.log("Finished Google Maps")
+      })
+    }
+  },
   created () {
+
+    this.createGoogleMaps()
+
     window.fbAsyncInit = function () {
       FB.init({
         appId: '1898976426806055',

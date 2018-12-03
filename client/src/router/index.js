@@ -3,10 +3,13 @@ import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 import Router from 'vue-router'
 import ListingsBase from '@/components/ListingsBase'
+import TransactionPendingBase from '@/components/TransactionPendingBase'
 import CreateDishBase from '@/components/CreateDishBase'
 import SearchDishBase from '@/components/SearchDishBase'
 import FacebookLogin from '@/components/FacebookLogin'
 import UserProfileBase from '@/components/UserProfileBase'
+import ChatBase from '@/components/ChatBase'
+import Maps from '@/components/GoogleApp'
 
 Vue.use(Vuetify)
 Vue.use(Router)
@@ -41,6 +44,14 @@ var router = new Router({
       }
     },
     {
+      path: '/transaction',
+      name: 'Transaction Pending',
+      component: TransactionPendingBase,
+      meta: {
+        title: 'Transaction Pending'
+      }
+    },
+    {
       path: '/login',
       name: 'Login',
       component: FacebookLogin,
@@ -54,6 +65,14 @@ var router = new Router({
       component: UserProfileBase,
       meta: {
         title: 'Profile'
+      }
+    },
+    {
+      path: '/chat/:id',
+      name: 'Chat',
+      component: ChatBase,
+      meta: {
+        title: 'Chat'
       }
     }
   ]

@@ -20,6 +20,13 @@ var UserSchema = new Schema({
 		sellerID: String,
 		buyerID: String,
 		quantity: Number
+	}],
+	chats: [{
+		chatId: String,
+		buyer: String,
+		buyerId: String,
+		seller: String,
+		sellerId: String
 	}]
 },{ versionKey: false });
 

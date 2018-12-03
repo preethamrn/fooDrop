@@ -22,6 +22,10 @@
               </v-flex>
             </v-layout>
 
+            <v-layout>
+              <div id='map'></div>
+            </v-layout>
+
             <v-combobox
               v-model='newDishDietaryRestrictions'
               :rules='dietaryRestrictionsRules'
@@ -78,6 +82,13 @@
   </div>
 </template>
 
+<style>
+  #map{
+    height:400px;
+    width:100%
+  }
+</style>
+
 <script>
 import DishesService from '@/services/DishesService'
 import HeaderBase from '@/components/HeaderBase'
@@ -89,6 +100,9 @@ export default {
   data () {
     return {
       // validation
+      vueGMap: null,
+      marker: null,
+      position: null,
       valid: true,
       nameRules: [(v) => { return !!v || 'Name is required' }],
       dietaryRestrictionsList: ['gluten free', 'vegan', 'vegetarian', 'lactose free', 'nut free'],
@@ -116,21 +130,27 @@ export default {
     async createDish () {
       // TODO: also include seller userId and paypalId in dish details
       if (this.$refs.form.validate()) {
-        let response = await DishesService.newDish({
-          name: this.newDishName,
-          description: this.newDishDescription,
-          imageUrl: this.newDishUrl,
-          dietaryRestrictions: this.newDishDietaryRestrictions,
-          ingredients: this.newDishIngredients,
-          location: {lat: this.newDishLocationLat, lon: this.newDishLocationLong},
-          price: this.newDishPrice,
-          sellerId: this.$store.state.userId,
-          quantity: this.newDishQuantity
-        })
-        if (response.data.success) {
-          alert('Success!')
+        if (this.$store.state.paypalId && this.$store.state.paypalId !== '') {
+          let response = await DishesService.newDish({
+            name: this.newDishName,
+            description: this.newDishDescription,
+            imageUrl: this.newDishUrl,
+            dietaryRestrictions: this.newDishDietaryRestrictions,
+            ingredients: this.newDishIngredients,
+            location: {lat: this.newDishLocationLat, lon: this.newDishLocationLong},
+            price: this.newDishPrice,
+            sellerId: this.$store.state.userId,
+            sellerPaypalId: this.$store.state.paypalId,
+            quantity: this.newDishQuantity
+          })
+          if (response.data.success) {
+            alert('Success!')
+            window.location.href = 'http://localhost:8080/'
+          } else {
+            alert('Error: ' + response.data.errorMessage)
+          }
         } else {
-          alert('Error: ' + response.data.errorMessage)
+          alert('You must enter your paypal email in your user profile to buy this dish')
         }
       }
     },
@@ -150,6 +170,33 @@ export default {
     removeIngredient (item) {
       this.newDishIngredients.splice(this.newDishIngredients.indexOf(item), 1)
       this.newDishIngredients = [...this.newDishIngredients]
+    },
+    placeMarker(latlng, map) {
+      console.log("Place Marker")
+      if(this.marker != null) {
+        this.marker.setMap(null)
+      }
+
+      this.marker = new google.maps.Marker({
+        position: latlng,
+        map: map
+      })
+      this.newDishLocationLat = latlng.lat
+      this.newDishLocationLong = latlng.lng
+      map.panTo(latlng)
+    },
+    initGoogleMaps() {
+      const localOptions = {
+        zoom: 17,
+        center: {lat: this.newDishLocationLat, lng: this.newDishLocationLong}
+      }
+      console.log("InitializeGoogle Maps")
+      this.vueGMap = new google.maps.Map(document.getElementById('map'), localOptions)
+      this.placeMarker({lat: this.newDishLocationLat, lng: this.newDishLocationLong}, this.vueGMap)
+      this.vueGMap.addListener('click', (e) => {
+        this.position = {lat: e.latLng.lat(), lng: e.latLng.lng()}
+        this.placeMarker(this.position, this.vueGMap)
+      })
     }
   },
   mounted () {
@@ -158,6 +205,7 @@ export default {
        navigator.geolocation.getCurrentPosition(function (position) {
         self.newDishLocationLat = position.coords.latitude
         self.newDishLocationLong = position.coords.longitude
+        self.initGoogleMaps()
       })
     }
   }

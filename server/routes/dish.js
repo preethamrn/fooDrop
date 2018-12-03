@@ -27,7 +27,7 @@ const ObjectId = mongoose.Types.ObjectId;
 /* GET home page. */
 
 var search = function(radius, ingredients, dietaryRestrictions){
-};
+;}
 
 router.post('/', function(request, response){
   console.log(request.body);      // your JSON
@@ -46,7 +46,7 @@ router.post('/', function(request, response){
 router.get('/get_dish', function(req, res){
   var post_id = ObjectId(req.query.post_id); 
   Post.findById(post_id, function(err,result){
-    if (err || res==null) {
+    if (err || res==null){ 
       // res.send()
       res.status(400).send({ error: "boo :(" });
       return console.error(err);
@@ -109,7 +109,7 @@ Post_Controller.updatePostQ(post_id,quantity,function(error,post)
         res.status(400).send({
           status: "fail"
         })
-        return console.err(error);
+        return console.error(error);
       }
 
       Post_Controller.addTransaction(buyer_id,new_transaction,function(error,seller){
@@ -208,6 +208,7 @@ router.get('/get_dishes_by_radius', function(req, res, next) {
     price: req.body.price,
     quantity: req.body.quantity, 
     sellerId: req.body.sellerId,
+    sellerPaypalId: req.body.sellerPaypalId,
     location: req.body.location
   })
 
