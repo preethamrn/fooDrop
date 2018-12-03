@@ -1,6 +1,5 @@
 const createError = require('http-errors');
 const path = require('path');
-//const cookieParser = require('cookie-parser');
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
@@ -63,7 +62,13 @@ app.use('/chat', chatRouter);
 app.use('/user', userRouter);
 app.use('/dish', dishRouter);
 
-// Using passport's facebook token strategy to authenticate accessToken
+// talk about the class as a facebookToken, facbeook 
+/** 
+ * Creates a facebook authentication stragety
+ * @class
+ * @param //object that takes in facebookappid and facebookappsecret
+ * 
+ */
 passport.use(new facebookToken({
 	clientID: '1898976426806055',
 	clientSecret: '3db474179fd2165f68391ee27c714b6c'
@@ -104,6 +109,16 @@ passport.use(new facebookToken({
 // Once passport strategy has been authenticated, handle user information.
 // This is where we create json web tokens
 // TODO: Add secret to config file rather than hard coding it.
+
+//description: it authenticates the user and if the user is valid it returns a java web token
+//parameters: facbeookuser object  and callback 
+/** 
+ * function that authenticates the user and if the user is valid it returns a json web token
+ *  @name auth_facebook
+ *  @function
+ * 
+ * 
+ */
 app.post('/auth/facebook', passport.authenticate('facebook-token', {session: false}), function(req, res, next) {
 	if(!req.user) {
 		console.log("User Not Authenticated");
