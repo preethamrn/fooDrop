@@ -21,7 +21,7 @@
 
 \title{\textbf{fooDrop - Food sharing webapp}}
 
-\subtitle{PART C\\URL: {github.com/preethamrn/fooDrop}\\Team Name: {fooDrop Inc.}}
+\subtitle{PART C\\URL: {github.com/preethamrn/fooDrop}\\YouTube video: {https://youtu.be/bweVMIYLL2s}\\Team Name: {fooDrop Inc.}}
 
 \author{
 Preetham Narayanareddy: 604630101\\ 
@@ -48,21 +48,6 @@ Udayan Sahai: 504646937
 \begin{document}
 
 \maketitle
-
-Checklist
-\begin{enumerate}
-    \item motivation (DONE)
-    \item DESIGN:
-        \subitem class diagrams highlighting the differences **HEAVY EMPHASIS ON THIS**
-        \subitem MENTIONED DESIGN PATTERNS (mongoose singleton design patter and observer) a paragraph or two should do the job
-    \item usage scenarios highlighting the differences (not quite sure how to highlight differences) (DONE)
-    \item non-functional requirements (talk about user rating system in the future)
-    \item more details on implementation
-    \item API documentation for classes and functions
-    \item unit tests for backend classes and methods, not sure how to do that... ??
-    \item test scenarios and test cases  (describe 2 - 3 integration tests and have a link in the report to the rests of tests)
-    \item full and final API documentation, put a link on the report
-\end{enumerate}
 
 
 \section{Motivation}
@@ -307,10 +292,10 @@ However, it uses a new socket.io API through the ChatBase class. We still contin
 
 \\\\
 
-We do not make any major implementation and structural changes in the DishListings and the DishItem class.
-However, we have added a new DishDetails class to avoid the problem of primitive obsession which is caused by adding too many primitive type variables. 
-Our DishListings class in the new version has an aggregation of Google Maps objects. 
-This is similar to the old version but we have decided to get rid of the Map pins objects as we found those to be redundant.
+We do not make any major implementation and structural changes in the DishListings and the DishItem class.\\
+However, we have added a new DishDetails class to avoid the problem of primitive obsession which is caused by adding too many primitive type variables. \\
+Our DishListings class in the new version has an aggregation of Google Maps objects. \\
+This is similar to the old version but we have decided to get rid of the Map pins objects as we found those to be redundant.\\\\
 
 For the purpose of this project we have used the following libraries and technologies:
 \newline\newline
@@ -331,9 +316,7 @@ Paypal REST API - The Paypal payments REST API allows easy and secure online and
 We use the Paypal payments API to allow the user to effortlessly pay the seller for a dish that they wish to purchase. 
 \newline\newline
 
-Vue - Vue is a well developed open source framework for frontend web development. 
-It's single file components allows for easy development and documentation. 
-There are also many modules and plugins that support Vue such as Vuex for state management and Vue-Router for single page application routing.
+Vue - Vue is a well developed open source framework for frontend web development. It's single file components allows for easy development and documentation. There are also many modules and plugins that support Vue such as Vuex for state management and Vue-Router for single page application routing.
 
 \section{Description of your APIs}
 
@@ -342,7 +325,6 @@ Link to the Front-End API Documentation:
 \begin{verbatim}
 http://preethamrn.github.io/fooDrop/client/docs
 \end{verbatim}
-
 Link to the Back-End API Documentation: 
 
 \begin{verbatim}http://preethamrn.github.io/fooDrop/server/docs
@@ -385,18 +367,19 @@ Link to the Back-End API Documentation:
     \caption{Know exactly how far food is}
 \end{figure}
 
-
+\begin{figure}[H]
+\includegraphics[width=\linewidth]{images/sell.png}
+    \caption{As a seller let the buyer know the ingredient's, price and where you are }
+\end{figure}
 
 \section{Test Scenarios and Test Cases in [Jest] and [Selenium]}
 
 \subsection{Backend}
-    Here is the link to the unit and integration tests for the backend: 
+Here is the link to the unit and integration tests for the backend: 
     
 \begin{verbatim}
 https://github.com/preethamrn/fooDrop/tree/master/server/test
 \end{verbatim}
-
-
 Instructions: To run tests, do
 \begin{verbatim}
 mocha *.js 
@@ -411,36 +394,32 @@ https://github.com/preethamrn/fooDrop/tree/master/client/tests
 
 
 \subsubsection{Unit Tests}
-We used the jest framework with vue test-utils for unit testing on our front end. 
-When using the jest framework, we had to create mock versions of Axios so that we do not continually send HTTPS requests whenever we make a new test. 
-Additionally, we had to create a mock router with jest to reroute mocked components to a new endpoint. 
-From vue test-utils, we used mount, shallowMount, and createLocalVue. 
-We used shallowMount when we wanted to mount isolated components, wherein we do not want/need to render its child components. 
-When we are using a component that will interact with other components and would need us to render its child components, we would use mount. 
-When we test a generic component suite that may get shared across different apps, it was better to test the components in a more isolated setup, without polluting the global Vue constructor, so we used createLocalVue to create a local instance of the the global Vue. 
-
-All of these unit tests suites are located in the tests/unit folder in the client, with the '.spec.js' file types. 
+We used the jest framework with vue test-utils for unit testing on our front end. \\
+When using the jest framework, we had to create mock versions of Axios so that we do not continually send HTTPS requests whenever we make a new test. \\
+Additionally, we had to create a mock router with jest to reroute mocked components to a new endpoint. \\
+From vue test-utils, we used mount, shallowMount, and createLocalVue. \\
+We used shallowMount when we wanted to mount isolated components, wherein we do not want/need to render its child components. \\
+When we are using a component that will interact with other components and would need us to render its child components, we would use mount. \\
+When we test a generic component suite that may get shared across different apps, it was better to test the components in a more isolated setup, without polluting the global Vue constructor, so we used createLocalVue to create a local instance of the the global Vue. \\
+All of these unit tests suites are located in the tests/unit folder in the client, with the '.spec.js' file types. \\
 You can run the tests by going into the client directory and entering: 'npm run test:unit'. 
 This will run all of the 'spec.js' test files in the 'tests/unit' folder, and tell you how many of the test suites passed and failed. We have 6 test suites, and 14 tests altogether. 
 
 
 \subsubsection{Integration Tests}
-In order to perform integration tests on the application, we used the testing framework, Selenium. 
-To streamline the process of creating tests, we used the Selenium IDE, which is a browser plugin. 
-Selenium IDE allowed us to view the elements and components and write tests around them, as well as record our actions in order to replicate them. 
-Selenium IDE also has the feature of showing exactly which command breaks the test, thus allowing for easy debugging.
-
-All the integration tests are stored in a file called Integrate Tests.side. 
-In order to run the test script, one must first install the Selenium IDE on the browser. 
-It is recommended that Chrome browser is used as it allows the use of http to get location data. 
-When Selenium is installed, launch it through the browser and open Integration Tests.side. 
-Once the tests have been loaded, locate the test suite tab and select interface to view all tests in order and the details of each test.
-
-Selenium IDE allowed us to quickly create integration tests that mimicked users, however there are some downsides to using it. 
-The main downside is that Selenium IDE does not allow use to create a precondition environment before executing the tests. 
-This means in order to run the tests, the collections in foodrop database (MongoDB) need to be dropped beforehand. 
+In order to perform integration tests on the application, we used the testing framework, Selenium. \\
+To streamline the process of creating tests, we used the Selenium IDE, which is a browser plugin. \\
+Selenium IDE allowed us to view the elements and components and write tests around them, as well as record our actions in order to replicate them. \\
+Selenium IDE also has the feature of showing exactly which command breaks the test, thus allowing for easy debugging.\\
+All the integration tests are stored in a file called Integrate Tests.side. \\
+In order to run the test script, one must first install the Selenium IDE on the browser. \\
+It is recommended that Chrome browser is used as it allows the use of http to get location data. \\
+When Selenium is installed, launch it through the browser and open Integration Tests.side. \\
+Once the tests have been loaded, locate the test suite tab and select interface to view all tests in order and the details of each test.\\
+Selenium IDE allowed us to quickly create integration tests that mimicked users, however there are some downsides to using it. \\
+The main downside is that Selenium IDE does not allow use to create a precondition environment before executing the tests. \\
+This means in order to run the tests, the collections in foodrop database (MongoDB) need to be dropped beforehand. \\
 Another issue is that if the logout test in the end fails, we needed to manually logout of Facebook.
-
 The following is a rundown of 3 test from the list of 15 integration tests. To view the rest of the tests please go the link:
 
 
@@ -455,7 +434,7 @@ integration/Integration%20Tests.side
 In this test Selenium simulates a button press on the Search button in order to redirect to the search page. 
 Once on the search page, Selenium looks for the appropriate input elements, such as Name, quantity, price and fills them out with valid data. 
 Selenium then places a marker on the Google Map feature in a location within 2 miles of the Tester's current location. 
-Once all parameters are filled out, the post is submitted and Selenium asserts for a 'Success' alert. 
+Once all parameters are filled out, the post is submitted and Selenium asserts for a 'Success' alert.
 The purpose of this test is to see the interaction between the Vue components on the Search page, Google Maps and the calls to the create\_dish endpoint.
 \newline\newline
 
