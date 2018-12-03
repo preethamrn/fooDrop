@@ -21,6 +21,15 @@
 import DishesService from '@/services/DishesService'
 import HeaderBase from '@/components/HeaderBase'
 import ListingsDishItem from '@/components/ListingsDishItem'
+
+/**
+ * @class ListingsBase
+ * @desc It is located at the route /. Contains a list of all dishes to be displayed in a list of ListingsDishItem.vue See ListingsDishItem.vue for more on single dishes
+ * @vue-data {Array.<Dish>} dishes - Actual list of dishes to be displayed
+ * @vue-prop {Boolean} searched - Boolean indicating whether dishesProp has been set
+ * @vue-prop {Array.<Dish>} dishesProp - List of dishes passed in from SearchDishBase.vue
+ * @vue-computed {String} storeUserState - Watcher function that checks for modifications to Vuex state
+ */
 export default {
   name: 'listings-base',
   components: {
@@ -46,6 +55,9 @@ export default {
     }
   },
   methods: {
+    /**
+     * Get current location and calls DishesService.searchDish search for dishes based on the default search parameters stored in Vuex.
+     */
     getDishes () {
       DishesService.searchDish({
         ingredients: this.$store.state.defaultIngredients,
@@ -61,6 +73,9 @@ export default {
         this.initGoogleMaps()
       })
     },
+    /**
+     * Initializes google maps for displaying the map with all the dish location markers. Also attaches event listeners for opening DishDetails.
+     */
     initGoogleMaps() {
       const localOptions = {
         zoom: 17,
@@ -107,6 +122,9 @@ export default {
       this.getDishes()
     }
   },
+  /**
+   * Automatically called when the page is mounted. It checks if the dishes have been passed in as props from SearchDishBase.vue and calls getDishes if not.
+   */
   mounted () {
     if (navigator.geolocation) {
       let self = this

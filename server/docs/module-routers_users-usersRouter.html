@@ -73,7 +73,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="routes_dish.js.html">routes/dish.js</a>, <a href="routes_dish.js.html#line14">line 14</a>
+        <a href="routes_chat.js.html">routes/chat.js</a>, <a href="routes_chat.js.html#line15">line 15</a>
     </li></ul></dd>
     
 
@@ -112,7 +112,7 @@
     
 
     
-    <h4 class="name" id=".create_transaction"><span class="type-signature">(static) </span>create_transaction<span class="signature">(Post_Id, Buyer_Id, Seller_id, quantity)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".get_chats"><span class="type-signature">(static) </span>get_chats<span class="signature">(ChatId)</span><span class="type-signature"></span></h4>
     
 
     
@@ -120,7 +120,7 @@
 
 
 <div class="description">
-    Route creates a transaction between two users
+    Route returns the chat messages
 </div>
 
 
@@ -156,7 +156,7 @@
 
         <tr>
             
-                <td class="name"><code>Post_Id</code></td>
+                <td class="name"><code>ChatId</code></td>
             
 
             <td class="type">
@@ -172,76 +172,7 @@
 
             
 
-            <td class="description last">The id of the Post</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>Buyer_Id</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The id of the Buyer</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>Seller_id</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The id of the Seller</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>quantity</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The quantity to be purchased</td>
+            <td class="description last">The id of the Chat</td>
         </tr>
 
     
@@ -282,7 +213,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="routes_dish.js.html">routes/dish.js</a>, <a href="routes_dish.js.html#line64">line 64</a>
+        <a href="routes_chat.js.html">routes/chat.js</a>, <a href="routes_chat.js.html#line29">line 29</a>
     </li></ul></dd>
     
 
@@ -316,7 +247,7 @@
     
 
     
-    <h4 class="name" id=".get_dish"><span class="type-signature">(static) </span>get_dish<span class="signature">(Post_Id)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".send_chat"><span class="type-signature">(static) </span>send_chat<span class="signature">(ChatId, userId, username, message)</span><span class="type-signature"></span></h4>
     
 
     
@@ -324,7 +255,7 @@
 
 
 <div class="description">
-    Route returns a specific dish from the model
+    /* Broadcast chat messages and stores message in database. Creates chat log in buyer, seller, and chat databases if not present
 </div>
 
 
@@ -360,7 +291,7 @@
 
         <tr>
             
-                <td class="name"><code>Post_Id</code></td>
+                <td class="name"><code>ChatId</code></td>
             
 
             <td class="type">
@@ -376,7 +307,76 @@
 
             
 
-            <td class="description last">The id of the Post</td>
+            <td class="description last">The id of the Chat</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>userId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The id of the User</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>username</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The username of whom to send message</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>message</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The message to emit</td>
         </tr>
 
     
@@ -417,599 +417,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="routes_dish.js.html">routes/dish.js</a>, <a href="routes_dish.js.html#line39">line 39</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id=".get_dishes_by_radius"><span class="type-signature">(static) </span>get_dishes_by_radius<span class="signature">(ingredients, dietaryRestrictions, radius, latitude, longitude, priceLow, priceHigh)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    Route get all the posts present in the given radius.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>ingredients</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;String></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Ingridients the user wants in the posts</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>dietaryRestrictions</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;String></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Any dietary restrictions the user has</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>radius</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">radius within which posts lie</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>latitude</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Inital latitude of user</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>longitude</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Inital longitude of user</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>priceLow</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">User's lower price point</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>priceHigh</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">User's higher price point</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="routes_dish.js.html">routes/dish.js</a>, <a href="routes_dish.js.html#line146">line 146</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id=".new_dish"><span class="type-signature">(static) </span>new_dish<span class="signature">(name, description, ingredients, dietaryRestrictions, imageUrl, price, quantity, sellerId, location)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    Route get all the posts present in the given radius.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>name</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Name of the new Dish</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>description</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Name of the new Dish</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>ingredients</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;String></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Ingridients the user wants in the posts</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>dietaryRestrictions</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;String></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Any dietary restrictions the user has</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>imageUrl</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">URL of a picture of the food</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>price</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Price of the dish</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>quantity</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Quantity of the dish to be sold</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>sellerId</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">ID of the seller.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>location</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">A user's location</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="routes_dish.js.html">routes/dish.js</a>, <a href="routes_dish.js.html#line181">line 181</a>
+        <a href="routes_chat.js.html">routes/chat.js</a>, <a href="routes_chat.js.html#line51">line 51</a>
     </li></ul></dd>
     
 
@@ -1053,13 +461,21 @@
 </div>
 
 <nav>
+<<<<<<< HEAD
     <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-app.html">app</a></li><li><a href="module-Post_Controller.html">Post_Controller</a></li><li><a href="module-routers_users.html">routers/users</a></li><li><a href="module-routes_user_info.html">routes/user_info</a></li><li><a href="module-User_Controller.html">User_Controller</a></li></ul><h3>Namespaces</h3><ul><li><a href="module-routers_users-usersRouter.html">usersRouter</a></li><li><a href="module-routes_user_info-userRouter.html">userRouter</a></li></ul>
+=======
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Post_Controller.html">Post_Controller</a></li><li><a href="module-routers_dish.html">routers/dish</a></li><li><a href="module-routers_users.html">routers/users</a></li><li><a href="module-routes_user_info.html">routes/user_info</a></li><li><a href="module-User_Controller.html">User_Controller</a></li></ul><h3>Namespaces</h3><ul><li><a href="module-routers_dish-dishRouter.html">dishRouter</a></li><li><a href="module-routers_users-usersRouter.html">usersRouter</a></li><li><a href="module-routes_user_info-userRouter.html">userRouter</a></li></ul>
+>>>>>>> 8f6a0bb97bf5fc8d0b4be7c9852ec5ac6da9c425
 </nav>
 
 <br class="clear">
 
 <footer>
+<<<<<<< HEAD
     Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Dec 02 2018 17:54:33 GMT-0800 (Pacific Standard Time)
+=======
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Dec 02 2018 17:43:43 GMT-0800 (Pacific Standard Time)
+>>>>>>> 8f6a0bb97bf5fc8d0b4be7c9852ec5ac6da9c425
 </footer>
 
 <script> prettyPrint(); </script>

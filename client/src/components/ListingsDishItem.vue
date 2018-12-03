@@ -48,6 +48,15 @@
 
 <script>
 import DishDetails from '@/components/DishDetails'
+/**
+ * @class ListingsDishItem
+ * @desc This component is nested within the ListingsBase component. It displays a single row of details for a dish in the dishes list.
+ * @vue-data {Number} distanceInMiles - Distance of the dish from user location
+ * @vue-prop {String} name - Name of the dish
+ * @vue-prop {Position} location - Location of the dish in terms of { latitude, longitude }
+ * @vue-prop {Number} price - Price of the dish
+ * @vue-prop {Dish} dish - Dish details of the dish
+ */
 export default {
   name: 'listings-dish-item',
   components: {
@@ -59,6 +68,9 @@ export default {
     }
   },
   methods: {
+    /**
+     * Opens the Dish Details dialog. Used by GoogleMapsMarker to expose an API to the DishDetails.
+     */
     openDishDetails () {
       this.$refs.dishdetails.dishDetailsDialog = true
     }

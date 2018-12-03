@@ -47,6 +47,15 @@
 
 <script>
 import DishDetails from '@/components/DishDetails'
+/**
+ * @class TransactionDishItem
+ * @desc This component is nested within the UserProfileBase component. It displays a single row of details for a transaction in the transactions list.
+ * @vue-data {Number} distanceInMiles - Distance of the dish from user location
+ * @vue-prop {String} name - Name of the dish
+ * @vue-prop {Position} location - Location of the dish in terms of { latitude, longitude }
+ * @vue-prop {Dish} dish - Dish details of the transaction
+ * @vue-computed {Number} cost - Cost of the transaction. Negative if the dish is bought and positive otherwise.
+ */
 export default {
   name: 'transactions-dish-item',
   components: {

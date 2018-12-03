@@ -25,6 +25,18 @@
 import HeaderBase from '@/components/HeaderBase'
 import ChatsService from '@/services/ChatsService'
 import io from 'socket.io-client'
+
+/**
+ * @class ChatBase
+ * @desc It is located at /chat/:id. Shows all the chat messages between a buyer and seller.
+ * @vue-data {String} chatId - Identifier for receiving chat messages from the backend
+ * @vue-data {String} message - Current message stored in the text field on the page
+ * @vue-data {Array.<Chat>} chats - List of chats containing the chat message, userId, and username of the user sending the message
+ * @vue-data {String} buyer - Buyer name in the conversation
+ * @vue-data {String} seller - Seller name in the conversation
+ * @vue-data {Socket.io} socket - Socket connection object for real time communication with the server
+ * @vue-computed {String} storeUserState - Watcher function that checks for modifications to Vuex state
+ */
 export default {
   name: 'chat-base',
   components: {
@@ -41,6 +53,9 @@ export default {
     }
   },
   methods: {
+    /**
+     * Create and store a real time connection with the server
+     */
     chatSocketConnect () {
       this.socket = io.connect('http://localhost:8081/', {
         query: {
@@ -57,6 +72,9 @@ export default {
         this.$router.push({ path: `/` })
       })
     },
+    /**
+     * Send chat message to the server
+     */
     async sendChat () {
       let response = await ChatsService.sendChat({ 
         chatId: this.chatId,
@@ -69,11 +87,14 @@ export default {
       }
     }
   },
+  /**
+   * Get chat messages and initialize socket connection
+   */
   async created () {
     this.chatId = this.$route.params.id
     let response = await ChatsService.getChats({ chatId: this.chatId })
     if (response.data.success) {
-      this.chats = response.data.result.messages
+      this.chats = response.data.result.messages || []
       this.buyer = response.data.result.buyer
       this.seller = response.data.result.seller
     } else {
@@ -95,6 +116,9 @@ export default {
       this.chatSocketConnect()
     }
   },
+  /**
+   * Disconnect socket connection
+   */
   destroyed () {
     this.socket.disconnect()
   }

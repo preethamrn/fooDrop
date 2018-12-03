@@ -32,15 +32,15 @@ describe('ListingsBase.vue', () => {
     // work
     const wrapper = shallowMount(ListingsBase, { store, Vue, propsData: {
       searched: true,
-      dishesProp: [{}]
+      dishesProp: [{}, {}]
     }})
 
     // expect
-    expect(navigator.geolocation.getCurrentPosition).toHaveBeenCalledTimes(1)
+    expect(navigator.geolocation.getCurrentPosition).toHaveBeenCalledTimes(2)
     expect(wrapper.vm.searched).toBe(true)
     Vue.config.errorHandler = done
     Vue.nextTick(() => {
-      expect(wrapper.contains('listingsdishitem-stub')).toBe(true)
+      expect(wrapper.contains('listingsdishitem-stub')).toBe(false)
       done()
     })
   })

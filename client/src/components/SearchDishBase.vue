@@ -75,6 +75,19 @@
 <script>
 import DishesService from '@/services/DishesService'
 import HeaderBase from '@/components/HeaderBase'
+/**
+ * @class SearchDishBase
+ * @desc Component for searching for dishes. Allows a user to enter search parameters which will redirect them to ListingsBase with their appropriate search results.
+ * @vue-data {Boolean} valid - Validates the search details input form
+ * @vue-data {String} searchDishName - Name of the dish in the search response
+ * @vue-data {Number} searchDishLocationLat - Location (latitude) of the search request
+ * @vue-data {Number} searchDishLocationLong - Location (longitude) of the search request
+ * @vue-data {Array.<String>} searchDishIngredients - Ingredients to include in the search response
+ * @vue-data {Array.<String>} searchDishDietaryRestrictions - Dietary restrictions required in the search response
+ * @vue-data {Array.<Number>} searchDishPrice - Price range of the search request
+ * @vue-data {Number} searchDishRadius - Radius of the search request
+ * @vue-computed {String} storeUserState - Watcher function that checks for modifications to Vuex state
+ */
 export default {
   name: 'search-dish-base',
   components: {
@@ -98,6 +111,9 @@ export default {
     }
   },
   methods: {
+    /**
+     * Send a search request to the server. Once the response is received the user is redirected to the ListingsBase page where their results are displayed
+     */
     async searchDish () {
       if (this.$refs.form.validate()) {
         try {
@@ -122,6 +138,9 @@ export default {
         }
       }
     },
+    /**
+     * Clear the form data entered for searching
+     */
     clear () {
       this.searchDishName = ''
       this.searchDishIngredients = []
@@ -129,10 +148,16 @@ export default {
       this.searchDishPrice = this.$store.state.defaultPriceRange
       this.searchDishRadius = this.$store.state.defaultRadius
     },
+    /**
+     * Removes a dietary restriction from the search dish dietary restrictions list
+     */
     removeDietaryRestriction (item) {
       this.searchDishDietaryRestrictions.splice(this.searchDishDietaryRestrictions.indexOf(item), 1)
       this.searchDishDietaryRestrictions = [...this.searchDishDietaryRestrictions]
     },
+    /**
+     * Removes an ingredient from the search dish ingredients list
+     */
     removeIngredient (item) {
       this.searchDishIngredients.splice(this.searchDishIngredients.indexOf(item), 1)
       this.searchDishIngredients = [...this.searchDishIngredients]
@@ -153,7 +178,6 @@ export default {
   },
   mounted () {
     if (navigator.geolocation) {
-       console.log(navigator.geolocation)
        var self = this;
        navigator.geolocation.getCurrentPosition(function (position) {
         self.searchDishLocationLat = position.coords.latitude

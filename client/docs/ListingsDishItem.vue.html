@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: ListingsDishItem.vue</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: ListingsDishItem.vue</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>&lt;template>
+  &lt;div class="listings-dish-item">
+    &lt;v-hover :close-delay='250'>
+      &lt;v-card slot-scope='{ hover }' :class='`pl-${hover ? 5 : 0}`'>
+        &lt;v-list-tile :key='name' avatar>
+          &lt;v-layout row wrap>
+            &lt;v-tooltip top>
+              &lt;v-list-tile-avatar v-if="dish.imageUrl !== ''" slot='activator' tile size='50'>&lt;img :src='dish.imageUrl'>&lt;/v-list-tile-avatar>
+              &lt;v-list-tile-avatar v-else slot='activator' tile size='50'>&lt;img src='../assets/default_food.png'>&lt;/v-list-tile-avatar>
+              &lt;span>{{ dish.description }}&lt;/span>
+            &lt;/v-tooltip>
+            &lt;v-flex xs9 sm5>
+              &lt;v-list-tile-content>
+                &lt;v-list-tile-title>{{ name }}&lt;/v-list-tile-title>
+                &lt;v-list-tile-sub-title>
+                  &lt;a target='_blank' :href="'https://www.google.com/maps/search/' + location.lat + ',' + location.lon">
+                    Distance: {{ distanceInMiles }} miles (Google Maps 🡕)
+                  &lt;/a>
+                &lt;/v-list-tile-sub-title>
+              &lt;/v-list-tile-content>
+            &lt;/v-flex>
+            &lt;v-flex xs6 sm3>
+              Price: {{ price }}
+            &lt;/v-flex>
+            &lt;v-flex xs6 sm3>
+              &lt;dish-details
+                ref='dishdetails'
+                :name='dish.name'
+                :description='dish.description'
+                :locationLat='dish.location.lat'
+                :locationLong='dish.location.lon'
+                :price='dish.price'
+                :dietaryRestrictions='dish.dietaryRestrictions'
+                :ingredients='dish.ingredients'
+                :url='dish.imageUrl'
+                :maxQuantity='dish.quantity'
+                :sellerId='dish.sellerId'
+                :sellerPaypalId='dish.sellerPaypalId'
+                :id='dish._id'
+              />
+            &lt;/v-flex>
+          &lt;/v-layout>
+        &lt;/v-list-tile>
+      &lt;/v-card>
+    &lt;/v-hover>
+  &lt;/div>
+&lt;/template>
+
+&lt;script>
+import DishDetails from '@/components/DishDetails'
+/**
+ * @class ListingsDishItem
+ * @desc This component is nested within the ListingsBase component. It displays a single row of details for a dish in the dishes list.
+ * @vue-data {Number} distanceInMiles - Distance of the dish from user location
+ * @vue-prop {String} name - Name of the dish
+ * @vue-prop {Position} location - Location of the dish in terms of { latitude, longitude }
+ * @vue-prop {Number} price - Price of the dish
+ * @vue-prop {Dish} dish - Dish details of the dish
+ */
+export default {
+  name: 'listings-dish-item',
+  components: {
+    DishDetails
+  },
+  data () {
+    return {
+      distanceInMiles: 0.0
+    }
+  },
+  methods: {
+    /**
+     * Opens the Dish Details dialog. Used by GoogleMapsMarker to expose an API to the DishDetails.
+     */
+    openDishDetails () {
+      this.$refs.dishdetails.dishDetailsDialog = true
+    }
+  },
+  mounted () {
+    if (navigator.geolocation) {
+       var self = this;
+       navigator.geolocation.getCurrentPosition(function (position) {
+        var lat1 = position.coords.latitude
+        var lon1 = position.coords.longitude
+        var lat2 = self.location.lat
+        var lon2 = self.location.lon
+        var R = 6371; // Radius of the earth in km
+        var dLat = (lat2-lat1) * (Math.PI/180);
+        var dLon = (lon2-lon1) * (Math.PI/180);
+        var a = 
+          Math.sin(dLat/2) * Math.sin(dLat/2) +
+          Math.cos(lat1 * (Math.PI/180)) * Math.cos(lat2 * (Math.PI/180)) * 
+          Math.sin(dLon/2) * Math.sin(dLon/2)
+          ;
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+        var d = R * c * 1.6; // Distance in Miles
+        self.distanceInMiles = Math.round(d*100)/100;
+      })
+    }
+  },
+  props: {
+    name: String,
+    location: Object,
+    price: Number,
+    dish: Object
+  }
+}
+&lt;/script>
+
+&lt;style>
+.v-list__tile {
+  height: 88px
+}
+@media only screen and (max-width: 1080px) {
+  .v-list__tile {
+    height: 125px
+  }
+}
+&lt;/style>
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ChatBase.html">ChatBase</a></li><li><a href="CreateDishBase.html">CreateDishBase</a></li><li><a href="DishDetails.html">DishDetails</a></li><li><a href="FacebookLogin.html">FacebookLogin</a></li><li><a href="GoogleMap.html">GoogleMap</a></li><li><a href="HeaderBase.html">HeaderBase</a></li><li><a href="ListingsBase.html">ListingsBase</a></li><li><a href="ListingsDishItem.html">ListingsDishItem</a></li><li><a href="SearchDishBase.html">SearchDishBase</a></li><li><a href="TransactionDishItem.html">TransactionDishItem</a></li><li><a href="TransactionPendingBase.html">TransactionPendingBase</a></li><li><a href="UserProfileBase.html">UserProfileBase</a></li><li><a href="UserProfileChatItem.html">UserProfileChatItem</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Dec 02 2018 16:34:32 GMT-0800 (Pacific Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

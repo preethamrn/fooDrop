@@ -1,5 +1,5 @@
 /** Express router providing user related routes
- * @module routers/users
+ * @module routers/dish
  * @requires express
  */
 
@@ -15,7 +15,7 @@ var express = require('express');
  * Express router to mount user related functions on.
  * @type {object}
  * @const
- * @namespace usersRouter
+ * @namespace dishRouter
  */
 var router = express.Router();
 const mongoose = require('mongoose');
@@ -40,7 +40,7 @@ router.post('/', function(request, response){
  * Route returns a specific dish from the model
  * @function
  * @name get_dish
- * @memberof module:routers/users~usersRouter
+ * @memberof module:routers/dish~dishRouter
  * @param {String} Post_Id - The id of the Post
  */
 router.get('/get_dish', function(req, res){
@@ -65,7 +65,7 @@ router.get('/get_dish', function(req, res){
  * Route creates a transaction between two users
  * @name create_transaction
  * @function
- * @memberof module:routers/users~usersRouter
+ * @memberof module:routers/dish~dishRouter
  * @param {String} Post_Id - The id of the Post
  * @param {String} Buyer_Id - The id of the Buyer
  * @param {String} Seller_id - The id of the Seller
@@ -147,7 +147,7 @@ router.get('/get_dishes', function(req, res, next) {
  *Route get all the posts present in the given radius.
  * @name get_dishes_by_radius
  * @function
- * @memberof module:routers/users~usersRouter
+ * @memberof module:routers/dish~dishRouter
  * @param {String[]} ingredients - Ingridients the user wants in the posts
  * @param {String[]} dietaryRestrictions - Any dietary restrictions the user has 
  * @param {Number} radius - radius within which posts lie
@@ -182,7 +182,7 @@ router.get('/get_dishes_by_radius', function(req, res, next) {
  *Route get all the posts present in the given radius.
  * @name new_dish
  * @function
- * @memberof module:routers/users~usersRouter
+ * @memberof module:routers/dish~dishRouter
  * @param {String} name - Name of the new Dish
  * @param {String} description - Name of the new Dish
  * @param {String[]} ingredients - Ingridients the user wants in the posts

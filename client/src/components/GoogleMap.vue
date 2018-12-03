@@ -28,6 +28,14 @@
 </template>
 
 <script>
+/**
+ * @class GoogleMap
+ * @desc Google maps wrapper component for displaying map on pages
+ * @vue-data {Position} center - Current center of the map
+ * @vue-data {Array.<GoogleMapsMarker>} markers - List of markers that have been added
+ * @vue-data {Array.<Position>} places - List of positions of markers
+ * @vue-data {Position} currentPlace - List of current position to add a marker
+ */
 export default {
   name: "GoogleMap",
   data() {
@@ -46,10 +54,16 @@ export default {
   },
 
   methods: {
-    // receives a place object via the autocomplete component
+    /** 
+     * Receives a place object via the autocomplete component and sets currentPlace
+     * @param {Position} place - Place to be marked
+     */
     setPlace(place) {
       this.currentPlace = place;
     },
+    /**
+     * Add a marker based on the current place
+     */
     addMarker() {
       if (this.currentPlace) {
         const marker = {
@@ -62,6 +76,9 @@ export default {
         this.currentPlace = null;
       }
     },
+    /**
+     * Get current location from browser geolocation
+     */
     geolocate: function() {
       navigator.geolocation.getCurrentPosition(position => {
         this.center = {

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: UserProfileBase.vue</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: UserProfileBase.vue</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>&lt;template>
+ &lt;div class="user-profile-base">
+   &lt;header-base/>
+   &lt;v-layout column>
+      &lt;v-flex xs12 sm6>
+        &lt;v-card class='user-profile-card'>
+          &lt;v-form ref='form' v-model='valid' lazy-validation>
+            &lt;v-card-title>&lt;h3 class="headline mb-0">User Profile&lt;/h3>&lt;/v-card-title>
+            
+            &lt;v-combobox
+              v-model='defaultDietaryRestrictions'
+              :rules='dietaryRestrictionsRules'
+              :items='dietaryRestrictionsList'
+              label='Dietary Restrictions'
+              chips
+              clearable
+              solo
+              multiple
+              dense
+            >
+              &lt;template slot='selection' slot-scope='data'>
+                &lt;v-chip
+                  :selected='data.selected'
+                  close
+                  @input='removeDietaryRestriction(data.item)'
+                >
+                  &lt;strong>{{ data.item }}&lt;/strong>&amp;nbsp;
+                &lt;/v-chip>
+              &lt;/template>
+            &lt;/v-combobox>
+
+            &lt;v-layout row>
+              &lt;v-flex xs10>&lt;v-range-slider class='padded-slider' v-model='defaultPriceRange' :max='100' :min='0'>&lt;/v-range-slider>&lt;/v-flex>
+              &lt;v-flex xs1>&lt;v-text-field label='Price' prefix='$' v-model='defaultPriceRange[0]'>&lt;/v-text-field>&lt;/v-flex>
+              &lt;v-flex xs1>&lt;v-text-field prefix='-' v-model='defaultPriceRange[1]'>&lt;/v-text-field>&lt;/v-flex>
+            &lt;/v-layout>
+            &lt;v-layout row>
+              &lt;v-flex xs10>&lt;v-slider class='padded-slider' v-model='defaultRadius' :max='15' :min='0'>&lt;/v-slider>&lt;/v-flex>
+              &lt;v-flex xs2>&lt;v-text-field class='padded-input' label='Radius' suffix='mi' v-model='defaultRadius'>&lt;/v-text-field>&lt;/v-flex>
+            &lt;/v-layout>
+
+            &lt;v-text-field
+              label='Paypal Email'
+              placeholder='Paypal Email'
+              v-model='paypalId'
+              :rules="[(v) => { return !!v || 'Paypal Email cannot be empty'}]"
+            >&lt;/v-text-field>
+
+            &lt;v-card-actions>
+              &lt;v-btn flat color='green' class='updatebtn' :disabled='!valid' @click='update'>Update Profile&lt;/v-btn>
+            &lt;/v-card-actions>
+          &lt;/v-form>
+        &lt;/v-card>
+        &lt;v-card class='user-profile-card'>
+          &lt;v-card-title>&lt;h3 class="headline mb-0">Transactions&lt;/h3>&lt;/v-card-title>
+          &lt;v-list v-if='transactions.length !== 0'>
+            &lt;transactions-dish-item v-for='(dish, index) in transactions' :key='index' :name='dish.name' :location='dish.location' :dish='dish'/>
+          &lt;/v-list>
+        &lt;/v-card>
+        &lt;v-card class='user-profile-card'>
+          &lt;v-card-title>&lt;h3 class="headline mb-0">Chats&lt;/h3>&lt;/v-card-title>
+          &lt;v-list v-if='chats.length !== 0'>
+            &lt;user-profile-chat-item v-for='(chat, index) in chats'
+              :key='index'
+              :buyer='chat.buyer'
+              :seller='chat.seller'
+              :buyerId='chat.buyerId'
+              :sellerId='chat.sellerId'
+              :chatId='chat.chatId'
+            />
+          &lt;/v-list>
+        &lt;/v-card>
+      &lt;/v-flex>
+   &lt;/v-layout>
+ &lt;/div>
+&lt;/template>
+
+&lt;script>
+import HeaderBase from '@/components/HeaderBase'
+import FacebookAuth from '@/services/FacebookAuth'
+import TransactionsDishItem from '@/components/TransactionsDishItem'
+import UserProfileChatItem from '@/components/UserProfileChatItem'
+/**
+ * @class UserProfileBase
+ * @desc User profile page that allows user to update their profile, view past transaction, and view past chats for contacting sellers.
+ * @vue-data {Boolean} valid - Validate the user profile details
+ * @vue-data {Array.&lt;String>} defaultDietaryRestrictions - Default dietary restrictions for searching
+ * @vue-data {Array.&lt;Number>} defaultPriceRange - Default price range for searching
+ * @vue-data {Number} defaultRadius - Default radius for searching
+ * @vue-data {String} paypalId - PayPal Email used for transactions when creating and buying dishes
+ * @vue-data {Array.&lt;Dish>} transactions - List of past transactions
+ * @vue-data {Array.&lt;Chat>} chats - List of past chats
+ * @vue-computed {String} storeUserState - Watcher function that checks for modifications to Vuex state
+ */
+export default {
+  name: 'user-profile-base',
+  components: {
+    HeaderBase,
+    TransactionsDishItem,
+    UserProfileChatItem
+  },
+  data () {
+    return {
+      // validation
+      valid: true,
+      dietaryRestrictionsList: ['gluten free', 'vegan', 'vegetarian', 'lactose free', 'nut free'],
+      dietaryRestrictionsRules: [(v) => { return (v &amp;&amp; v.every((d) => { return this.dietaryRestrictionsList.includes(d); })) || 'Dietary Restrictions must be from dropdown!' }],
+
+      // default search values
+      defaultDietaryRestrictions: [],
+      defaultPriceRange: [0, 5],
+      defaultRadius: 5,
+      paypalId: '',
+      transactions: [],
+      chats: []
+    }
+  },
+  methods: {
+    /**
+     * Removed dietary restrictions from component data
+     */
+    removeDietaryRestriction (item) {
+      this.defaultDietaryRestrictions.splice(this.defaultDietaryRestrictions.indexOf(item), 1)
+      this.defaultDietaryRestrictions = [...this.defaultDietaryRestrictions]
+    },
+    /**
+     * Resets component data to the defaults from the backend user profile
+     */
+    resetDefaults () {
+      this.defaultDietaryRestrictions = this.$store.state.defaultDietaryRestrictions
+      this.defaultPriceRange = this.$store.state.defaultPriceRange
+      this.defaultRadius = this.$store.state.defaultRadius
+      this.paypalId = this.$store.state.paypalId
+      this.transactions = this.$store.state.transactions
+      this.chats = this.$store.state.chats
+    },
+    /**
+     * Update user profile on the backend server database
+     */
+    async update () {
+      try {
+        let response = await FacebookAuth.updateUser({
+          _id: this.$store.state.userId,
+          values: {
+            radius: this.defaultRadius,
+            priceLow: this.defaultPriceRange[0],
+            priceHigh: this.defaultPriceRange[1],
+            paypalID: this.paypalId,
+            restrictions: this.defaultDietaryRestrictions,
+          }
+        })
+        let user = response.data.user
+        if (user) {
+          this.$store.commit('setDefaultDietaryRestrictions', user.restrictions)
+          this.$store.commit('setDefaultPriceRange', [user.priceLow, user.priceHigh])
+          this.$store.commit('setDefaultRadius', user.radius)
+          this.$store.commit('setPaypalId', user.paypalID)
+        }
+      } catch (error) {
+        alert("Error: Couldn't save settings")
+      }
+    }
+  },
+  computed: {
+    storeUserState () {
+      return this.$store.state.userId
+    }
+  },
+  watch: {
+    storeUserState () {
+      this.resetDefaults()
+    }
+  },
+  created () {
+    this.resetDefaults()
+  }
+}
+&lt;/script>
+
+&lt;style scoped>
+.user-profile-card {
+  margin-left: 1em;
+  margin-right: 1em;
+}
+
+.v-card__title {
+  padding: 1em 2em 0 1em;
+}
+
+.padded-slider {
+  margin-left: 1em;
+  margin-right: 1em;
+}
+
+.padded-input {
+  margin-right: 1em;
+}
+&lt;/style>
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ChatBase.html">ChatBase</a></li><li><a href="CreateDishBase.html">CreateDishBase</a></li><li><a href="DishDetails.html">DishDetails</a></li><li><a href="FacebookLogin.html">FacebookLogin</a></li><li><a href="GoogleMap.html">GoogleMap</a></li><li><a href="HeaderBase.html">HeaderBase</a></li><li><a href="ListingsBase.html">ListingsBase</a></li><li><a href="ListingsDishItem.html">ListingsDishItem</a></li><li><a href="SearchDishBase.html">SearchDishBase</a></li><li><a href="TransactionDishItem.html">TransactionDishItem</a></li><li><a href="TransactionPendingBase.html">TransactionPendingBase</a></li><li><a href="UserProfileBase.html">UserProfileBase</a></li><li><a href="UserProfileChatItem.html">UserProfileChatItem</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Dec 02 2018 16:34:32 GMT-0800 (Pacific Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

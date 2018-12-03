@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: routes/chat.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: routes/chat.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/** Express router providing user related routes
+ * @module routers/chat
+ * @requires express
+ */
+
+
+
+/**
+ * express module
+ * @const
+ */
+
+var express = require('express');
+
+/**
+ * Express router to mount user related functions on.
+ * @type {object}
+ * @const
+ * @namespace chatRouter
+ */
+
+var router = express.Router();
+var Chat = require("../models/chat");
+var User = require("../models/user");
+const mongoose = require('mongoose');
+
+/* GET chat messages */
+
+/**
+ * Route returns the chat messages 
+ * @function
+ * @name get_chats
+ * @memberof module:routers/chat~chatRouter
+ * @param {String} ChatId - The id of the Chat
+ */
+router.get('/get_chats', function(req, res, next) {
+  Chat.findOne({ chatId: req.query.chatId }, function(err, result) {
+    if (err) {
+      res.send({ success: false })
+      return console.error(err);
+    }
+    if (result !== null) {
+      res.send({ success: true, result: result })
+    } else {
+      // if chat log isn't found then return the dummy result
+      res.send({ success: true, result: { chats: [], buyer: 'Buyer', seller: 'Seller' } })
+    }
+  })
+});
+
+/**
+/* Broadcast chat messages and stores message in database. Creates chat log in buyer, seller, and chat databases if not present
+ * @function
+ * @name send_chat
+ * @memberof module:routers/chat~chatRouter
+ * @param {String} ChatId - The id of the Chat
+ * @param {String} userId - The id of the User
+ * @param {String} username - The username of whom to send message
+ * @param {String} message - The message to emit
+
+ */
+router.post('/send_chat', function(req, res, next) {
+  // TODO: add message to chats collection (findOne, then save)
+  // TODO: if chatId doesn't exist (findOne returns null) then create model in chats collection and add message to user and seller collections
+  req.io.to(req.body.chatId).emit('chat', {
+		userId: req.body.userId,
+		username: req.body.username,
+    message: req.body.message
+  })
+  Chat.findOne({ chatId: req.body.chatId }, function(err, result) {
+    if (err) {
+      console.error(err)
+      res.send({ success: false })
+      return
+    }
+
+    if (result === null) {
+      // chat log doesn't exists so create chatId in chats collection and add to buyer and seller collections
+      let chatId = req.body.chatId
+      let buyerId = req.body.userId
+      if (chatId.substr(0, buyerId.length) === buyerId) {
+        sellerId = chatId.substr(buyerId.length, chatId.length)
+      } else {
+        sellerId = chatId.substr(0, chatId.length - buyerId.length)
+      }
+      let newChat = new Chat({
+        chatId: req.body.chatId,
+        buyer: buyerId,
+        seller: sellerId,
+        messages: [{
+          userId: req.body.userId,
+          username: req.body.username,
+          message: req.body.message
+        }]
+      })
+      newChat.save(function (error) {
+        if (error) {
+          console.error(error)
+        } else {
+          let buyerName = 'Buyer'
+          let sellerName = 'Seller'
+          User.findById(buyerId, function (err, result) {
+            buyerName = result.name
+            
+            User.findById(sellerId, function (err, result) {
+              sellerName = result.name
+
+              User.update({_id: buyerId }, {
+                $push: {
+                  chats: {
+                    chatId: chatId,
+                    buyer: buyerName,
+                    buyerId: buyerId,
+                    seller: sellerName,
+                    sellerId: sellerId
+                  }
+                }
+              }, () => {})
+              User.update({_id: sellerId }, {
+                $push: {
+                  chats: {
+                    chatId: chatId,
+                    buyer: buyerName,
+                    buyerId: buyerId,
+                    seller: sellerName,
+                    sellerId: sellerId
+                  }
+                }
+              }, () => {})
+            })
+          })
+        }
+      })
+    } else {
+      result.messages.push({
+        userId: req.body.userId,
+        username: req.body.username,
+        message: req.body.message
+      })
+      result.save(() => {})
+    }
+  })
+  res.send({ success: true })
+});
+
+module.exports = router
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Post_Controller.html">Post_Controller</a></li><li><a href="module-routers_chat.html">routers/chat</a></li><li><a href="module-routers_dish.html">routers/dish</a></li><li><a href="module-routers_user_info.html">routers/user_info</a></li><li><a href="module-User_Controller.html">User_Controller</a></li></ul><h3>Namespaces</h3><ul><li><a href="module-routers_chat-chatRouter.html">chatRouter</a></li><li><a href="module-routers_dish-dishRouter.html">dishRouter</a></li><li><a href="module-routers_user_info-userRouter.html">userRouter</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Dec 02 2018 17:47:21 GMT-0800 (Pacific Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
