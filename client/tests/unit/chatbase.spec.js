@@ -45,11 +45,13 @@ describe('ChatBase.vue', () => {
     //expect
     expect(mockAxios.get).toHaveBeenCalledTimes(1)
     Vue.config.errorHandler = done
-    Vue.nextTick(() => {
-      expect(wrapper.vm.chats.length).toBe(5)
-      expect(wrapper.contains('vcardtext-stub')).toBe(true)
-      done()
-    })
+    setTimeout(() => {
+      Vue.nextTick(() => {
+        expect(wrapper.vm.chats.length).toBe(5)
+        expect(wrapper.contains('vcardtext-stub')).toBe(true)
+        done()
+      })
+	  }, 0);
   })
 
   it('tests sending chat messages', () => {
