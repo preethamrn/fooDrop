@@ -191,6 +191,7 @@ router.get('/get_dishes_by_radius', function(req, res, next) {
  * @param {Number} price - Price of the dish
  * @param {Number} quantity - Quantity of the dish to be sold
  * @param {String} sellerId - ID of the seller.
+ * @param {String} sellerPaypalId - PayPal email of the seller.
  * @param {{
          lat:Number, 
          lon:Number
@@ -208,6 +209,7 @@ router.get('/get_dishes_by_radius', function(req, res, next) {
     price: req.body.price,
     quantity: req.body.quantity, 
     sellerId: req.body.sellerId,
+    sellerPaypalId: req.body.sellerPaypalId,
     location: req.body.location
   })
 

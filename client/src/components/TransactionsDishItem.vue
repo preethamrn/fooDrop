@@ -9,7 +9,7 @@
               <v-list-tile-avatar v-else slot='activator' tile size='50'><img src='../assets/default_food.png'></v-list-tile-avatar>
               <span>{{ dish.description }}</span>
             </v-tooltip>
-            <v-flex xs9 sm5>
+            <v-flex xs9 sm4>
               <v-list-tile-content>
                 <v-list-tile-title>{{ name }}</v-list-tile-title>
                 <v-list-tile-sub-title>
@@ -19,10 +19,16 @@
                 </v-list-tile-sub-title>
               </v-list-tile-content>
             </v-flex>
-            <v-flex xs6 sm3>
-              <span :style="[cost > 0 ? {'color': 'green'} : {'color': 'red'}]">{{ dish.quantity }} * {{ dish.price }} = {{ cost }}</span>
+            <v-flex xs1 sm1>
+              <span>Quantity: {{ dish.quantity }}</span>
             </v-flex>
-            <v-flex xs6 sm3>
+            <v-flex xs1 sm1>
+              <span>Price: {{ dish.price }}</span>
+            </v-flex>
+            <v-flex xs1 sm3>
+              <span :style="[cost > 0 ? {'color': 'green'} : {'color': 'red'}]">Cost: {{ cost }}</span>
+            </v-flex>
+            <v-flex xs3 sm2>
               <dish-details
                 :name='dish.name'
                 :description='dish.description'
