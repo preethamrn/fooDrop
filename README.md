@@ -18,6 +18,10 @@ Webapp for buying fresh home-cooked food
 ## To install dependencies in client and server
 * `npm install`
 
+## Documentation
+* http://preethamrn.github.io/fooDrop/client/docs
+* http://preethamrn.github.io/fooDrop/server/docs
+
 ## Directory structure
 * client tests: /client/src/tests/unit
 * server tests: /server/test

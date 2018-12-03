@@ -26,4 +26,4 @@ npm run test:unit
 ```
 
 ### Documentation location
-https://github.com/preethamrn/fooDrop/tree/master/client/docs
+https://preethamrn.github.io/fooDrop/client/docs

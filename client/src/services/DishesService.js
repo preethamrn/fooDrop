@@ -14,7 +14,7 @@ export default {
     return Api().post('dish/new_dish', params)
   },
   /**
-   * GET request to dish/get_dishes_by_radisu for getting new dishes
+   * GET request to dish/get_dishes_by_radius for getting new dishes
    * @param {Request} params
    * @return {Promise}
    */
