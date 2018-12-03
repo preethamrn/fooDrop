@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: FacebookLogin.vue</title>
+    <title>JSDoc: Source: TransactionPendingBase.vue</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: FacebookLogin.vue</h1>
+    <h1 class="page-title">Source: TransactionPendingBase.vue</h1>
 
     
 
@@ -27,57 +27,50 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>&lt;template>
-	&lt;v-layout align-center justify-center>
-		&lt;v-flex text-xs-center xs12 sm6>
-			&lt;v-btn color="#3b5998" class="white--text" @click.native ='login'>Sign In With Facebook&lt;/v-btn>
-		&lt;/v-flex>
-	&lt;/v-layout>
+  &lt;div class="transaction-pending-base">
+    &lt;h1>Transaction Pending&lt;/h1>
+  &lt;/div>
 &lt;/template>
 
 &lt;script>
-/* eslint-disable */
-import FacebookLogin from '@/services/FacebookAuth'
+import DishesService from '@/services/DishesService'
 /**
- * @class FacebookLogin
- * @desc Login component that uses Facebook OAuth
+ * @class TransactionPendingBase
+ * @desc Landing page after PayPal transaction while waiting for success on the backend
  */
 export default {
-  name: 'facebook-login',
-  data() {
-    return {}
+  name: 'transaction-pending-base',
+  data () {
+    return { }
   },
-  methods: {
-    /**
-     * Login to Facebook using OAuth. Opens popup to enter Facebook login details.
-     */
-    async login() {
-      console.log("Loading SDK")
-      let self = this
-      FB.login(function (response) {
-        if (response.authResponse) {
-          console.log('Welcome! Fetching your information.....');
-          (async (fbResponse) => {
-            let response = await FacebookLogin.getToken({
-              access_token: fbResponse.authResponse.accessToken
-            });
-            console.log(response.data)
-            if (response.data.auth) {
-              localStorage.setItem('authToken', response.data.token)
-              localStorage.setItem('facebookID', response.data.facebookID)
-              self.$router.push({ path: `/` })
-            } else {
-              alert('Error: Failed authentication')
-            }
-          })(response);
-        } else {
-          console.log('Login Unsuccessful');
-        }
+  /**
+   * Check for success from backend server
+   */
+  async created () {
+    let params = {};
+    window.location.href.replace(/[?&amp;]+([^=&amp;]+)=([^&amp;]*)/gi, function(m,key,value) {
+      params[key] = value;
+    })
+    console.log(params)
+    if (params.success === 'true') {
+      let response = await DishesService.buyDish({
+        buyer_id: params.userId,
+        seller_id: params.sellerId,
+        post_id: params.postId,
+        quantity: params.quantity
       })
-   	}
+      if (response.data.status === 'fail') {
+        alert('Error: Failed to buy dish')
+      } else {
+        alert('Success!')
+      }
+    } else {
+      alert('Error: PayPal failed to validate transaction. Try again.')
+    }
+    window.location.href = 'http://localhost:8080'
   }
 }
-&lt;/script>
-</code></pre>
+&lt;/script></code></pre>
         </article>
     </section>
 

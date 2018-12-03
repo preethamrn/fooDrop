@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: services/ChatsService.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,36 +17,42 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: services/ChatsService.js</h1>
 
     
 
 
 
     
-
-
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
     <section>
-        <article><h1>client</h1><h2>Project setup</h2><pre class="prettyprint source"><code>npm install</code></pre><h3>Compiles and hot-reloads for development</h3><pre class="prettyprint source"><code>npm run serve</code></pre><h3>Compiles and minifies for production</h3><pre class="prettyprint source"><code>npm run build</code></pre><h3>Lints and fixes files</h3><pre class="prettyprint source"><code>npm run lint</code></pre></article>
+        <article>
+            <pre class="prettyprint source linenums"><code>import Api from '@/services/Api'
+
+/**
+ * @module ChatService
+ * @desc Module for communicating with /chat/ endpoint on backend server
+ */
+export default {
+  /**
+   * GET request to chat/get_chats for getting list of previous chat messages for a specific chatId
+   * @param {Request} params
+   * @return {Promise}
+   */
+  getChats (params) {
+    return Api().get('chat/get_chats', {params: params})
+  },
+  /**
+   * POST request to chat/send_chat for sending a new chat message for storage on the database and to broadcast to all connected users
+   * @param {Request} params
+   * @return {Promise}
+   */
+  sendChat (params) {
+    return Api().post('chat/send_chat', params)
+  }
+}
+</code></pre>
+        </article>
     </section>
-
-
 
 
 

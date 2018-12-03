@@ -15,12 +15,19 @@
 <script>
 /* eslint-disable */
 import FacebookAuth from '@/services/FacebookAuth'
+/**
+ * @class HeaderBase
+ * @desc It is a header component for all pages on the website. Allows users to navigate between pages on the website.
+ */
 export default {
   name: 'header-base',
   data () {
     return {}
   },
   methods: {
+    /**
+     * Logout of the user profile and remove login details from browser cache
+     */
     async logout () {
       console.log("Loading SDK")
       let self = this
@@ -31,7 +38,6 @@ export default {
               localStorage.removeItem('authToken')
               localStorage.removeItem('facebookID')
               this.$store.state.userId = ''
-              this.$store.state.userId = 
               self.$router.push({ path: `/login` })
             }
           })

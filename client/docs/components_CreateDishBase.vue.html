@@ -1,32 +1,60 @@
-<template>
-  <div class="create-dish-base">
-    <header-base/>
-    <v-layout>
-      <v-flex xs12 sm6 offset-sm3>
-        <v-card class='create-dish-card'>
-          <v-form ref='form' v-model='valid' lazy-validation>
-            <v-img v-if="newDishUrl != ''"
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/CreateDishBase.vue</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/CreateDishBase.vue</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>&lt;template>
+  &lt;div class="create-dish-base">
+    &lt;header-base/>
+    &lt;v-layout>
+      &lt;v-flex xs12 sm6 offset-sm3>
+        &lt;v-card class='create-dish-card'>
+          &lt;v-form ref='form' v-model='valid' lazy-validation>
+            &lt;v-img v-if="newDishUrl != ''"
               :src='newDishUrl'
               aspect-ratio='2.75'
-            ></v-img>
-            <v-text-field label='Image URL' v-model='newDishUrl'></v-text-field>
+            >&lt;/v-img>
+            &lt;v-text-field label='Image URL' v-model='newDishUrl'>&lt;/v-text-field>
 
-            <v-text-field label='Name' v-model='newDishName' :rules='nameRules' class='dish-name'></v-text-field>
-            <v-textarea label='Description' v-model='newDishDescription' rows='3' auto-grow></v-textarea>
-            <v-layout row>
-              <v-flex xs6>
-                <v-text-field label='Latitude' v-model='newDishLocationLat' disabled></v-text-field>
-              </v-flex>
-              <v-flex xs6>
-                <v-text-field label='Longitude' v-model='newDishLocationLong' disabled></v-text-field>
-              </v-flex>
-            </v-layout>
+            &lt;v-text-field label='Name' v-model='newDishName' :rules='nameRules' class='dish-name'>&lt;/v-text-field>
+            &lt;v-textarea label='Description' v-model='newDishDescription' rows='3' auto-grow>&lt;/v-textarea>
+            &lt;v-layout row>
+              &lt;v-flex xs6>
+                &lt;v-text-field label='Latitude' v-model='newDishLocationLat' disabled>&lt;/v-text-field>
+              &lt;/v-flex>
+              &lt;v-flex xs6>
+                &lt;v-text-field label='Longitude' v-model='newDishLocationLong' disabled>&lt;/v-text-field>
+              &lt;/v-flex>
+            &lt;/v-layout>
 
-            <v-layout>
-              <div id='map'></div>
-            </v-layout>
+            &lt;v-layout>
+              &lt;div id='map'>&lt;/div>
+            &lt;/v-layout>
 
-            <v-combobox
+            &lt;v-combobox
               v-model='newDishDietaryRestrictions'
               :rules='dietaryRestrictionsRules'
               :items='dietaryRestrictionsList'
@@ -37,18 +65,18 @@
               multiple
               dense
             >
-              <template slot='selection' slot-scope='data'>
-                <v-chip
+              &lt;template slot='selection' slot-scope='data'>
+                &lt;v-chip
                   :selected='data.selected'
                   close
                   @input='removeDietaryRestriction(data.item)'
                 >
-                  <strong>{{ data.item }}</strong>&nbsp;
-                </v-chip>
-              </template>
-            </v-combobox>
+                  &lt;strong>{{ data.item }}&lt;/strong>&amp;nbsp;
+                &lt;/v-chip>
+              &lt;/template>
+            &lt;/v-combobox>
             
-            <v-combobox
+            &lt;v-combobox
               v-model='newDishIngredients'
               :items='[]'
               label='Ingredients'
@@ -57,39 +85,39 @@
               solo
               multiple
             >
-              <template slot='selection' slot-scope='data'>
-                <v-chip
+              &lt;template slot='selection' slot-scope='data'>
+                &lt;v-chip
                   :selected='data.selected'
                   close
                   @input='removeIngredient(data.item)'
                 >
-                  <strong>{{ data.item }}</strong>&nbsp;
-                </v-chip>
-              </template>
-            </v-combobox>
+                  &lt;strong>{{ data.item }}&lt;/strong>&amp;nbsp;
+                &lt;/v-chip>
+              &lt;/template>
+            &lt;/v-combobox>
 
-            <v-text-field label='Price' prefix='$' :rules='priceRules' v-model.number='newDishPrice'></v-text-field>
-            <v-text-field label='Quantity' :rules='quantityRules' v-model.number='newDishQuantity'></v-text-field>
+            &lt;v-text-field label='Price' prefix='$' :rules='priceRules' v-model.number='newDishPrice'>&lt;/v-text-field>
+            &lt;v-text-field label='Quantity' :rules='quantityRules' v-model.number='newDishQuantity'>&lt;/v-text-field>
 
-            <v-card-actions>
-              <v-btn flat color='red' class='clearbtn' @click='clearForm'>x Clear</v-btn>
-              <v-btn flat color='green' class='createbtn' :disabled='!valid' @click='createDish'>- Post</v-btn>
-            </v-card-actions>
-          </v-form>
-        </v-card>
-      </v-flex>
-    </v-layout>
-  </div>
-</template>
+            &lt;v-card-actions>
+              &lt;v-btn flat color='red' class='clearbtn' @click='clearForm'>x Clear&lt;/v-btn>
+              &lt;v-btn flat color='green' class='createbtn' :disabled='!valid' @click='createDish'>- Post&lt;/v-btn>
+            &lt;/v-card-actions>
+          &lt;/v-form>
+        &lt;/v-card>
+      &lt;/v-flex>
+    &lt;/v-layout>
+  &lt;/div>
+&lt;/template>
 
-<style>
+&lt;style>
   #map{
     height:400px;
     width:100%
   }
-</style>
+&lt;/style>
 
-<script>
+&lt;script>
 import DishesService from '@/services/DishesService'
 import HeaderBase from '@/components/HeaderBase'
 /**
@@ -103,8 +131,8 @@ import HeaderBase from '@/components/HeaderBase'
  * @vue-data {String} newDishUrl - Image URL of the new dish
  * @vue-data {Number} newDishLocationLat - Location (latitude) of the new dish
  * @vue-data {Number} newDishLocationLong - Location (longitude) of the new dish
- * @vue-data {Array.<String>} newDishIngredients - Ingredients of the new dish
- * @vue-data {Array.<String>} newDishDietaryRestrictions - Dietary restrictions of the new dish
+ * @vue-data {Array.&lt;String>} newDishIngredients - Ingredients of the new dish
+ * @vue-data {Array.&lt;String>} newDishDietaryRestrictions - Dietary restrictions of the new dish
  * @vue-data {Number} newDishPrice - Price of the new dish
  * @vue-data {Number} newDishQuantity - Quantity of the new dish available for sale
  */
@@ -123,13 +151,13 @@ export default {
       valid: true,
       nameRules: [(v) => { return !!v || 'Name is required' }],
       dietaryRestrictionsList: ['gluten free', 'vegan', 'vegetarian', 'lactose free', 'nut free'],
-      dietaryRestrictionsRules: [(v) => { return (v && v.every((d) => { return this.dietaryRestrictionsList.includes(d); })) || 'Dietary Restrictions must be from dropdown!' }],
+      dietaryRestrictionsRules: [(v) => { return (v &amp;&amp; v.every((d) => { return this.dietaryRestrictionsList.includes(d); })) || 'Dietary Restrictions must be from dropdown!' }],
       priceRules: [
         (v) => { return !!v || 'Price is required'}, 
-        (v) => { return (v && v > 0 && v <= 100) || 'Price must be between $0 and $100' }, 
-        (v) => { return (v && (100*v - Math.floor(100*v) === 0)) || 'Price cannot have more than two decimal places' }
+        (v) => { return (v &amp;&amp; v > 0 &amp;&amp; v &lt;= 100) || 'Price must be between $0 and $100' }, 
+        (v) => { return (v &amp;&amp; (100*v - Math.floor(100*v) === 0)) || 'Price cannot have more than two decimal places' }
       ],
-      quantityRules: [(v) => { return !!v || 'Quantity is required'}, (v) => { return (v && v > 0) || 'Quantity cannot be negative' }],
+      quantityRules: [(v) => { return !!v || 'Quantity is required'}, (v) => { return (v &amp;&amp; v > 0) || 'Quantity cannot be negative' }],
 
       // new dish details
       newDishName: '',
@@ -149,7 +177,7 @@ export default {
      */
     async createDish () {
       if (this.$refs.form.validate()) {
-        if (this.$store.state.paypalId && this.$store.state.paypalId !== '' && this.$store.state.paypalId !== '-1') {
+        if (this.$store.state.paypalId &amp;&amp; this.$store.state.paypalId !== '' &amp;&amp; this.$store.state.paypalId !== '-1') {
           let response = await DishesService.newDish({
             name: this.newDishName,
             description: this.newDishDescription,
@@ -247,9 +275,9 @@ export default {
     }
   }
 }
-</script>
+&lt;/script>
 
-<style scoped>
+&lt;style scoped>
 .create-dish-card {
   margin-left: 1em;
   margin-right: 1em;
@@ -258,4 +286,27 @@ export default {
 .dish-name {
   font-size: x-large;
 }
-</style>
+&lt;/style>
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-ChatService.html">ChatService</a></li><li><a href="module-DishesService.html">DishesService</a></li><li><a href="module-FacebookAuth.html">FacebookAuth</a></li></ul><h3>Classes</h3><ul><li><a href="ChatBase.html">ChatBase</a></li><li><a href="CreateDishBase.html">CreateDishBase</a></li><li><a href="DishDetails.html">DishDetails</a></li><li><a href="FacebookLogin.html">FacebookLogin</a></li><li><a href="GoogleMap.html">GoogleMap</a></li><li><a href="HeaderBase.html">HeaderBase</a></li><li><a href="ListingsBase.html">ListingsBase</a></li><li><a href="ListingsDishItem.html">ListingsDishItem</a></li><li><a href="SearchDishBase.html">SearchDishBase</a></li><li><a href="TransactionDishItem.html">TransactionDishItem</a></li><li><a href="TransactionPendingBase.html">TransactionPendingBase</a></li><li><a href="UserProfileBase.html">UserProfileBase</a></li><li><a href="UserProfileChatItem.html">UserProfileChatItem</a></li><li><a href="VuexStore.html">VuexStore</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Dec 02 2018 16:50:39 GMT-0800 (Pacific Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
