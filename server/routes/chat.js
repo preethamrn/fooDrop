@@ -49,7 +49,7 @@ router.get('/get_chats', function(req, res, next) {
 });
 
 /**
-/* Broadcast chat messages and stores message in database. Creates chat log in buyer, seller, and chat databases if not present
+ * Broadcast chat messages and stores message in database. Creates chat log in buyer, seller, and chat databases if not present
  * @function
  * @name send_chat
  * @memberof module:routers/chat~chatRouter
