@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: CreateDishBase.vue</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: CreateDishBase.vue</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>&lt;template>
+  &lt;div class="create-dish-base">
+    &lt;header-base/>
+    &lt;v-layout>
+      &lt;v-flex xs12 sm6 offset-sm3>
+        &lt;v-card class='create-dish-card'>
+          &lt;v-form ref='form' v-model='valid' lazy-validation>
+            &lt;v-img v-if="newDishUrl != ''"
+              :src='newDishUrl'
+              aspect-ratio='2.75'
+            >&lt;/v-img>
+            &lt;v-text-field label='Image URL' v-model='newDishUrl'>&lt;/v-text-field>
+
+            &lt;v-text-field label='Name' v-model='newDishName' :rules='nameRules' class='dish-name'>&lt;/v-text-field>
+            &lt;v-textarea label='Description' v-model='newDishDescription' rows='3' auto-grow>&lt;/v-textarea>
+            &lt;v-layout row>
+              &lt;v-flex xs6>
+                &lt;v-text-field label='Latitude' v-model='newDishLocationLat' disabled>&lt;/v-text-field>
+              &lt;/v-flex>
+              &lt;v-flex xs6>
+                &lt;v-text-field label='Longitude' v-model='newDishLocationLong' disabled>&lt;/v-text-field>
+              &lt;/v-flex>
+            &lt;/v-layout>
+
+            &lt;v-layout>
+              &lt;div id='map'>&lt;/div>
+            &lt;/v-layout>
+
+            &lt;v-combobox
+              v-model='newDishDietaryRestrictions'
+              :rules='dietaryRestrictionsRules'
+              :items='dietaryRestrictionsList'
+              label='Dietary Restrictions'
+              chips
+              clearable
+              solo
+              multiple
+              dense
+            >
+              &lt;template slot='selection' slot-scope='data'>
+                &lt;v-chip
+                  :selected='data.selected'
+                  close
+                  @input='removeDietaryRestriction(data.item)'
+                >
+                  &lt;strong>{{ data.item }}&lt;/strong>&amp;nbsp;
+                &lt;/v-chip>
+              &lt;/template>
+            &lt;/v-combobox>
+            
+            &lt;v-combobox
+              v-model='newDishIngredients'
+              :items='[]'
+              label='Ingredients'
+              chips
+              clearable
+              solo
+              multiple
+            >
+              &lt;template slot='selection' slot-scope='data'>
+                &lt;v-chip
+                  :selected='data.selected'
+                  close
+                  @input='removeIngredient(data.item)'
+                >
+                  &lt;strong>{{ data.item }}&lt;/strong>&amp;nbsp;
+                &lt;/v-chip>
+              &lt;/template>
+            &lt;/v-combobox>
+
+            &lt;v-text-field label='Price' prefix='$' :rules='priceRules' v-model.number='newDishPrice'>&lt;/v-text-field>
+            &lt;v-text-field label='Quantity' :rules='quantityRules' v-model.number='newDishQuantity'>&lt;/v-text-field>
+
+            &lt;v-card-actions>
+              &lt;v-btn flat color='red' class='clearbtn' @click='clearForm'>x Clear&lt;/v-btn>
+              &lt;v-btn flat color='green' class='createbtn' :disabled='!valid' @click='createDish'>- Post&lt;/v-btn>
+            &lt;/v-card-actions>
+          &lt;/v-form>
+        &lt;/v-card>
+      &lt;/v-flex>
+    &lt;/v-layout>
+  &lt;/div>
+&lt;/template>
+
+&lt;style>
+  #map{
+    height:400px;
+    width:100%
+  }
+&lt;/style>
+
+&lt;script>
+import DishesService from '@/services/DishesService'
+import HeaderBase from '@/components/HeaderBase'
+/**
+ * @class CreateDishBase
+ * @desc Component for creating dishes. Allows a user to enter dish details, select dish location, and create the dish on the backend server for sale.
+ * @vue-data {GoogleMap} vueGMap - Google map display on the page for sale location selection
+ * @vue-data {GoogleMapMarker} marker - Marker displaying the current dish sale position on the map
+ * @vue-data {Boolean} valid - Validate the dish creation details
+ * @vue-data {String} newDishName - Name of the new dish
+ * @vue-data {String} newDishDescription - Description of the new dish
+ * @vue-data {String} newDishUrl - Image URL of the new dish
+ * @vue-data {Number} newDishLocationLat - Location (latitude) of the new dish
+ * @vue-data {Number} newDishLocationLong - Location (longitude) of the new dish
+ * @vue-data {Array.&lt;String>} newDishIngredients - Ingredients of the new dish
+ * @vue-data {Array.&lt;String>} newDishDietaryRestrictions - Dietary restrictions of the new dish
+ * @vue-data {Number} newDishPrice - Price of the new dish
+ * @vue-data {Number} newDishQuantity - Quantity of the new dish available for sale
+ */
+export default {
+  name: 'create-dish-base',
+  components: {
+    HeaderBase
+  },
+  data () {
+    return {
+      vueGMap: null,
+      marker: null,
+      position: null,
+
+      // validation
+      valid: true,
+      nameRules: [(v) => { return !!v || 'Name is required' }],
+      dietaryRestrictionsList: ['gluten free', 'vegan', 'vegetarian', 'lactose free', 'nut free'],
+      dietaryRestrictionsRules: [(v) => { return (v &amp;&amp; v.every((d) => { return this.dietaryRestrictionsList.includes(d); })) || 'Dietary Restrictions must be from dropdown!' }],
+      priceRules: [
+        (v) => { return !!v || 'Price is required'}, 
+        (v) => { return (v &amp;&amp; v > 0 &amp;&amp; v &lt;= 100) || 'Price must be between $0 and $100' }, 
+        (v) => { return (v &amp;&amp; (100*v - Math.floor(100*v) === 0)) || 'Price cannot have more than two decimal places' }
+      ],
+      quantityRules: [(v) => { return !!v || 'Quantity is required'}, (v) => { return (v &amp;&amp; v > 0) || 'Quantity cannot be negative' }],
+
+      // new dish details
+      newDishName: '',
+      newDishDescription: '',
+      newDishUrl: '',
+      newDishLocationLat: 0.0,
+      newDishLocationLong: 0.0,
+      newDishIngredients: [],
+      newDishDietaryRestrictions: [],
+      newDishPrice: 0,
+      newDishQuantity: 0
+    }
+  },
+  methods: {
+    /**
+     * Sends a request to create the dish on the backend database
+     */
+    async createDish () {
+      if (this.$refs.form.validate()) {
+        if (this.$store.state.paypalId &amp;&amp; this.$store.state.paypalId !== '' &amp;&amp; this.$store.state.paypalId !== '-1') {
+          let response = await DishesService.newDish({
+            name: this.newDishName,
+            description: this.newDishDescription,
+            imageUrl: this.newDishUrl,
+            dietaryRestrictions: this.newDishDietaryRestrictions,
+            ingredients: this.newDishIngredients,
+            location: {lat: this.newDishLocationLat, lon: this.newDishLocationLong},
+            price: this.newDishPrice,
+            sellerId: this.$store.state.userId,
+            sellerPaypalId: this.$store.state.paypalId,
+            quantity: this.newDishQuantity
+          })
+          if (response.data.success) {
+            alert('Success!')
+            window.location.href = 'http://localhost:8080/'
+          } else {
+            alert('Error: ' + response.data.errorMessage)
+          }
+        } else {
+          alert('You must enter your paypal email in your user profile to buy this dish')
+        }
+      }
+    },
+    /**
+     * Clear the form data entered for the new dish
+     */
+    clearForm () {
+      this.newDishName = ''
+      this.newDishDescription = ''
+      this.newDishUrl = ''
+      this.newDishIngredients = []
+      this.newDishDietaryRestrictions = []
+      this.newDishPrice = null
+      this.newDishQuantity = null
+    },
+    /**
+     * Removes a dietary restriction from the new dish dietary restrictions list
+     */
+    removeDietaryRestriction (item) {
+      this.newDishDietaryRestrictions.splice(this.newDishDietaryRestrictions.indexOf(item), 1)
+      this.newDishDietaryRestrictions = [...this.newDishDietaryRestrictions]
+    },
+    /**
+     * Removes an ingredient from the new dish ingredients list
+     */
+    removeIngredient (item) {
+      this.newDishIngredients.splice(this.newDishIngredients.indexOf(item), 1)
+      this.newDishIngredients = [...this.newDishIngredients]
+    },
+    /**
+     * Place a marker on the Google map display
+     */
+    placeMarker(latlng, map) {
+      console.log("Place Marker")
+      if(this.marker != null) {
+        this.marker.setMap(null)
+      }
+
+      this.marker = new google.maps.Marker({
+        position: latlng,
+        map: map
+      })
+      this.newDishLocationLat = latlng.lat
+      this.newDishLocationLong = latlng.lng
+      map.panTo(latlng)
+    },
+    /**
+     * Initialize the Google map on the page for location selection
+     */
+    initGoogleMaps() {
+      const localOptions = {
+        zoom: 17,
+        center: {lat: this.newDishLocationLat, lng: this.newDishLocationLong}
+      }
+      console.log("InitializeGoogle Maps")
+      this.vueGMap = new google.maps.Map(document.getElementById('map'), localOptions)
+      this.placeMarker({lat: this.newDishLocationLat, lng: this.newDishLocationLong}, this.vueGMap)
+      this.vueGMap.addListener('click', (e) => {
+        this.position = {lat: e.latLng.lat(), lng: e.latLng.lng()}
+        this.placeMarker(this.position, this.vueGMap)
+      })
+    }
+  },
+  /**
+   * Get the current location and inialize the google map
+   */
+  mounted () {
+    if (navigator.geolocation) {
+       var self = this;
+       navigator.geolocation.getCurrentPosition(function (position) {
+        self.newDishLocationLat = position.coords.latitude
+        self.newDishLocationLong = position.coords.longitude
+        self.initGoogleMaps()
+      })
+    }
+  }
+}
+&lt;/script>
+
+&lt;style scoped>
+.create-dish-card {
+  margin-left: 1em;
+  margin-right: 1em;
+}
+
+.dish-name {
+  font-size: x-large;
+}
+&lt;/style>
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ChatBase.html">ChatBase</a></li><li><a href="CreateDishBase.html">CreateDishBase</a></li><li><a href="DishDetails.html">DishDetails</a></li><li><a href="FacebookLogin.html">FacebookLogin</a></li><li><a href="GoogleMap.html">GoogleMap</a></li><li><a href="HeaderBase.html">HeaderBase</a></li><li><a href="ListingsBase.html">ListingsBase</a></li><li><a href="ListingsDishItem.html">ListingsDishItem</a></li><li><a href="SearchDishBase.html">SearchDishBase</a></li><li><a href="TransactionDishItem.html">TransactionDishItem</a></li><li><a href="TransactionPendingBase.html">TransactionPendingBase</a></li><li><a href="UserProfileBase.html">UserProfileBase</a></li><li><a href="UserProfileChatItem.html">UserProfileChatItem</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Dec 02 2018 16:34:32 GMT-0800 (Pacific Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

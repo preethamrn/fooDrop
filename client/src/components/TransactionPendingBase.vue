@@ -6,11 +6,18 @@
 
 <script>
 import DishesService from '@/services/DishesService'
+/**
+ * @class TransactionPendingBase
+ * @desc Landing page after PayPal transaction while waiting for success on the backend
+ */
 export default {
   name: 'transaction-pending-base',
   data () {
     return { }
   },
+  /**
+   * Check for success from backend server
+   */
   async created () {
     let params = {};
     window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {

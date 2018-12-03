@@ -47,7 +47,7 @@
             ></v-text-field>
 
             <v-card-actions>
-              <v-btn flat color='green' :disabled='!valid' @click='update'>Update Profile</v-btn>
+              <v-btn flat color='green' class='updatebtn' :disabled='!valid' @click='update'>Update Profile</v-btn>
             </v-card-actions>
           </v-form>
         </v-card>
@@ -80,6 +80,18 @@ import HeaderBase from '@/components/HeaderBase'
 import FacebookAuth from '@/services/FacebookAuth'
 import TransactionsDishItem from '@/components/TransactionsDishItem'
 import UserProfileChatItem from '@/components/UserProfileChatItem'
+/**
+ * @class UserProfileBase
+ * @desc User profile page that allows user to update their profile, view past transaction, and view past chats for contacting sellers.
+ * @vue-data {Boolean} valid - Validate the user profile details
+ * @vue-data {Array.<String>} defaultDietaryRestrictions - Default dietary restrictions for searching
+ * @vue-data {Array.<Number>} defaultPriceRange - Default price range for searching
+ * @vue-data {Number} defaultRadius - Default radius for searching
+ * @vue-data {String} paypalId - PayPal Email used for transactions when creating and buying dishes
+ * @vue-data {Array.<Dish>} transactions - List of past transactions
+ * @vue-data {Array.<Chat>} chats - List of past chats
+ * @vue-computed {String} storeUserState - Watcher function that checks for modifications to Vuex state
+ */
 export default {
   name: 'user-profile-base',
   components: {
@@ -104,10 +116,16 @@ export default {
     }
   },
   methods: {
+    /**
+     * Removed dietary restrictions from component data
+     */
     removeDietaryRestriction (item) {
       this.defaultDietaryRestrictions.splice(this.defaultDietaryRestrictions.indexOf(item), 1)
       this.defaultDietaryRestrictions = [...this.defaultDietaryRestrictions]
     },
+    /**
+     * Resets component data to the defaults from the backend user profile
+     */
     resetDefaults () {
       this.defaultDietaryRestrictions = this.$store.state.defaultDietaryRestrictions
       this.defaultPriceRange = this.$store.state.defaultPriceRange
@@ -116,6 +134,9 @@ export default {
       this.transactions = this.$store.state.transactions
       this.chats = this.$store.state.chats
     },
+    /**
+     * Update user profile on the backend server database
+     */
     async update () {
       try {
         let response = await FacebookAuth.updateUser({

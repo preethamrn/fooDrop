@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: SearchDishBase.vue</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: SearchDishBase.vue</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>&lt;template>
+  &lt;div class="search-dish-base">
+    &lt;header-base/>
+    &lt;v-layout>
+      &lt;v-flex xs12 sm6 offset-sm3>
+        &lt;v-card class='search-dish-card'>
+          &lt;v-form ref='form' v-model='valid' lazy-validation>
+            &lt;v-card-title>&lt;h3 class="headline mb-0">Search&lt;/h3>&lt;/v-card-title>
+
+            &lt;v-text-field label='Name' v-model='searchDishName' class='dish-name'>&lt;/v-text-field>
+
+            &lt;v-combobox
+              v-model='searchDishDietaryRestrictions'
+              :rules='dietaryRestrictionsRules'
+              :items='dietaryRestrictionsList'
+              label='Dietary Restrictions'
+              chips
+              clearable
+              solo
+              multiple
+              dense
+            >
+              &lt;template slot='selection' slot-scope='data'>
+                &lt;v-chip
+                  :selected='data.selected'
+                  close
+                  @input='removeDietaryRestriction(data.item)'
+                >
+                  &lt;strong>{{ data.item }}&lt;/strong>&amp;nbsp;
+                &lt;/v-chip>
+              &lt;/template>
+            &lt;/v-combobox>
+
+            &lt;v-combobox
+              v-model='searchDishIngredients'
+              :items='[]'
+              label='Ingredients'
+              chips
+              clearable
+              solo
+              multiple
+            >
+              &lt;template slot='selection' slot-scope='data'>
+                &lt;v-chip
+                  :selected='data.selected'
+                  close
+                  @input='removeIngredient(data.item)'
+                >
+                  &lt;strong>{{ data.item }}&lt;/strong>&amp;nbsp;
+                &lt;/v-chip>
+              &lt;/template>
+            &lt;/v-combobox>
+
+            &lt;v-layout row>
+              &lt;v-flex xs10>&lt;v-range-slider class='padded-slider' v-model='searchDishPrice' :max='100' :min='0'>&lt;/v-range-slider>&lt;/v-flex>
+              &lt;v-flex xs1>&lt;v-text-field label='Price' prefix='$' v-model='searchDishPrice[0]'>&lt;/v-text-field>&lt;/v-flex>
+              &lt;v-flex xs1>&lt;v-text-field prefix='-' v-model='searchDishPrice[1]'>&lt;/v-text-field>&lt;/v-flex>
+            &lt;/v-layout>
+            &lt;v-layout row>
+              &lt;v-flex xs10>&lt;v-slider class='padded-slider' v-model='searchDishRadius' :max='15' :min='0'>&lt;/v-slider>&lt;/v-flex>
+              &lt;v-flex xs2>&lt;v-text-field class='padded-input' label='Radius' suffix='mi' v-model='searchDishRadius'>&lt;/v-text-field>&lt;/v-flex>
+            &lt;/v-layout>
+
+            &lt;v-card-actions>
+              &lt;v-btn flat class='clear' color='red' @click='clear'>x Clear&lt;/v-btn>
+              &lt;v-btn flat class='search' color='green' :disabled='!valid' @click='searchDish'>- Search&lt;/v-btn>
+            &lt;/v-card-actions>
+          &lt;/v-form>
+        &lt;/v-card>
+      &lt;/v-flex>
+    &lt;/v-layout>
+  &lt;/div>
+&lt;/template>
+
+&lt;script>
+import DishesService from '@/services/DishesService'
+import HeaderBase from '@/components/HeaderBase'
+/**
+ * @class SearchDishBase
+ * @desc Component for searching for dishes. Allows a user to enter search parameters which will redirect them to ListingsBase with their appropriate search results.
+ * @vue-data {Boolean} valid - Validates the search details input form
+ * @vue-data {String} searchDishName - Name of the dish in the search response
+ * @vue-data {Number} searchDishLocationLat - Location (latitude) of the search request
+ * @vue-data {Number} searchDishLocationLong - Location (longitude) of the search request
+ * @vue-data {Array.&lt;String>} searchDishIngredients - Ingredients to include in the search response
+ * @vue-data {Array.&lt;String>} searchDishDietaryRestrictions - Dietary restrictions required in the search response
+ * @vue-data {Array.&lt;Number>} searchDishPrice - Price range of the search request
+ * @vue-data {Number} searchDishRadius - Radius of the search request
+ * @vue-computed {String} storeUserState - Watcher function that checks for modifications to Vuex state
+ */
+export default {
+  name: 'search-dish-base',
+  components: {
+    HeaderBase
+  },
+  data () {
+    return {
+      // validation
+      valid: true,
+      dietaryRestrictionsList: ['gluten free', 'vegan', 'vegetarian', 'lactose free', 'nut free'],
+      dietaryRestrictionsRules: [(v) => { return (v &amp;&amp; v.every((d) => { return this.dietaryRestrictionsList.includes(d); })) || 'Dietary Restrictions must be from dropdown!' }],
+
+      // new dish details
+      searchDishName: '',
+      searchDishLocationLat: 0.0,
+      searchDishLocationLong: 0.0,
+      searchDishIngredients: [],
+      searchDishDietaryRestrictions: [],
+      searchDishPrice: [0, 5],
+      searchDishRadius: 5
+    }
+  },
+  methods: {
+    /**
+     * Send a search request to the server. Once the response is received the user is redirected to the ListingsBase page where their results are displayed
+     */
+    async searchDish () {
+      if (this.$refs.form.validate()) {
+        try {
+          let response = await DishesService.searchDish({
+            name: this.searchDishName,
+            ingredients: this.searchDishIngredients,
+            dietaryRestrictions: this.searchDishDietaryRestrictions,
+            lat: this.searchDishLocationLat,
+            lon: this.searchDishLocationLong,
+            radius: this.searchDishRadius,
+            priceLow: this.searchDishPrice[0],
+            priceHigh: this.searchDishPrice[1]
+          })
+          if (response.data.success) {
+            console.log(response.data.dishes)
+            this.$router.push({ path: `/`, name: 'Listings', params: { dishesProp: response.data.dishes, searched: true }})
+          } else {
+            alert('Error: ' + response.data.errorMessage)
+          }
+        } catch (error) {
+          alert('Error: ' + error)
+        }
+      }
+    },
+    /**
+     * Clear the form data entered for searching
+     */
+    clear () {
+      this.searchDishName = ''
+      this.searchDishIngredients = []
+      this.searchDishDietaryRestrictions = this.$store.state.defaultDietaryRestrictions
+      this.searchDishPrice = this.$store.state.defaultPriceRange
+      this.searchDishRadius = this.$store.state.defaultRadius
+    },
+    /**
+     * Removes a dietary restriction from the search dish dietary restrictions list
+     */
+    removeDietaryRestriction (item) {
+      this.searchDishDietaryRestrictions.splice(this.searchDishDietaryRestrictions.indexOf(item), 1)
+      this.searchDishDietaryRestrictions = [...this.searchDishDietaryRestrictions]
+    },
+    /**
+     * Removes an ingredient from the search dish ingredients list
+     */
+    removeIngredient (item) {
+      this.searchDishIngredients.splice(this.searchDishIngredients.indexOf(item), 1)
+      this.searchDishIngredients = [...this.searchDishIngredients]
+    }
+  },
+  computed: {
+    storeUserState () {
+      return this.$store.state.userId
+    }
+  },
+  watch: {
+    storeUserState () {
+      this.clear()
+    }
+  },
+  created () {
+    this.clear()
+  },
+  mounted () {
+    if (navigator.geolocation) {
+       var self = this;
+       navigator.geolocation.getCurrentPosition(function (position) {
+        self.searchDishLocationLat = position.coords.latitude
+        self.searchDishLocationLong = position.coords.longitude
+      }, function(error) {console.log(error)})
+    }
+  }
+}
+&lt;/script>
+
+&lt;style scoped>
+.search-dish-card {
+  margin-left: 1em;
+  margin-right: 1em;
+}
+
+.dish-name {
+  font-size: x-large;
+}
+
+.v-card__title {
+  padding: 1em 2em 0 1em;
+}
+
+.padded-slider {
+  margin-left: 1em;
+  margin-right: 1em;
+}
+
+.padded-input {
+  margin-right: 1em;
+}
+&lt;/style>
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ChatBase.html">ChatBase</a></li><li><a href="CreateDishBase.html">CreateDishBase</a></li><li><a href="DishDetails.html">DishDetails</a></li><li><a href="FacebookLogin.html">FacebookLogin</a></li><li><a href="GoogleMap.html">GoogleMap</a></li><li><a href="HeaderBase.html">HeaderBase</a></li><li><a href="ListingsBase.html">ListingsBase</a></li><li><a href="ListingsDishItem.html">ListingsDishItem</a></li><li><a href="SearchDishBase.html">SearchDishBase</a></li><li><a href="TransactionDishItem.html">TransactionDishItem</a></li><li><a href="TransactionPendingBase.html">TransactionPendingBase</a></li><li><a href="UserProfileBase.html">UserProfileBase</a></li><li><a href="UserProfileChatItem.html">UserProfileChatItem</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Dec 02 2018 16:34:32 GMT-0800 (Pacific Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
