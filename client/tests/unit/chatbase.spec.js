@@ -44,11 +44,21 @@ describe('ChatBase.vue', () => {
 
     //expect
     expect(mockAxios.get).toHaveBeenCalledTimes(1)
+
     Vue.config.errorHandler = done
-    Vue.nextTick(() => {
-      expect(wrapper.contains('vcardtext-stub')).toBe(true)
-      done()
-    })
+
+    setTimeout(() => {
+    		Vue.nextTick(() => {
+      		expect(wrapper.contains('vcardtext-stub')).toBe(true)
+      		done()
+    	})
+	}, 0);
+    
+    //old one but it doesnt work properly on my machine, so i used set timeout above
+    // Vue.nextTick(() => {
+    //   expect(wrapper.contains('vcardtext-stub')).toBe(true)
+    //   done()
+
   })
 
   it('tests sending chat messages', () => {
