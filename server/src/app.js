@@ -81,7 +81,8 @@ passport.use(new facebookToken({
         priceHigh: 20,
         priceLow: 0,
 				restrictions: [],
-				transactions: []
+				transactions: [],
+				chats: []
 			})
 
 			newUser.save(function(err, savedUser) {

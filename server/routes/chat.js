@@ -55,6 +55,8 @@ router.post('/send_chat', function(req, res, next) {
           message: req.body.message
         }]
       })
+      console.log(buyerId)
+      console.log(sellerId)
       newChat.save(function (error) {
         if (error) {
           console.error(error)
